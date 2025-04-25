@@ -1,0 +1,51 @@
+:root {
+  --footer-background: #5c116e99;
+  --footer-border: #dc49f0;
+  --footer-shadow: #f049d488;
+  --footer-foreground: #ffffff;
+  --footer-separator: #73e4af;
+}
+
+footer {
+  box-shadow: 0px 0px 8px 2px var(--footer-shadow);
+  backdrop-filter: blur(10px);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 12px;
+  padding: 6px 12px;
+  background-color: var(--footer-background);
+  border: 1px solid var(--footer-border);
+  border-bottom: 0;
+  border-radius: 6px 6px 0px 0px;
+  transition: .15 ease-in-out;
+}
+
+footer p.footer-content {
+  margin: 0;
+  margin-top: 3px;
+  padding: 0;
+  font-size: 1.2rem;
+  color: var(--footer-foreground);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+footer .separator {
+  margin-right: 10px;
+  margin-left: 10px;
+  color: var(--footer-separator);
+}
+
+footer .separator::after {
+  content: "//";
+}
+
+@media screen and (min-width: 1300px) {
+  footer {
+    width: 50%;
+  }
+}

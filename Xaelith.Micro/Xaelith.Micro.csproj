@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Shared\" />
+    <Folder Include="wwwroot\content\" />
+    <Folder Include="wwwroot\data\" />
+    <Folder Include="wwwroot\fonts\" />
+    <Folder Include="wwwroot\style\admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.cs">
+      <DependentUpon>App.razor</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Layout\AppShell.razor" />
+  </ItemGroup>
+
+</Project>
