@@ -1,0 +1,13 @@
+﻿main {
+    margin: 0 auto;
+    margin-top: 36px;
+    padding-bottom: 56px;
+    width: 90%;
+    text-align: justify;
+}
+
+@media screen and (min-width: 1300px) {
+    main {
+        width: 50%;
+    }
+}

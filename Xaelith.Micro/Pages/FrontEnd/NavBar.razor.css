@@ -1,0 +1,102 @@
+﻿nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    width: 90%;
+    padding: 8px 12px 10px 12px;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    
+    border: 1px solid var(--navbar-border);
+    border-top: 0;
+    border-radius: 0 0 6px 6px;
+    
+    box-shadow: 0 0 8px 2px var(--navbar-shadow);
+    backdrop-filter: blur(10px);
+    
+    background-color: var(--navbar-background);
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+.las {
+    font-size: 1.45rem;
+}
+
+.left-side {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    vertical-align: middle;
+    
+    width: 100%;
+    height: 100%;
+}
+
+.site-title {
+    overflow: hidden;
+    
+    font-size: 0.9rem;
+    font-family: "Vermin Vibes V", sans-serif;
+    
+    text-transform: uppercase;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+}
+
+.separator {
+    margin-right: 10px;
+    margin-left: 10px;
+    
+    color: var(--navbar-separator-foreground);
+}
+
+.title-separator::after {
+    content: ">>";
+}
+
+.nav-separator::after {
+    content: "//";
+}
+
+ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    
+    margin: 0;
+    padding: 0;
+    
+    font-size: 1.2rem;
+    
+    text-transform: uppercase;
+    
+    list-style: none;
+}
+
+ul li {
+    margin-right: 10px;
+    
+    text-overflow: ellipsis;
+}
+
+ul li:last-child {
+    margin-right: 0;
+}
+
+@media screen and (min-width: 1300px) {
+    nav {
+        width: 50%;
+    }
+}

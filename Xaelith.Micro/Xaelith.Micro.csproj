@@ -5,9 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="Infrastructure\ServiceModel\" />
+    <Folder Include="Infrastructure\Utilities\" />
     <Folder Include="Shared\" />
-    <Folder Include="wwwroot\content\" />
-    <Folder Include="wwwroot\data\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\style\admin\" />
   </ItemGroup>
@@ -20,6 +20,11 @@
 
   <ItemGroup>
     <AdditionalFiles Include="Layout\AppShell.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JsonFlatFileDataStore" Version="2.4.2" />
+    <PackageReference Include="Markdig" Version="0.41.0" />
   </ItemGroup>
 
 </Project>

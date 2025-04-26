@@ -1,0 +1,101 @@
+﻿:root {
+    --main-background: #0f0213;
+    --main-foreground: #cfaee9;
+    --scrollbar-background: #0f0213;
+    --scrollbar-foreground: #ff88ff;
+    --selection-background: #ff88ff;
+    --selection-foreground: #1e0725;
+    --navbar-background: #5c116e99;
+    --navbar-border: #dc49f0;
+    --navbar-shadow: #f049d488;
+    --navbar-link-foreground: #e473e4;
+    --navbar-link-hover-foreground: #ff88ff;
+    --navbar-separator-foreground: #73e4af;
+    --list-bullet-foreground: #ff88ff99;
+    --block-background: #200529;
+    --block-foreground: #aa88c4;
+    --table-border: #aa88c4;
+    --table-header-background: #cfaee9;
+    --table-header-foreground: #1e0725;
+    --table-background: #0f0213;
+    --table-even-row-background: #200529;
+    --link-normal-foreground: #ee77ee;
+    --link-hover-foreground: #ff88ff;
+    --link-visited-foreground: #ee77ee;
+    --link-active-foreground: #ff88ff;
+    --link-active-shadow: #ff88ff88;
+    --button-background: #ff88ff;
+    --button-foreground: #200529;
+    --button-border: #ff88ff;
+    --button-hover-background: #200529;
+    --button-hover-foreground: #ff88ff;
+    --button-hover-border: #ff88ff;
+    --button-active-background: #200529;
+    --button-active-foreground: #ff88ff;
+    --button-active-border: #ff88ff;
+    --button-disabled-background: #774477;
+    --button-disabled-foreground: #200529;
+    --button-disabled-border: #774477;
+    --post-separator: #ff88ff99;
+    --header-border: #cfaee9;
+    --alert-note-accent: #ff88ff;
+    --alert-note-accent2: #ff88ff99;
+    --alert-note-background: #ff88ff22;
+    --alert-note-foreground: #ff88ff;
+    --alert-tip-accent: #88f1ff;
+    --alert-tip-accent2: #88f1ff99;
+    --alert-tip-background: #88f1ff22;
+    --alert-tip-foreground: #88f1ff;
+    --alert-important-accent: #88ff92;
+    --alert-important-accent2: #88ff9299;
+    --alert-important-background: #88ff9222;
+    --alert-important-foreground: #88ff92;
+    --alert-warning-accent: #ffcf88;
+    --alert-warning-accent2: #ffcf8899;
+    --alert-warning-background: #ffcf8822;
+    --alert-warning-foreground: #ffcf88;
+    --alert-caution-accent: #ff889c;
+    --alert-caution-accent2: #ff889c99;
+    --alert-caution-background: #ff889c22;
+    --alert-caution-foreground: #ff889c;
+}
+
+::selection {
+    background-color: var(--selection-background);
+    color: var(--selection-foreground);
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    
+    margin: 0;
+    padding: 0;
+    
+    font-size: 1.2rem;
+    font-family: "Rajdhani", sans-serif;
+    
+    color: var(--main-foreground);
+    background-color: var(--main-background);
+    scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
+}
+
+a {
+    transition: .15s ease-in-out;
+    
+    text-decoration: none;
+    
+    color: var(--link-normal-foreground);
+}
+
+a:hover {
+    border: none;
+    
+    text-shadow: 0 0 3px var(--link-active-shadow);
+    
+    color: var(--link-hover-foreground);
+}
+
+a:active {
+    color: var(--link-active-foreground);
+}
