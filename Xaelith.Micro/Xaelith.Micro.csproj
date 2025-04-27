@@ -5,8 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="data\logs\" />
     <Folder Include="Infrastructure\ServiceModel\" />
-    <Folder Include="Infrastructure\Utilities\" />
     <Folder Include="Shared\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\style\admin\" />
