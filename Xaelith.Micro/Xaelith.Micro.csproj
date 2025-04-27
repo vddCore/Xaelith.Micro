@@ -6,7 +6,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="data\logs\" />
-    <Folder Include="Infrastructure\ServiceModel\" />
     <Folder Include="Shared\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\style\admin\" />
