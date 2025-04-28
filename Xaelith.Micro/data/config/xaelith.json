@@ -3,7 +3,10 @@
     "site_title": "Aura's Binary Forge",
     "site_description": "Digital Witch's Vibrant Recluse",
     "site_url": "https://localhost:5271",
-    "footer_text": "sometimes shit just doesn't work // © until i fucking die"
+    "footer_text": "sometimes shit just doesn't work // © until i fucking die",
+    "date_format": "dd MMMM yyyy - HH:mm",
+    "post_order_criteria": "date",
+    "post_order_direction": "descending"
   },
   
   "navigation": {

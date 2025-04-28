@@ -6,17 +6,17 @@
     <div class="left-side">
         <div class="site-title">
             <h1>
-                <a href="@Configuration.Config!.General.SiteUrl">
-                    @Configuration.Config!.General.SiteTitle
+                <a href="@Configuration.Root!.General.SiteUrl">
+                    @Configuration.Root!.General.SiteTitle
                 </a>
             </h1>
         </div>
 
         <span class="separator title-separator"></span>
 
-        @for (var i = 0; i < Configuration.Config!.Navigation.NavigationLists.Count; i++)
+        @for (var i = 0; i < Configuration.Root!.Navigation.NavigationLists.Count; i++)
         {
-            var list = Configuration.Config!.Navigation.NavigationLists[i];
+            var list = Configuration.Root!.Navigation.NavigationLists[i];
             
             <ul class="nav-links">
                 @foreach (var link in list.Links)
@@ -25,7 +25,7 @@
                 }
             </ul>
             
-            if (i < Configuration.Config!.Navigation.NavigationLists.Count - 1)
+            if (i < Configuration.Root!.Navigation.NavigationLists.Count - 1)
             {
                 <span class="separator nav-separator"></span>
             }

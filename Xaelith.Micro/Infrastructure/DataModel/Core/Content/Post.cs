@@ -4,17 +4,14 @@ using Newtonsoft.Json;
 
 public record Post
 {
-    [JsonProperty("id")]
-    public Guid Id { get; set; } = Guid.NewGuid();
-    
     [JsonProperty("slug")]
-    public string Slug { get; set; }
+    public string Slug { get; set; } = "untitled";
     
     [JsonProperty("published")]
     public bool Published { get; set; }
-    
+
     [JsonProperty("publish_date")]
-    public DateTime? PublishDate { get; set; }
+    public required DateTime PublishDate { get; set; } = DateTime.Now;
     
     [JsonProperty("edit_date")]
     public DateTime? EditDate { get; set; }
@@ -33,12 +30,4 @@ public record Post
     
     [JsonProperty("tags")]
     public List<string> Tags { get; set; } = [];
-
-    [JsonProperty("break_at")]
-    public int? BreakAt { get; set; }
-
-    public Post()
-    {
-        Slug = Id.ToString("D");
-    }
 }

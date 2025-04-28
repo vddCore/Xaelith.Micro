@@ -55,6 +55,10 @@
     <Content Include="data\content\ce20e8e2-5e15-4c6f-91be-1ea1f763fa76\body.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="data\content\e52eb4de-495f-4a3b-ba63-5ca7d3783815\body.md" />
+    <Content Include="data\content\e52eb4de-495f-4a3b-ba63-5ca7d3783815\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

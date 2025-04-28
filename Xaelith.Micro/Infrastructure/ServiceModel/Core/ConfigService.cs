@@ -8,10 +8,10 @@ public class ConfigService : IConfigService
 {
     public string ConfigPath { get; } = Path.Combine(
         WellKnown.Config,
-        "xaelith.json"
+        WellKnown.ConfigurationFileName
     );
     
-    public Configuration? Config { get; private set; }
+    public Configuration? Root { get; private set; }
 
     public ConfigService()
     {
@@ -22,20 +22,20 @@ public class ConfigService : IConfigService
     {
         if (!File.Exists(ConfigPath))
         {
-            Config = new Configuration();
+            Root = new Configuration();
             Save();
         }
         else
         {
             using var sr = new StreamReader(ConfigPath);
             
-            Config = JsonConvert.DeserializeObject<Configuration>(
+            Root = JsonConvert.DeserializeObject<Configuration>(
                 sr.ReadToEnd()
             );
 
-            if (Config == null)
+            if (Root == null)
             {
-                Config = new Configuration();
+                Root = new Configuration();
                 Save();
             }
         }
@@ -45,7 +45,7 @@ public class ConfigService : IConfigService
     {
         using (var sw = new StreamWriter(ConfigPath))
         {
-            sw.Write(JsonConvert.SerializeObject(Config));
+            sw.Write(JsonConvert.SerializeObject(Root));
         }
     }
 }

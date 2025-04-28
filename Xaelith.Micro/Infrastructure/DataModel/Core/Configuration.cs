@@ -1,12 +1,16 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
 
 public class Configuration
 {
     [JsonProperty("general")]
     public GeneralSettings General { get; } = new();
+    
+    [JsonProperty("rendering")]
+    public RenderingSettings Rendering { get; } = new();
     
     [JsonProperty("navigation")]
     public NavigationSettings Navigation { get; } = new();
@@ -27,7 +31,21 @@ public record GeneralSettings
     public string FooterText { get; set; } = "Copyright (c) 2025 Xaelith Project";
     
     [JsonProperty("date_format")]
-    public string DateFormat { get; set; } = "yyyy-MM-dd";
+    public string DateFormat { get; set; } = "dd MMMM yyyy - HH:mm";
+    
+    [JsonProperty("post_order_criteria")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public PostOrderCriteria PostOrderCriteria { get; set; } = PostOrderCriteria.Date;
+    
+    [JsonProperty("post_order_direction")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public PostOrderDirection PostOrderDirection { get; set; } = PostOrderDirection.Descending;
+}
+
+public record RenderingSettings
+{
+    [JsonProperty("pagebreak_token")]
+    public string PageBreakToken { get; set; } = "[[pagebreak]]";
 }
 
 public record NavigationSettings

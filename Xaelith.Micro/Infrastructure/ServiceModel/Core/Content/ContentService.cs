@@ -2,31 +2,32 @@
 
 using Newtonsoft.Json;
 using Xaelith.Micro.Infrastructure.DataModel.Content;
+using Xaelith.Micro.Infrastructure.DataModel.Core;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public class ContentService : IContentService
 {
-    private Dictionary<string, Post> _posts;
-    
-    public IReadOnlyDictionary<string, Post> Posts => _posts;
+    private readonly IConfigService _configService;
 
-    public ContentService()
+    public ContentService(IConfigService configService)
     {
-        Directory.CreateDirectory(WellKnown.Content);
+        _configService = configService;
         
-        _posts = GetAllPosts();
+        Directory.CreateDirectory(WellKnown.Content);
     }
 
-    public void RefreshPostCache()
-        => _posts = GetAllPosts();
-
-    public Dictionary<string, Post> GetAllPosts(Predicate<Post>? filter = null)
+    public List<(Guid Id, Post Post)> GetAllPosts(Predicate<Post>? filter = null)
     {
         var postDirectories = Directory.GetDirectories(WellKnown.Content);
-        var posts = new Dictionary<string, Post>();
+        var posts = new List<(Guid Id, Post Post)>();
         
         foreach (var postRoot in postDirectories)
         {
+            var directoryName = Path.GetFileName(postRoot);
+            
+            if (!Guid.TryParse(directoryName, out var postId))
+                continue;
+            
             var metadataPath = Path.Combine(
                 postRoot, 
                 WellKnown.PostMetadataFileName
@@ -57,10 +58,32 @@ public class ContentService : IContentService
                 if (!filter?.Invoke(metadata) ?? false)
                     continue;
                     
-                posts.Add(
-                    Path.GetFileName(postRoot),
+                posts.Add((
+                    postId,
                     metadata
-                );
+                ));
+
+                var direction = _configService.Root!.General.PostOrderDirection;
+                switch (_configService.Root!.General.PostOrderCriteria)
+                {
+                    case PostOrderCriteria.Date:
+                    {
+                        posts = direction == PostOrderDirection.Ascending 
+                              ? posts.OrderBy(x => x.Post.PublishDate).ToList()
+                              : posts.OrderByDescending(x => x.Post.PublishDate).ToList();
+                        
+                        break;
+                    }
+
+                    case PostOrderCriteria.Alphabetical:
+                    {
+                        posts = direction == PostOrderDirection.Ascending
+                              ? posts.OrderBy(x => x.Post.Title).ToList()
+                              : posts.OrderByDescending(x => x.Post.Title).ToList();
+                        
+                        break;
+                    }
+                }
             }
             catch
             {
@@ -69,6 +92,16 @@ public class ContentService : IContentService
         }
 
         return posts;
+    }
+
+    public (Guid Id, Post Post)? GetPostBySlug(string slug)
+    {
+        var collection = GetAllPosts(p => p.Slug == slug);
+
+        if (!collection.Any())
+            return null;
+        
+        return collection.First();
     }
 
     public string GetPostBody(Guid postId)

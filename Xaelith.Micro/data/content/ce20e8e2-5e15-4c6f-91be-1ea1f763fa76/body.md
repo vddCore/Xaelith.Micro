@@ -9,6 +9,8 @@ was trying to hold herself together. She was shimmering at the edges, like a
 signal on the verge of fading. Void? Leaned against the workbench, arms 
 crossed, stance firm, her usual half-smirk pulling at her lips.
 
+[[pagebreak]]
+
 "You gonna cry again?" Void teased, but there was no real bite in her words.
 She stepped forward, boots tapping softly against the floor, and kneeled in 
 front of Aura. "It's okay, you know. You're not broken for feeling too much."

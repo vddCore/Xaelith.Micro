@@ -4,7 +4,7 @@ using Xaelith.Micro.Infrastructure.DataModel.Core;
 
 public interface IConfigService : IXaelithService
 {
-    Configuration? Config { get; }
+    Configuration? Root { get; }
     
     void Reload();
     void Save();

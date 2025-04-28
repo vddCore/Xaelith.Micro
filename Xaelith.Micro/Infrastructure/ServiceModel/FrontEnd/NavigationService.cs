@@ -14,7 +14,7 @@ public class NavigationService : INavigationService
 
     public NavList? FindNavList(string name)
     {
-        return _configService.Config?
+        return _configService.Root?
             .Navigation
             .NavigationLists
             .FirstOrDefault(x => x.Name == name);
@@ -32,7 +32,7 @@ public class NavigationService : INavigationService
 
         var navList = new NavList { Name = name };
         
-        _configService.Config?
+        _configService.Root?
             .Navigation
             .NavigationLists
             .Add(navList);
@@ -49,7 +49,7 @@ public class NavigationService : INavigationService
         if (navList == null)
             return false;
         
-        _configService.Config?
+        _configService.Root?
             .Navigation
             .NavigationLists
             .Remove(navList);

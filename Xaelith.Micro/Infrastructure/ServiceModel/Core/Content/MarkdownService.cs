@@ -5,10 +5,13 @@ using Markdig.Extensions.Emoji;
 
 public class MarkdownService : IMarkdownService
 {
+    private IConfigService _configService;
     private MarkdownPipeline _markdownPipeline;
     
-    public MarkdownService()
+    public MarkdownService(IConfigService configService)
     {
+        _configService = configService;
+        
         _markdownPipeline = new MarkdownPipelineBuilder()
             .UseAdvancedExtensions()
             .Use(new EmojiExtension(EmojiMapping.DefaultEmojisOnlyMapping))
@@ -17,6 +20,11 @@ public class MarkdownService : IMarkdownService
 
     public string Render(string markdown)
     {
+        var pbToken = _configService.Root!.Rendering.PageBreakToken;
+
+        if (!string.IsNullOrWhiteSpace(pbToken))
+            markdown = markdown.Replace(pbToken, string.Empty);
+        
         return Markdown.ToHtml(
             markdown,
             _markdownPipeline
@@ -25,14 +33,11 @@ public class MarkdownService : IMarkdownService
 
     public string RenderBrief(string markdown, int length)
     {
-        markdown = markdown.Substring(0, length);
+        markdown = markdown.Substring(0, length)
+            .Trim()
+            .TrimEnd('.');
 
-        if (!markdown.EndsWith(".")
-            && !markdown.EndsWith("\n"))
-        {
-            markdown += "...";
-        }
-
+        markdown += "<span class=\"post-continuation-prompt\">...</span>";
         return Render(markdown);
     }
 }
