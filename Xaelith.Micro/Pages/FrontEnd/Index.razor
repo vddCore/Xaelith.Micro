@@ -1,5 +1,15 @@
 ﻿@page "/"
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
 
-<NavBar />
+@inject IContentService Content
 
-<Footer />
+<NavBar/>
+
+<main>
+    @foreach (var (_, post) in @Content.GetAllPosts())
+    {
+        <PostBrief Post="@post"/>
+    }
+</main>
+
+<Footer/>

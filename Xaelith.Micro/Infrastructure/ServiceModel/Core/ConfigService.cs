@@ -4,10 +4,10 @@ using Newtonsoft.Json;
 using Xaelith.Micro.Infrastructure.DataModel.Core;
 using Xaelith.Micro.Infrastructure.Utilities;
 
-public class ConfigService
+public class ConfigService : IConfigService
 {
     public string ConfigPath { get; } = Path.Combine(
-        KnownPaths.Config,
+        WellKnown.Config,
         "xaelith.json"
     );
     

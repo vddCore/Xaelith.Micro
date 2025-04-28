@@ -1,0 +1,87 @@
+﻿@using Xaelith.Micro.Infrastructure.DataModel.Content
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
+
+@inject IConfigService Configuration
+@inject IContentService Content
+@inject IMarkdownService Markdown
+
+<section class="post">
+    <div class="post-titlebar">
+        <h1 class="post-title">
+            <a href="/post/@Post.Slug">@Post.Title</a>
+        </h1>
+
+        <div class="post-toolbar">
+            <a class="post-toolbar-link" href="/admin/edit/@Post.Id.ToString("D")">
+                <i class="las la-edit"></i>
+                edit
+            </a>
+        </div>
+    </div>
+
+    <h2 class="post-subtitle">
+        @Post.Description
+    </h2>
+
+    <div class="post-content">
+        @if (@Post.BreakAt != null)
+        {
+            @((MarkupString)Markdown.RenderBrief(
+                @Content.GetPostBody(@Post.Id),
+                @Post.BreakAt.Value
+            ))
+        }
+        else
+        {
+            @((MarkupString)Markdown.Render(
+                @Content.GetPostBody(@Post.Id)
+            ))
+        }
+    </div>
+
+    <div class="post-meta">
+        <div class="post-meta-items">
+            <span class="post-meta-item post-meta-author">
+                @Post.Author
+            </span>
+
+            @if (@Post.PublishDate != null)
+            {
+                <span class="post-meta-item post-meta-date">
+                    @Post.PublishDate.Value.ToString(
+                        @Configuration.Config!.General.DateFormat
+                    )
+                </span>
+            }
+
+            <span class="post-meta-item post-meta-category">
+                <a href="/category/@Post.Category">@Post.Category</a>
+            </span>
+
+            @if (Post.Tags.Any())
+            {
+                <span class="post-meta-item post-meta-tags">
+                    <ul>
+                        @foreach (var tag in @Post.Tags)
+                        {
+                            <li><a href="/tag/@tag">@tag</a></li>
+                        }
+                    </ul>
+                </span>
+            }
+        </div>
+
+        @if (@Post.BreakAt != null)
+        {
+            <div class="post-meta-break">
+                <a href="/post/@Post.Slug">// read more _</a>
+            </div>
+        }
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public Post Post { get; set; } = null!;
+}

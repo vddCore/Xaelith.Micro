@@ -15,6 +15,18 @@
     <Compile Update="App.cs">
       <DependentUpon>App.razor</DependentUpon>
     </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Core\Content\MarkdownService.cs">
+      <DependentUpon>IMarkdownService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Core\Content\ContentService.cs">
+      <DependentUpon>IContentService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infrastructure\ServiceModel\FrontEnd\NavigationService.cs">
+      <DependentUpon>INavigationService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Core\ConfigService.cs">
+      <DependentUpon>IConfigService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +36,25 @@
   <ItemGroup>
     <PackageReference Include="JsonFlatFileDataStore" Version="2.4.2" />
     <PackageReference Include="Markdig" Version="0.41.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="data\content\f3d71d04-69b7-4c0b-b4ec-8f0c2e97d418\body.md" />
+    <Content Include="data\content\f3d71d04-69b7-4c0b-b4ec-8f0c2e97d418\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\963c4e6e-c1c7-4452-8886-5bbef26b7ea0\body.md" />
+    <Content Include="data\content\963c4e6e-c1c7-4452-8886-5bbef26b7ea0\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\5b23d5eb-878d-42b2-9c99-91fa96d61ad3\body.md" />
+    <Content Include="data\content\5b23d5eb-878d-42b2-9c99-91fa96d61ad3\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\ce20e8e2-5e15-4c6f-91be-1ea1f763fa76\body.md" />
+    <Content Include="data\content\ce20e8e2-5e15-4c6f-91be-1ea1f763fa76\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

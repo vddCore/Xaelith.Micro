@@ -29,6 +29,8 @@ h1 {
 }
 
 .las {
+    margin-top: 2px;
+    
     font-size: 1.45rem;
 }
 
@@ -41,12 +43,14 @@ h1 {
     
     width: 100%;
     height: 100%;
+    
+    margin-right: 8px;
 }
 
 .site-title {
     overflow: hidden;
     
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-family: "Vermin Vibes V", sans-serif;
     
     text-transform: uppercase;
@@ -95,8 +99,34 @@ ul li:last-child {
     margin-right: 0;
 }
 
-@media screen and (min-width: 1650px) {
+@media screen and (min-width: 1550px) {
     nav {
         width: 50%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    nav {
+        width: 100%;
+
+        padding-bottom: 6px;
+        
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .right-side {
+        padding-right: 1.2rem;
+        margin-top: -2px;
+    }
+    
+    .left-side {
+        margin-top: -2px;
+    }
+    
+    .site-title {
+        margin-top: -2px;
+        font-size: 0.75rem;
     }
 }

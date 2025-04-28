@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-public class NavList
+public record NavList
 {
     [JsonProperty("name")]
     public string Name { get; set; } = string.Empty;

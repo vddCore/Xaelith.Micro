@@ -3,11 +3,11 @@
 using Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
 using Xaelith.Micro.Infrastructure.ServiceModel.Core;
 
-public class NavigationService
+public class NavigationService : INavigationService
 {
-    private readonly ConfigService _configService;
+    private readonly IConfigService _configService;
     
-    public NavigationService(ConfigService configService)
+    public NavigationService(IConfigService configService)
     {
         _configService = configService;
     }

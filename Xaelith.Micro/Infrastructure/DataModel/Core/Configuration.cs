@@ -25,6 +25,9 @@ public record GeneralSettings
     
     [JsonProperty("footer_text")]
     public string FooterText { get; set; } = "Copyright (c) 2025 Xaelith Project";
+    
+    [JsonProperty("date_format")]
+    public string DateFormat { get; set; } = "yyyy-MM-dd";
 }
 
 public record NavigationSettings

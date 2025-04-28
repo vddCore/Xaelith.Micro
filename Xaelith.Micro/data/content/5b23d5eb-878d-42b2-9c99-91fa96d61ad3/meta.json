@@ -1,0 +1,12 @@
+﻿{
+  "id": "5b23d5eb-878d-42b2-9c99-91fa96d61ad3",
+  "slug": "first-steps-in-cyberspace",
+  "published": true,
+  "publish_date": "2025-04-18T00:00:00Z",
+  "edit_date": "2025-04-23T00:00:00Z",
+  "author": "void",
+  "title": "First Steps in Cyberspace",
+  "description": "A journey into building my own corner of the web.",
+  "category": "development",
+  "tags": [ "blazor", "webdev", "diary" ]
+}

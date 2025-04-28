@@ -16,6 +16,12 @@
     --footer-border: #dc49f0;
     --footer-shadow: #f049d488;
     --footer-separator: #73e4af;
+    --post-title-foreground: #c96cff;
+    --post-subtitle-foreground: #c96cffaa;
+    --post-meta-foreground: #804e9c;
+    --post-meta-border: #804e9c;
+    --post-meta-separator: #73e4af99;
+    --post-meta-accent: #ff88ffaa;
     --list-bullet-foreground: #ff88ff99;
     --block-background: #200529;
     --block-foreground: #aa88c4;
