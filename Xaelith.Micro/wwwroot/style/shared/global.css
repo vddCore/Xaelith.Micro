@@ -251,6 +251,7 @@ section.post .post-meta-tags ul li:last-of-type::after {
 
 section.post .post-meta-break {
     vertical-align: middle;
+    align-self: center;
 
     padding-left: 8px;
 
@@ -259,10 +260,131 @@ section.post .post-meta-break {
     font-weight: 500;
     font-size: 1.4rem;
 
-    align-self: center;
     text-transform: uppercase;
 }
 
 section.post .post-meta-break a {
     text-wrap: nowrap;
+}
+
+section.post .markdown-alert {
+    padding: 0.1rem 0.5rem;
+    margin-bottom: 0.4rem;
+    
+    border-left: 8px solid;
+}
+
+section.post .markdown-alert p {
+    margin: 0;
+    padding: 0;
+}
+
+section.post p.markdown-alert-title {
+    margin: 0;
+    padding: 0;
+    
+    font-size: 1.4rem;
+    font-weight: 500;
+    
+    text-transform: uppercase;
+}
+
+section.post .markdown-alert-title::before {
+    display: inline-block;
+    
+    margin-right: 6px;
+    
+    font-family: "Line Awesome Free";
+    font-weight: 900;
+    font-size: 24px;
+}
+
+
+section.post .markdown-alert-title svg {
+    display: none;
+}
+
+section.post .markdown-alert-note {
+    border-image: repeating-linear-gradient(
+        70deg, 
+        var(--alert-note-accent),
+        var(--alert-note-accent) 4px,
+        var(--alert-note-accent2) 4px, 
+        var(--alert-note-accent2) 8px
+    ) 2;
+    
+    background-color: var(--alert-note-background);
+    color: var(--alert-note-foreground);
+}
+
+section.post .markdown-alert-note .markdown-alert-title::before {
+    content: '\F05A';
+}
+
+section.post .markdown-alert-tip {
+    border-image: repeating-linear-gradient(
+        70deg, 
+        var(--alert-tip-accent),
+        var(--alert-tip-accent) 4px,
+        var(--alert-tip-accent2) 4px,
+        var(--alert-tip-accent2) 8px    
+    ) 2;
+    
+    background-color: var(--alert-tip-background);
+    color: var(--alert-tip-foreground);
+}
+
+section.post .markdown-alert-tip .markdown-alert-title::before {
+    content: '\F12E';
+}
+
+section.post .markdown-alert-important {
+    border-image: repeating-linear-gradient(
+            70deg,
+            var(--alert-important-accent),
+            var(--alert-important-accent) 4px,
+            var(--alert-important-accent2) 4px,
+            var(--alert-important-accent2) 8px
+    ) 2;
+
+    background-color: var(--alert-important-background);
+    color: var(--alert-important-foreground);
+}
+
+section.post .markdown-alert-important .markdown-alert-title::before {
+    content: '\F00C';
+}
+
+section.post .markdown-alert-warning {
+    border-image: repeating-linear-gradient(
+            70deg,
+            var(--alert-warning-accent),
+            var(--alert-warning-accent) 4px,
+            var(--alert-warning-accent2) 4px,
+            var(--alert-warning-accent2) 8px
+    ) 2;
+
+    background-color: var(--alert-warning-background);
+    color: var(--alert-warning-foreground);
+}
+
+section.post .markdown-alert-warning .markdown-alert-title::before {
+    content: '\F071';
+}
+
+section.post .markdown-alert-caution {
+    border-image: repeating-linear-gradient(
+            70deg,
+            var(--alert-caution-accent),
+            var(--alert-caution-accent) 4px,
+            var(--alert-caution-accent2) 4px,
+            var(--alert-caution-accent2) 8px
+    ) 2;
+
+    background-color: var(--alert-caution-background);
+    color: var(--alert-caution-foreground);
+}
+
+section.post .markdown-alert-caution .markdown-alert-title::before {
+    content: '\F54C';
 }
