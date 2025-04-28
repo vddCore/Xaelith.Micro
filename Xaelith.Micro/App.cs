@@ -1,5 +1,7 @@
 namespace Xaelith.Micro;
 
+using Xaelith.Micro.Infrastructure.Utilities;
+
 public partial class App
 {
     public static void Main(string[] args)
@@ -7,6 +9,7 @@ public partial class App
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services
+            .AttachXaelithServices()
             .AddRazorComponents()
             .AddInteractiveServerComponents();
 

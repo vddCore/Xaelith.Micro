@@ -6,12 +6,12 @@
     
     width: 90%;
     padding: 8px 12px 10px 12px;
+    margin: 0 auto;
     
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    margin: 0 auto;
     
     border: 1px solid var(--navbar-border);
     border-top: 0;
@@ -95,7 +95,7 @@ ul li:last-child {
     margin-right: 0;
 }
 
-@media screen and (min-width: 1300px) {
+@media screen and (min-width: 1650px) {
     nav {
         width: 50%;
     }

@@ -1,0 +1,9 @@
+﻿@using Xaelith.Micro.Infrastructure.ServiceModel.Core
+
+@inject ConfigService ConfigService;
+
+<footer>
+    <p class="footer-content">
+        @ConfigService.Config!.General.FooterText     
+    </p>    
+</footer>

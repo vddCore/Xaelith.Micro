@@ -1,15 +1,17 @@
 ﻿namespace Xaelith.Micro.Infrastructure.Utilities;
 
-using Xaelith.Micro.Infrastructure.ServiceModel;
+using Xaelith.Micro.Infrastructure.ServiceModel.Core;
+using Xaelith.Micro.Infrastructure.ServiceModel.FrontEnd;
 
 public static class WebApplicationBuilderExtensions
 {
-    public static WebApplicationBuilder AttachServices(
-        this WebApplicationBuilder builder)
+    public static IServiceCollection AttachXaelithServices(
+        this IServiceCollection services)
     {
-        builder.Services
-            .AddSingleton<ConfigService>();
+        services
+            .AddSingleton<ConfigService>()
+            .AddSingleton<NavigationService>();
 
-        return builder;
+        return services;
     }
 }

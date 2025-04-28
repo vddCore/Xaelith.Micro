@@ -1,3 +1,40 @@
 ﻿{
+  "general": {
+    "site_title": "Aura's Binary Forge",
+    "site_description": "Digital Witch's Vibrant Recluse",
+    "site_url": "https://localhost:5271",
+    "footer_text": "sometimes shit just doesn't work // © until i fucking die"
+  },
   
+  "navigation": {
+    "nav_lists": [
+      {
+        "name": "main",
+        "links": [
+          {
+            "label": "Home",
+            "href": "https://localhost:5271"
+          },
+          {
+            "label": "About",
+            "href": "https://localhost:5271/about"
+          }
+        ]
+      },
+
+      {
+        "name": "collections",
+        "links": [
+          {
+            "label": "Stories",
+            "href": "https://localhost:5271/collection/stories"
+          },
+          {
+            "label": "Poetry",
+            "href": "https://localhost:5271/collection/poetry"
+          }
+        ]
+      }
+    ]
+  }
 }

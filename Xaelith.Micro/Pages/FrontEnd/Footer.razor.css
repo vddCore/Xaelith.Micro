@@ -1,0 +1,46 @@
+﻿footer {
+    width: 90%;
+    padding: 6px 12px;
+    margin: 0 auto;
+    margin-top: 12px;
+    
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    border: 1px solid var(--footer-border);
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+    
+    box-shadow: 0 0 8px 2px var(--footer-shadow);
+    backdrop-filter: blur(10px);
+    
+    background-color: var(--footer-background);
+}
+
+footer p.footer-content {
+    margin: 0;
+    margin-top: 3px;
+    padding: 0;
+    font-size: 1.2rem;
+    color: var(--footer-foreground);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+footer .separator {
+    margin-right: 10px;
+    margin-left: 10px;
+    color: var(--footer-separator);
+}
+
+footer .separator::after {
+    content: "//";
+}
+
+@media screen and (min-width: 1650px) {
+    footer {
+        width: 50%;
+    }
+}

@@ -1,4 +1,4 @@
-﻿namespace Xaelith.Micro.Infrastructure.ServiceModel;
+﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core;
 
 using Newtonsoft.Json;
 using Xaelith.Micro.Infrastructure.DataModel.Core;

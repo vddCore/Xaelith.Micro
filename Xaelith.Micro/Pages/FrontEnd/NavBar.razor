@@ -1,27 +1,35 @@
-﻿<nav id="main-nav">
+﻿@using Xaelith.Micro.Infrastructure.ServiceModel.Core
+
+@inject ConfigService ConfigService;
+
+<nav id="main-nav">
     <div class="left-side">
         <div class="site-title">
-            <h1><a href="#">Aura's Binary Forge</a></h1>
+            <h1>
+                <a href="@ConfigService.Config!.General.SiteUrl">
+                    @ConfigService.Config!.General.SiteTitle
+                </a>
+            </h1>
         </div>
 
         <span class="separator title-separator"></span>
 
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-
-        <span class="separator nav-separator"></span>
-
-        <ul class="nav-links">
-            <li>
-                <a href="#">Poetry</a>
-            </li>
-
-            <li>
-                <a href="#">Stories</a>
-            </li>
-        </ul>
+        @for (var i = 0; i < @ConfigService.Config!.Navigation.NavigationLists.Count; i++)
+        {
+            var list = @ConfigService.Config!.Navigation.NavigationLists[i];
+            
+            <ul class="nav-links">
+                @foreach (var link in list.Links)
+                {
+                    <li><a href="@link.Target">@link.Label</a></li>
+                }
+            </ul>
+            
+            if (i < @ConfigService.Config!.Navigation.NavigationLists.Count - 1)
+            {
+                <span class="separator nav-separator"></span>
+            }
+        }
     </div>
 
     <div class="right-side">
@@ -36,7 +44,3 @@
         </ul>
     </div>
 </nav>
-
-@code {
-
-}

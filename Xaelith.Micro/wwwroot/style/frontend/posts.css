@@ -114,8 +114,6 @@ section.post .post-meta-tags ul li:last-of-type::after {
 }
 
 section.post .post-meta-break {
-  border-top: 1px solid var(--post-break-border-foreground);
-  border-bottom: 1px solid var(--post-break-border-foreground);
   margin-bottom: 0;
   text-transform: uppercase;
   font-size: 1.4rem;
