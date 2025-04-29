@@ -20,7 +20,10 @@
       "tag1": "a description for tag1, duh.",
       "tag2": "a description for tag2, not quite informative.",
       "tag3": "a description for tag3. very useful. \\*slow clapping*"
-    }
+    },
+    
+    "max_posts_per_page": 7,
+    "max_pages_in_paginator": 7
   },
   
   "navigation": {

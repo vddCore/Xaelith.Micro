@@ -60,8 +60,14 @@ public record NavigationSettings
 public record ContentSettings
 {
     [JsonProperty("categories")]
-    public Dictionary<string, string> Categories { get; set; } = new();
-    
+    public Dictionary<string, string> Categories { get; set; } = [];
+
     [JsonProperty("tags")]
-    public Dictionary<string, string> Tags { get; set; } = new();
+    public Dictionary<string, string> Tags { get; set; } = [];
+
+    [JsonProperty("max_posts_per_page")]
+    public int MaximumPostsPerPage { get; set; } = 7;
+    
+    [JsonProperty("max_pages_in_paginator")]
+    public int MaximumPagesInPaginator { get; set; } = 7;
 }

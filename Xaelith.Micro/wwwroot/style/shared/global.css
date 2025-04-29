@@ -120,3 +120,60 @@ a:active {
     
     display: inline;
 }
+
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    font-size: 1.6rem;
+}
+
+.pagination .pagination-button {
+    margin-top: -4px;
+    padding: 1rem;
+}
+
+.pagination .pagination-button.inactive {
+    user-select: none;
+    
+    color: var(--pagination-link-inactive-foreground);
+}
+
+.pagination ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pagination ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.pagination ul li:first-of-type {
+    margin-left: 0;
+}
+
+.pagination ul li:last-of-type {
+    margin-right: 0;
+}
+
+.pagination ul li a {
+    font-weight: 300;
+}
+
+.pagination ul li .pagination-link {
+    color: var(--link-normal-foreground);
+}
+
+.pagination ul li .pagination-link.current-page {
+    user-select: none;
+    
+    padding-left: 4px;
+    padding-right: 4px;
+    
+    border-bottom: 2px solid var(--pagination-link-active-border);
+    
+    font-weight: 600;
+}

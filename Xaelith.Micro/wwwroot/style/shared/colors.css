@@ -37,6 +37,8 @@
     --link-visited-foreground: #ee77ee;
     --link-active-foreground: #ff88ff;
     --link-active-shadow: #ff88ff88;
+    --pagination-link-active-border: #ff88ff;
+    --pagination-link-inactive-foreground: #ff88ff66;
     --button-background: #ff88ff;
     --button-foreground: #200529;
     --button-border: #ff88ff;

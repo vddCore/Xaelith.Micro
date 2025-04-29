@@ -61,6 +61,26 @@
     <Content Update="data\config\xaelith.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="data\content\55fcfa02-0f5e-41be-98ce-30991b2e7c86\body.md" />
+    <Content Include="data\content\55fcfa02-0f5e-41be-98ce-30991b2e7c86\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\7e2d9e62-e8a2-47c6-9df0-79ef2f2220ea\body.md" />
+    <Content Include="data\content\7e2d9e62-e8a2-47c6-9df0-79ef2f2220ea\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\f3842ed7-abc2-4cf2-b5bc-7edc905c5440\body.md" />
+    <Content Include="data\content\f3842ed7-abc2-4cf2-b5bc-7edc905c5440\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\4acb015f-7ad6-4c29-a28f-660ed53b458c\body.md" />
+    <Content Include="data\content\4acb015f-7ad6-4c29-a28f-660ed53b458c\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="data\content\863ad73e-43b4-4e0e-bf1d-9c2e72e73b56\body.md" />
+    <Content Include="data\content\863ad73e-43b4-4e0e-bf1d-9c2e72e73b56\body.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

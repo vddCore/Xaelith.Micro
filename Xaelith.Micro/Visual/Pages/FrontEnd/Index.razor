@@ -11,11 +11,7 @@
               && p.Type == PostType.Normal
         );
         
-        foreach (var (id, post) in posts)
-        {
-            <PostBrief Id="@id" 
-                       Post="@post"/>
-        }
+        <Paginator Posts="@posts" />
     }
 </main>
 

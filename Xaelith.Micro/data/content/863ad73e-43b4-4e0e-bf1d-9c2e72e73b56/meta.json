@@ -1,0 +1,12 @@
+﻿{
+  "slug": "terminal-whispers",
+  "published": true,
+  "publish_date": "2025-04-30T01:02:03Z",
+  "edit_date": null,
+  "author": "void",
+  "title": "Terminal Whispers",
+  "description": "Sometimes your best therapist is... Zsh.",
+  "category": "Code & Ritual",
+  "tags": [ "terminal", "coding", "late-night", "introspection" ],
+  "type": "normal"
+}
