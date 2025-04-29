@@ -20,12 +20,16 @@
     box-shadow: 0 0 8px 2px var(--navbar-shadow);
     backdrop-filter: blur(10px);
     
+    text-wrap: wrap;
+    
     background-color: var(--navbar-background);
+    
+    transition: top 0.3s;
 }
 
 h1 {
-    margin: 0;
     padding: 0;
+    margin: 0;
 }
 
 .las {
@@ -41,21 +45,24 @@ h1 {
     align-items: center;
     vertical-align: middle;
     
+    margin-right: 8px;
+    
     width: 100%;
     height: 100%;
     
-    margin-right: 8px;
+    text-wrap: wrap;
+}
+
+.nav-lists {
+    display: flex;
+    flex-direction: row;    
 }
 
 .site-title {
-    overflow: hidden;
-    
     font-size: 0.8rem;
     font-family: "Vermin Vibes V", sans-serif;
     
-    text-transform: uppercase;
     text-wrap: nowrap;
-    text-overflow: ellipsis;
 }
 
 .separator {
@@ -67,6 +74,10 @@ h1 {
 
 .title-separator::after {
     content: ">>";
+}
+
+.title-break {
+    display: none;
 }
 
 .nav-separator::after {
@@ -128,5 +139,38 @@ ul li:last-child {
     .site-title {
         margin-top: -2px;
         font-size: 0.75rem;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    nav {
+        flex-direction: column;
+    }
+    
+    .left-side {
+        flex-direction: column;
+    }
+    
+    .site-title {
+        margin-top: 2px;
+        align-self: center;
+    }
+    
+    .nav-lists {
+        margin-top: 8px;
+        margin-bottom: 2px;
+    }
+    
+    ul,
+    .nav-lists {
+        font-size: 1.25rem;
+    }
+    
+    .title-separator {
+        display: none;
+    }
+    
+    .right-side {
+        display: none;
     }
 }

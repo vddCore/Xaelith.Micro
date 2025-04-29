@@ -8,4 +8,7 @@ public interface IContentService : IXaelithService
     (Guid Id, Post Post)? GetPostBySlug(string slug);
     
     string GetPostBody(Guid postId);
+
+    string GetCategoryDescription(string category);
+    string GetTagDescription(string tag);
 }

@@ -14,22 +14,24 @@
 
         <span class="separator title-separator"></span>
 
-        @for (var i = 0; i < Configuration.Root!.Navigation.NavigationLists.Count; i++)
-        {
-            var list = Configuration.Root!.Navigation.NavigationLists[i];
-            
-            <ul class="nav-links">
-                @foreach (var link in list.Links)
-                {
-                    <li><a href="@link.Target">@link.Label</a></li>
-                }
-            </ul>
-            
-            if (i < Configuration.Root!.Navigation.NavigationLists.Count - 1)
+        <div class="nav-lists">
+            @for (var i = 0; i < Configuration.Root!.Navigation.NavigationLists.Count; i++)
             {
-                <span class="separator nav-separator"></span>
+                var list = Configuration.Root!.Navigation.NavigationLists[i];
+                
+                <ul class="nav-links">
+                    @foreach (var link in list.Links)
+                    {
+                        <li><a href="@link.Target">@link.Label</a></li>
+                    }
+                </ul>
+                
+                if (i < Configuration.Root!.Navigation.NavigationLists.Count - 1)
+                {
+                    <span class="separator nav-separator"></span>
+                }
             }
-        }
+        </div>
     </div>
 
     <div class="right-side">

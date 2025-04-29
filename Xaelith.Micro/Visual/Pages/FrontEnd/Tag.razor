@@ -1,0 +1,20 @@
+﻿@page "/tag/{tagName}"
+
+@using System.ComponentModel.DataAnnotations
+
+<main>
+    <div class="aggregate-header">
+        
+    </div>
+    
+    @{
+        
+    }
+</main>
+
+@code {
+
+    [Parameter, Required]
+    public string TagName { get; set; } = string.Empty;
+
+}

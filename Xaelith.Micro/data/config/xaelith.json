@@ -2,11 +2,20 @@
   "general": {
     "site_title": "Aura's Binary Forge",
     "site_description": "Digital Witch's Vibrant Recluse",
-    "site_url": "https://localhost:5271",
+    "site_url": "http://localhost:5271",
     "footer_text": "sometimes shit just doesn't work // © until i fucking die",
     "date_format": "dd MMMM yyyy - HH:mm",
     "post_order_criteria": "date",
     "post_order_direction": "descending"
+  },
+  
+  "categories": {
+    "stories": "stories i write. some with assistance from others, some fully of my own",
+    "poetry": "'s just me spilling my guts. feel free to laugh."
+  },
+  
+  "tags": {
+    
   },
   
   "navigation": {
@@ -16,11 +25,11 @@
         "links": [
           {
             "label": "Home",
-            "href": "https://localhost:5271"
+            "href": "/"
           },
           {
             "label": "About",
-            "href": "https://localhost:5271/about"
+            "href": "/about"
           }
         ]
       },
@@ -30,11 +39,11 @@
         "links": [
           {
             "label": "Stories",
-            "href": "https://localhost:5271/collection/stories"
+            "href": "/category/stories"
           },
           {
             "label": "Poetry",
-            "href": "https://localhost:5271/collection/poetry"
+            "href": "/category/poetry"
           }
         ]
       }

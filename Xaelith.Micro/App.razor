@@ -22,20 +22,7 @@
           href="Xaelith.Micro.styles.css"/>
 
     <script src="lib/highlightjs/highlight.min.js"></script>
-    
-    <script>
-        (function() {
-          function highlightAll() {
-            hljs.highlightAll();
-          }
-
-          window.xaelith = window.xaelith || {};
-
-          window.xaelith.onLoad = {
-            highlightAll: highlightAll
-          };
-        })();
-    </script>
+    <script src="lib/init/init.js"></script>
 
     <ImportMap/>
     <HeadOutlet/>
@@ -44,5 +31,6 @@
 <body>
 <Routes @rendermode="InteractiveServer"/>
 <script src="_framework/blazor.web.js"></script>
+<script src="lib/rejoin-restyle/rejoin-observer.js"></script>
 </body>
 </html>

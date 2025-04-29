@@ -113,4 +113,20 @@ public class ContentService : IContentService
         using var sr = new StreamReader(postBodyPath);
         return sr.ReadToEnd();
     }
+
+    public string GetCategoryDescription(string category)
+    {
+        return _configService.Root!.Content.Categories.TryGetValue(
+            category, out var categoryDescription
+        ) ? categoryDescription 
+          : string.Empty;
+    }
+
+    public string GetTagDescription(string tag)
+    {
+        return _configService.Root!.Content.Tags.TryGetValue(
+            tag, out var tagDescription
+        ) ? tagDescription 
+          : string.Empty;
+    }
 }

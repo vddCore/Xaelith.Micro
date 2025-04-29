@@ -26,6 +26,7 @@
     --list-bullet-foreground: #ff88ff99;
     --block-background: #200529;
     --block-foreground: #aa88c4;
+    --code-border: #ff88ff66;
     --table-border: #aa88c4;
     --table-header-background: #cfaee9;
     --table-header-foreground: #1e0725;
@@ -39,8 +40,8 @@
     --button-background: #ff88ff;
     --button-foreground: #200529;
     --button-border: #ff88ff;
-    --button-hover-background: #200529;
-    --button-hover-foreground: #ff88ff;
+    --button-hover-background: #ff88ffaa;
+    --button-hover-foreground: #200529;
     --button-hover-border: #ff88ff;
     --button-active-background: #200529;
     --button-active-foreground: #ff88ff;
@@ -50,6 +51,10 @@
     --button-disabled-border: #774477;
     --post-separator: #ff88ff99;
     --header-border: #cfaee9;
+    --components-reconnect-border: #ff88ff;
+    --components-reconnect-shadow: #f049d488;
+    --components-reconnect-background: #0f0213;
+    --components-reconnect-foreground: #ff88ff;
     --alert-note-accent: #ff88ff;
     --alert-note-accent2: #ff88ff99;
     --alert-note-background: #ff88ff22;
@@ -70,7 +75,6 @@
     --alert-caution-accent2: #ff889c99;
     --alert-caution-background: #ff889c22;
     --alert-caution-foreground: #ff889c;
-    --code-border: #ff88ff66;
 }
 
 ::selection {
@@ -104,6 +108,12 @@ main {
 @media screen and (min-width: 1550px) {
     main {
         width: 50%;
+    }
+}
+
+@media screen and (max-width: 736px) {
+    main {
+        margin: 90px auto 0;
     }
 }
 
@@ -273,6 +283,8 @@ section.post h1.post-title {
 
     font-weight: 500;
 
+    text-align: left;
+    
     border-left: 8px solid var(--post-title-foreground);
 }
 
@@ -284,13 +296,15 @@ section.post h2.post-subtitle {
     display: block;
     align-self: flex-end;
 
+    padding-top: 4px;
     padding-left: 8px;
-    margin: 0;
-
+    
     border-left: 8px solid var(--post-subtitle-foreground);
 
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 1.15rem;
+    
+    text-align: left;
 
     color: var(--post-subtitle-foreground);
 }
@@ -604,4 +618,9 @@ section.post code {
     font-size: 18px;
     
     background-color: var(--block-background);
+}
+
+.components-reconnect-dialog {
+    background: var(--components-reconnect-background);
+    box-shadow: 10px 10px 10px var(--components-reconnect-shadow);
 }

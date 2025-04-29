@@ -1,0 +1,27 @@
+﻿(function() {
+  function highlightAll() {
+    hljs.highlightAll();
+  }
+
+  window.xaelith = window.xaelith || {};
+
+  window.xaelith.onLoad = {
+    highlightAll: highlightAll
+  };
+})();
+
+let prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+    if (window.innerWidth <= 736) {
+    let currentScrollPos = window.pageYOffset;
+
+    if (prevScrollpos > currentScrollPos) {
+      document.getElementById("main-nav").style.top = "0";
+      document.getElementById("main-footer").style.bottom = "0";
+    } else {
+      document.getElementById("main-nav").style.top = "-100px";
+      document.getElementById("main-footer").style.bottom = "-100px";
+    }
+    prevScrollpos = currentScrollPos;
+  }
+} 

@@ -14,6 +14,9 @@ public class Configuration
     
     [JsonProperty("navigation")]
     public NavigationSettings Navigation { get; } = new();
+
+    [JsonProperty("content")]
+    public ContentSettings Content { get; } = new();
 }
 
 public record GeneralSettings
@@ -52,4 +55,13 @@ public record NavigationSettings
 {
     [JsonProperty("nav_lists")]
     public List<NavList> NavigationLists { get; set; } = [];
+}
+
+public record ContentSettings
+{
+    [JsonProperty("categories")]
+    public Dictionary<string, string> Categories { get; set; } = new();
+    
+    [JsonProperty("tags")]
+    public Dictionary<string, string> Tags { get; set; } = new();
 }
