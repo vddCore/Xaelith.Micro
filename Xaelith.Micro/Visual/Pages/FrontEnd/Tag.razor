@@ -4,47 +4,59 @@
 @inject IContentService Content
 @inject IMarkdownService Markdown
 
-<PageTitle>@Configuration.Root!.General.SiteTitle // Tag '@TagName'</PageTitle>
-
-<HeadContent>
-    <meta name="description"
-          content="@Configuration.Root!.General.SiteDescription" />
-</HeadContent>
+@{
+    var posts = Content.GetAllPosts(
+        p => p is { Published: true, Type: PostType.Normal }
+          && p.Tags.Contains(TagName)
+    );
+}
 
 <NavBar/>
 
 <main>
-    <div class="filter-header">
-        <h1>Displaying posts tagged <pre>@TagName</pre></h1>
+    @if (!posts.Any())
+    {
+        <PageTitle>@Configuration.Root!.General.SiteTitle // Tag Not Found</PageTitle>
+        <NotFound Message="@NotFoundMessage" />
+    }
+    else
+    {
+        <PageTitle>@Configuration.Root!.General.SiteTitle // Tag '@TagName'
+        </PageTitle>
 
-        @{
-            var contentDescription = @Content.GetTagDescription(
-                TagName
-            );
+        <HeadContent>
+            <meta name="description"
+                  content="@Configuration.Root!.General.SiteDescription"/>
+        </HeadContent>
 
-            if (!string.IsNullOrWhiteSpace(contentDescription))
-            {
-                <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+
+        <div class="filter-header">
+            <h1>Displaying posts tagged
+                <pre>@TagName</pre>
+            </h1>
+
+            @{
+                var contentDescription = Content.GetTagDescription(
+                    TagName
+                );
+
+                if (!string.IsNullOrWhiteSpace(contentDescription))
+                {
+                    <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+                }
             }
-        }
-    </div>
+        </div>
 
-    @{
-        var posts = Content.GetAllPosts(
-            p => p.Published
-                 && p.Type == PostType.Normal
-                 && p.Tags.Contains(TagName)
-        );
-
-        <Paginator Posts="@posts" />
+        <Paginator Posts="@posts"/>
     }
 </main>
 
 <Footer/>
 
 @code {
-
     [Parameter, Required]
     public string TagName { get; set; } = string.Empty;
 
+    private string NotFoundMessage
+        => $"There are no posts tagged <code>{TagName}</code> _";
 }

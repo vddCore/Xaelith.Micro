@@ -39,6 +39,9 @@
     --link-active-shadow: #ff88ff88;
     --pagination-link-active-border: #ff88ff;
     --pagination-link-inactive-foreground: #ff88ff66;
+    --error-foreground: #cf5049;
+    --error-border: #cf5049;
+    --warning-foreground: #cfae49;
     --button-background: #ff88ff;
     --button-foreground: #200529;
     --button-border: #ff88ff;

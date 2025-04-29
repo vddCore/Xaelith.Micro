@@ -13,11 +13,12 @@
 @if (post == null)
 {
     <PageTitle>@Configuration.Root!.General.SiteTitle // Post Not Found</PageTitle>
+    <NotFound Message="@NotFoundMessage" />
 }
 else
 {
     <PageTitle>
-        @Configuration.Root!.General.SiteTitle // '@post.Value.Post.Title'
+        @Configuration.Root!.General.SiteTitle // @post.Value.Post.Title
     </PageTitle>
 
     <HeadContent>
@@ -35,4 +36,7 @@ else
 @code {
     [Parameter]
     public required string Slug { get; set; }
+
+    private string NotFoundMessage 
+        => $"No post with slug <code>{Slug}</code> exists _";
 }

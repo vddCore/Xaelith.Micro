@@ -15,8 +15,7 @@
 <main>
     @{
         var posts = Content.GetAllPosts(
-            p => p.Published
-              && p.Type == PostType.Normal
+            p => p is { Published: true, Type: PostType.Normal }
         );
         
         <Paginator Posts="@posts" />

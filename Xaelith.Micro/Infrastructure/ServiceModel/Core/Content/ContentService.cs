@@ -16,10 +16,10 @@ public class ContentService : IContentService
         Directory.CreateDirectory(WellKnown.Content);
     }
 
-    public List<(Guid Id, DataModel.Core.Content.Post Post)> GetAllPosts(Predicate<DataModel.Core.Content.Post>? filter = null)
+    public List<(Guid Id, Post Post)> GetAllPosts(Predicate<Post>? filter = null)
     {
         var postDirectories = Directory.GetDirectories(WellKnown.Content);
-        var posts = new List<(Guid Id, DataModel.Core.Content.Post Post)>();
+        var posts = new List<(Guid Id, Post Post)>();
         
         foreach (var postRoot in postDirectories)
         {
