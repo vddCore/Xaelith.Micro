@@ -20,6 +20,8 @@ if (dialog && dialog.shadowRoot) {
     
     let reconnectDialog = shadowRoot.querySelector('.components-reconnect-dialog');
     if (reconnectDialog) {
+        reconnectDialog.style.userSelect = "none";
+        
         reconnectDialog.style.backgroundColor = computedStyle
           .getPropertyValue('--components-reconnect-background');
           
@@ -49,6 +51,7 @@ if (dialog && dialog.shadowRoot) {
         retryButton.style.cursor = "pointer";
         retryButton.style.transition = "background-color 0.3s ease-in-out";
         retryButton.style.fontFamily = "Rajdhani";
+        retryButton.style.fontSize = "1.1rem";
         retryButton.style.textTransform = "uppercase"
 
         retryButton.addEventListener("mouseenter", () => {
@@ -58,7 +61,7 @@ if (dialog && dialog.shadowRoot) {
         
         retryButton.addEventListener("mouseleave", () => {
             retryButton.style.backgroundColor = computedStyle
-              .gettPropertyValue("--button-background");
+              .getPropertyValue("--button-background");
         });
     }
 }

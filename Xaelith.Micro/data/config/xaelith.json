@@ -9,13 +9,18 @@
     "post_order_direction": "descending"
   },
   
-  "categories": {
-    "stories": "stories i write. some with assistance from others, some fully of my own",
-    "poetry": "'s just me spilling my guts. feel free to laugh."
-  },
-  
-  "tags": {
-    
+  "content": {
+    "categories": {
+      "debug": "debugging purposes are cool. they let you *see* things.",
+      "stories": "stories i write. some with assistance from others, some fully of my own",
+      "poetry": "'s just me spilling my guts. feel free to laugh."
+    },
+
+    "tags": { 
+      "tag1": "a description for tag1, duh.",
+      "tag2": "a description for tag2, not quite informative.",
+      "tag3": "a description for tag3. very useful. \\*slow clapping*"
+    }
   },
   
   "navigation": {
@@ -29,7 +34,7 @@
           },
           {
             "label": "About",
-            "href": "/about"
+            "href": "/static/about"
           }
         ]
       },

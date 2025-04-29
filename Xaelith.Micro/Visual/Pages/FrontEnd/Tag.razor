@@ -1,16 +1,43 @@
-﻿@page "/tag/{tagName}"
+﻿@page "/tag/{tagname}"
 
-@using System.ComponentModel.DataAnnotations
+@inject IJSRuntime JsRuntime;
+@inject IContentService Content
+@inject IMarkdownService Markdown
+
+<NavBar/>
 
 <main>
-    <div class="aggregate-header">
-        
+    <div class="filter-header">
+        <h1>Displaying posts tagged <pre>@TagName</pre></h1>
+
+        @{
+            var contentDescription = @Content.GetTagDescription(
+                TagName
+            );
+
+            if (!string.IsNullOrWhiteSpace(contentDescription))
+            {
+                <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+            }
+        }
     </div>
-    
+
     @{
-        
+        var posts = Content.GetAllPosts(
+            p => p.Published
+                 && p.Type == PostType.Normal
+                 && p.Tags.Contains(TagName)
+        );
+
+        foreach (var (id, post) in posts)
+        {
+            <PostBrief Id="@id"
+                       Post="@post"/>
+        }
     }
 </main>
+
+<Footer/>
 
 @code {
 

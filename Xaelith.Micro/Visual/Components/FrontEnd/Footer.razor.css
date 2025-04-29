@@ -1,12 +1,13 @@
 ﻿footer {
-    width: 90%;
-    padding: 6px 12px;
-    margin: 12px auto 0;
-
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    
+    width: 90%;
+    
+    padding: 6px 12px;
+    margin: 12px auto 0;
     
     border: 1px solid var(--footer-border);
     border-bottom: 0;
@@ -16,6 +17,8 @@
     backdrop-filter: blur(10px);
 
     text-wrap: wrap;
+    text-align: center;
+    text-transform: uppercase;
     
     background-color: var(--footer-background);
     
@@ -25,23 +28,14 @@
 footer p.footer-content {
     padding: 0;
     
-    margin: 3px 0 0;
+    margin: 0;
+    margin-left: -21px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     
     font-size: 1.2rem;
-    text-align: center;
-    text-transform: uppercase;
     
     color: var(--footer-foreground);
-}
-
-footer .separator {
-    margin-right: 10px;
-    margin-left: 10px;
-    color: var(--footer-separator);
-}
-
-footer .separator::after {
-    content: "//";
 }
 
 @media screen and (min-width: 1550px) {

@@ -1,14 +1,21 @@
 ﻿@page "/"
-@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
 
 @inject IContentService Content
     
 <NavBar/>
 
 <main>
-    @foreach (var (id, post) in Content.GetAllPosts(p => p.Published))
-    {
-        <PostBrief Id="@id" Post="@post"/>
+    @{
+        var posts = Content.GetAllPosts(
+            p => p.Published
+              && p.Type == PostType.Normal
+        );
+        
+        foreach (var (id, post) in posts)
+        {
+            <PostBrief Id="@id" 
+                       Post="@post"/>
+        }
     }
 </main>
 

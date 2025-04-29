@@ -7,5 +7,6 @@
   "title": "Night City Burnout",
   "description": "When the neon lights aren't enough to drown out the burnout.",
   "category": "Life",
-  "tags": [ "mental-health", "cyberpunk", "burnout" ]
+  "tags": [ "mental-health", "cyberpunk", "burnout" ],
+  "type": "normal"
 }

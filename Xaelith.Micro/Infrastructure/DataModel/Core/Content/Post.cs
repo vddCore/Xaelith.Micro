@@ -1,6 +1,7 @@
-﻿namespace Xaelith.Micro.Infrastructure.DataModel.Content;
+﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 public record Post
 {
@@ -30,4 +31,8 @@ public record Post
     
     [JsonProperty("tags")]
     public List<string> Tags { get; set; } = [];
+    
+    [JsonProperty("type")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public PostType Type { get; set; }
 }

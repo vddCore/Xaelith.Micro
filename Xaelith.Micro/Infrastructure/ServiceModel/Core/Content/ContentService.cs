@@ -1,8 +1,8 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
 
 using Newtonsoft.Json;
-using Xaelith.Micro.Infrastructure.DataModel.Content;
 using Xaelith.Micro.Infrastructure.DataModel.Core;
+using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public class ContentService : IContentService
@@ -16,10 +16,10 @@ public class ContentService : IContentService
         Directory.CreateDirectory(WellKnown.Content);
     }
 
-    public List<(Guid Id, Post Post)> GetAllPosts(Predicate<Post>? filter = null)
+    public List<(Guid Id, DataModel.Core.Content.Post Post)> GetAllPosts(Predicate<DataModel.Core.Content.Post>? filter = null)
     {
         var postDirectories = Directory.GetDirectories(WellKnown.Content);
-        var posts = new List<(Guid Id, Post Post)>();
+        var posts = new List<(Guid Id, DataModel.Core.Content.Post Post)>();
         
         foreach (var postRoot in postDirectories)
         {

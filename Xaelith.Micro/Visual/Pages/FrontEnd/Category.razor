@@ -1,5 +1,47 @@
-﻿<h3>Category</h3>
+﻿@page "/category/{categoryname}"
+
+@inject IJSRuntime JsRuntime;
+@inject IContentService Content
+@inject IMarkdownService Markdown
+
+<NavBar/>
+
+<main>
+    <div class="filter-header">
+        <h1>Displaying posts in category <pre>@CategoryName</pre></h1>
+        
+        @{
+            var contentDescription = @Content.GetCategoryDescription(
+                CategoryName
+            );
+
+            if (!string.IsNullOrWhiteSpace(contentDescription))
+            {
+                <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+            }
+        }
+    </div>
+    
+    @{
+        var posts = Content.GetAllPosts(
+            p => p.Published
+                 && p.Type == PostType.Normal
+                 && p.Category == CategoryName
+        );
+
+        foreach (var (id, post) in posts)
+        {
+            <PostBrief Id="@id"
+                       Post="@post"/>
+        }
+    }
+</main>
+
+<Footer/>
 
 @code {
-    
+
+    [Parameter, Required]
+    public string CategoryName { get; set; } = string.Empty;
+
 }

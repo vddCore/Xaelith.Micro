@@ -1,6 +1,6 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
 
-using Xaelith.Micro.Infrastructure.DataModel.Content;
+using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
 public interface IContentService : IXaelithService
 {

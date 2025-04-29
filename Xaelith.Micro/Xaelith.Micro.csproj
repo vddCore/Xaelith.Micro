@@ -58,6 +58,9 @@
     <Content Include="data\content\e52eb4de-495f-4a3b-ba63-5ca7d3783815\body.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="data\config\xaelith.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

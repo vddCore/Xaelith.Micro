@@ -7,5 +7,6 @@
   "title": "First Steps in Cyberspace",
   "description": "A journey into building my own corner of the web.",
   "category": "development",
-  "tags": [ "blazor", "webdev", "diary" ]
+  "tags": [ "blazor", "webdev", "diary" ],
+  "type": "normal"
 }

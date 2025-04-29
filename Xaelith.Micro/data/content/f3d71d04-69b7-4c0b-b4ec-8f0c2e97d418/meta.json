@@ -1,11 +1,12 @@
 ﻿{
   "slug": "candles-and-code",
   "published": false,
-  "publish_date": null,
+  "publish_date": "2025-04-01T00:00:00Z",
   "edit_date": null,
   "author": "void",
   "title": "Candles and Code",
   "description": "Mixing a little witchy warmth into a cold digital world.",
   "category": "Lifestyle",
-  "tags": [ "witchcraft", "coding", "mood" ]
+  "tags": [ "witchcraft", "coding", "mood" ],
+  "type": "normal"
 }
