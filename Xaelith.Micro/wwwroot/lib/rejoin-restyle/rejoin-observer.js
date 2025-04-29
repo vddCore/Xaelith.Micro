@@ -7,7 +7,7 @@
 
 const observer = new MutationObserver(() => {
 let dialog = document.getElementById('components-reconnect-modal');
-console.log(dialog);
+
 if (dialog && dialog.shadowRoot) {
     let shadowRoot = dialog.shadowRoot;
     let computedStyle = window.getComputedStyle(document.body);
