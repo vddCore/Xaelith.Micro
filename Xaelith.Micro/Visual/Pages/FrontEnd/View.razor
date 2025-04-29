@@ -1,22 +1,36 @@
 ﻿@page "/view/{slug}"
 
+@inject IConfigService Configuration;
 @inject IContentService Content;
 
-<NavBar />
+@{
+    var post = Content.GetPostBySlug(Slug);
+}
+
+<NavBar/>
 
 <main>
-    @{
-        var post = Content.GetPostBySlug(Slug);
+@if (post == null)
+{
+    <PageTitle>@Configuration.Root!.General.SiteTitle // Post Not Found</PageTitle>
+}
+else
+{
+    <PageTitle>
+        @Configuration.Root!.General.SiteTitle // '@post.Value.Post.Title'
+    </PageTitle>
 
-        if (post != null)
-        {
-            <PostFull Id="post.Value.Id"
-                      Post="post.Value.Post" />
-        }
-    }
+    <HeadContent>
+        <meta name="description"
+              content="@Configuration.Root!.General.SiteDescription"/>
+    </HeadContent>
+
+    <PostFull Id="post.Value.Id"
+              Post="post.Value.Post"/>
+}
 </main>
 
-<Footer />
+<Footer/>
 
 @code {
     [Parameter]

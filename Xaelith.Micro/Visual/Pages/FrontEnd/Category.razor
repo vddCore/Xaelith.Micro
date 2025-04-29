@@ -1,7 +1,15 @@
 ﻿@page "/category/{categoryname}"
 
+@inject IConfigService Configuration
 @inject IContentService Content
 @inject IMarkdownService Markdown
+
+<PageTitle>@Configuration.Root!.General.SiteTitle // Category '@CategoryName'</PageTitle>
+
+<HeadContent>
+    <meta name="description"
+          content="@Configuration.Root!.General.SiteDescription" />
+</HeadContent>
 
 <NavBar/>
 
