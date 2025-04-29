@@ -70,6 +70,7 @@
     --alert-caution-accent2: #ff889c99;
     --alert-caution-background: #ff889c22;
     --alert-caution-foreground: #ff889c;
+    --code-border: #ff88ff66;
 }
 
 ::selection {
@@ -80,36 +81,183 @@
 body, html {
     width: 100%;
     height: 100%;
-    
+
     margin: 0;
     padding: 0;
-    
-    font-size: 1.2rem;
+
+    font-size: 1.15rem;
     font-family: "Rajdhani", sans-serif;
-    
+
     color: var(--main-foreground);
     background-color: var(--main-background);
     scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
 }
 
+main {
+    margin: 66px auto 0;
+
+    padding-bottom: 56px;
+    width: 90%;
+    text-align: justify;
+}
+
+@media screen and (min-width: 1550px) {
+    main {
+        width: 50%;
+    }
+}
+
 a {
     transition: .15s ease-in-out;
-    
+
     text-decoration: none;
-    
+
     color: var(--link-normal-foreground);
 }
 
 a:hover {
     border: none;
-    
+
     text-shadow: 0 0 3px var(--link-active-shadow);
-    
+
     color: var(--link-hover-foreground);
 }
 
 a:active {
     color: var(--link-active-foreground);
+}
+
+section.post {
+    padding-bottom: 1.2rem;
+}
+
+section.post:last-of-type {
+    padding-bottom: 0;
+}
+
+section.post h1,
+section.post h2,
+section.post h3,
+section.post h4,
+section.post h5,
+section.post h6 {
+    padding-left: 8px;
+    padding-bottom: 2px;
+
+    margin: 0 0 auto;
+
+    border-left: 4px solid var(--header-border);
+}
+
+section.post h1 {
+    padding-top: 8px;
+
+    font-size: 2.25rem;
+}
+
+section.post h2 {
+    padding-top: 8px;
+}
+
+section.post h3 {
+    padding-top: 6px;
+}
+
+section.post h4 {
+    padding-top: 6px;
+}
+
+section.post h5 {
+    padding-top: 6px;
+}
+
+section.post h6 {
+    padding-top: 5px;
+}
+
+section.post hr {
+    border: none;
+    border-top: 1px dotted var(--main-foreground);
+
+    color: var(--main-foreground);
+}
+
+section.post ul {
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+}
+
+section.post ul li::before {
+    display: inline-block;
+    vertical-align: middle;
+
+    margin-right: 6px;
+
+    content: '⮞';
+
+    color: var(--list-bullet-foreground);
+}
+
+section.post ul.contains-task-list {
+    padding-left: 1.15rem;
+}
+
+section.post ul.contains-task-list li.task-list-item::before {
+    display: none;
+}
+
+section.post ul.contains-task-list li.task-list-item input[type="checkbox"] {
+    display: none;
+}
+
+section.post ul.contains-task-list li.task-list-item:has(input[type="checkbox"])::marker {
+    content: '☐ ';
+    
+    color: var(--list-bullet-foreground);
+}
+
+section.post ul.contains-task-list li.task-list-item:has(input[type="checkbox"]:checked)::marker {
+    content: '☒ ';
+    
+    color: var(--list-bullet-foreground);
+}
+
+section.post ul.contains-task-list li.task-list-item:has(input[type="checkbox"]:checked) {
+    text-decoration: line-through;
+    color: var(--list-bullet-foreground);
+}
+
+section.post ol {
+    list-style: upper-roman;
+
+    padding: 0 0 0 1.25rem;
+
+    margin: 0;
+}
+
+section.post ol li::marker {
+    color: var(--list-bullet-foreground);
+}
+
+section.post ol > li > ol {
+    list-style: decimal;
+}
+
+section.post ol > li > ol > li > ol {
+    list-style: lower-latin;
+    
+    padding-left: 1.25rem;
+}
+
+section.post ol > li > ol > li > ol > li > ol {
+    list-style: lower-greek;
+    padding-left: 1.25rem;
+}
+
+section.post ol > li > ol > li > ol > li > ol > li > ol {
+    list-style: armenian;
 }
 
 section.post .post-titlebar {
@@ -120,8 +268,7 @@ section.post .post-titlebar {
 }
 
 section.post h1.post-title {
-    padding: 0;
-    padding-left: 8px;
+    padding: 0 0 0 8px;
     margin-bottom: 0;
 
     font-weight: 500;
@@ -167,6 +314,8 @@ section.post .post-toolbar-link {
 }
 
 section.post .post-content {
+    padding-bottom: 8px;
+    
     margin-top: 8px;
 }
 
@@ -185,9 +334,9 @@ section.post p:last-of-type {
 
 section.post .post-continuation-prompt {
     display: inline;
-    
+
     margin-left: 4px;
-    
+
     color: var(--post-continuation-prompt-foreground);
 }
 
@@ -203,6 +352,14 @@ section.post .post-meta {
     font-size: 1rem;
 
     color: var(--post-meta-foreground);
+}
+
+section.post .post-meta-items {
+    padding-top: 6px;
+    padding-left: 6px;
+    padding-right: 12px;
+    
+    border-top: 1px dotted var(--post-meta-foreground);
 }
 
 section.post .post-meta-author {
@@ -241,6 +398,10 @@ section.post .post-meta-tags ul li {
     margin: 0;
 }
 
+section.post .post-meta-tags ul li::before {
+    display: none;
+}
+
 section.post .post-meta-tags ul li::after {
     content: ", ";
 }
@@ -270,7 +431,7 @@ section.post .post-meta-break a {
 section.post .markdown-alert {
     padding: 0.1rem 0.5rem;
     margin-bottom: 0.4rem;
-    
+
     border-left: 8px solid;
 }
 
@@ -282,18 +443,18 @@ section.post .markdown-alert p {
 section.post p.markdown-alert-title {
     margin: 0;
     padding: 0;
-    
-    font-size: 1.4rem;
+
+    font-size: 1.6rem;
     font-weight: 500;
-    
+
     text-transform: uppercase;
 }
 
 section.post .markdown-alert-title::before {
     display: inline-block;
-    
+
     margin-right: 6px;
-    
+
     font-family: "Line Awesome Free";
     font-weight: 900;
     font-size: 24px;
@@ -306,13 +467,13 @@ section.post .markdown-alert-title svg {
 
 section.post .markdown-alert-note {
     border-image: repeating-linear-gradient(
-        70deg, 
+        70deg,
         var(--alert-note-accent),
         var(--alert-note-accent) 4px,
-        var(--alert-note-accent2) 4px, 
+        var(--alert-note-accent2) 4px,
         var(--alert-note-accent2) 8px
     ) 2;
-    
+
     background-color: var(--alert-note-background);
     color: var(--alert-note-foreground);
 }
@@ -323,13 +484,13 @@ section.post .markdown-alert-note .markdown-alert-title::before {
 
 section.post .markdown-alert-tip {
     border-image: repeating-linear-gradient(
-        70deg, 
+        70deg,
         var(--alert-tip-accent),
         var(--alert-tip-accent) 4px,
         var(--alert-tip-accent2) 4px,
-        var(--alert-tip-accent2) 8px    
+        var(--alert-tip-accent2) 8px
     ) 2;
-    
+
     background-color: var(--alert-tip-background);
     color: var(--alert-tip-foreground);
 }
@@ -340,11 +501,11 @@ section.post .markdown-alert-tip .markdown-alert-title::before {
 
 section.post .markdown-alert-important {
     border-image: repeating-linear-gradient(
-            70deg,
-            var(--alert-important-accent),
-            var(--alert-important-accent) 4px,
-            var(--alert-important-accent2) 4px,
-            var(--alert-important-accent2) 8px
+        70deg,
+        var(--alert-important-accent),
+        var(--alert-important-accent) 4px,
+        var(--alert-important-accent2) 4px,
+        var(--alert-important-accent2) 8px
     ) 2;
 
     background-color: var(--alert-important-background);
@@ -357,11 +518,11 @@ section.post .markdown-alert-important .markdown-alert-title::before {
 
 section.post .markdown-alert-warning {
     border-image: repeating-linear-gradient(
-            70deg,
-            var(--alert-warning-accent),
-            var(--alert-warning-accent) 4px,
-            var(--alert-warning-accent2) 4px,
-            var(--alert-warning-accent2) 8px
+        70deg,
+        var(--alert-warning-accent),
+        var(--alert-warning-accent) 4px,
+        var(--alert-warning-accent2) 4px,
+        var(--alert-warning-accent2) 8px
     ) 2;
 
     background-color: var(--alert-warning-background);
@@ -374,11 +535,11 @@ section.post .markdown-alert-warning .markdown-alert-title::before {
 
 section.post .markdown-alert-caution {
     border-image: repeating-linear-gradient(
-            70deg,
-            var(--alert-caution-accent),
-            var(--alert-caution-accent) 4px,
-            var(--alert-caution-accent2) 4px,
-            var(--alert-caution-accent2) 8px
+        70deg,
+        var(--alert-caution-accent),
+        var(--alert-caution-accent) 4px,
+        var(--alert-caution-accent2) 4px,
+        var(--alert-caution-accent2) 8px
     ) 2;
 
     background-color: var(--alert-caution-background);
@@ -387,4 +548,62 @@ section.post .markdown-alert-caution {
 
 section.post .markdown-alert-caution .markdown-alert-title::before {
     content: '\F54C';
+}
+
+section.post table {
+    empty-cells: show;
+    width: 100%;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    border: 1px solid var(--table-border);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 4px;
+
+    background-color: var(--table-background);
+}
+
+section.post table thead {
+    vertical-align: bottom;
+
+    color: var(--table-header-foreground);
+    background-color: var(--table-header-background);
+}
+
+section.post table tr:nth-child(2n) {
+    background-color: var(--table-even-row-background);
+}
+
+section.post table th,
+section.post table td {
+    padding: 0.25em 0.5em;
+}
+
+section.post pre {
+    padding: 1px;
+
+    margin: 0.4rem 0;
+
+    border: 1px solid var(--code-border);
+    border-left: 4px solid var(--code-border);
+    border-radius: 6px;
+    
+    font-family: "Ubuntu Mono";
+    
+    background-color: var(--block-background);
+    color: var(--block-foreground);
+}
+
+section.post code {
+    padding: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 3px;
+    
+    font-family: "Ubuntu Mono";
+    font-size: 18px;
+    
+    background-color: var(--block-background);
 }

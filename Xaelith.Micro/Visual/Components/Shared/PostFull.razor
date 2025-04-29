@@ -1,0 +1,83 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using Xaelith.Micro.Infrastructure.DataModel.Content
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
+
+@inject IJSRuntime JsRuntime
+@inject IConfigService Configuration
+@inject IContentService Content
+@inject IMarkdownService Markdown
+
+<section class="post post-full">
+    <div class="post-titlebar">
+        <h1 class="post-title">
+            <a href="/view/@Post.Slug">@Post.Title</a>
+        </h1>
+
+        <div class="post-toolbar">
+            <a class="post-toolbar-link" href="/admin/edit/@Id.ToString("D")">
+                <i class="las la-edit"></i>
+                edit
+            </a>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Post.Description))
+    {
+        <h2 class="post-subtitle">
+            @Post.Description
+        </h2>
+    }
+
+    <div class="post-content">
+        @((MarkupString)Markdown.Render(Content.GetPostBody(Id)))
+    </div>
+
+    <div class="post-meta">
+        <div class="post-meta-items">
+            <span class="post-meta-item post-meta-author">
+                @Post.Author
+            </span>
+
+            <span class="post-meta-item post-meta-date">
+                @Post.PublishDate.ToString(
+                    Configuration.Root!.General.DateFormat
+                )
+            </span>
+
+            <span class="post-meta-item post-meta-category">
+                <a href="/category/@Post.Category">@Post.Category</a>
+            </span>
+
+            @if (Post.Tags.Any())
+            {
+                <div class="post-meta-item post-meta-tags">
+                    <ul>
+                        @foreach (var tag in Post.Tags)
+                        {
+                            <li><a href="/tag/@tag">@tag</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter, Required]
+    public Guid Id { get; set; } = Guid.Empty;
+
+    [Parameter, Required]
+    public Post Post { get; set; } = null!;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("xaelith.onLoad.highlightAll");
+        }
+    }
+}

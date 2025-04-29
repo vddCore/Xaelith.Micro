@@ -1,29 +1,48 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        
-        <meta name="viewport" 
-              content="width=device-width, initial-scale=1.0" />
-        
-        <base href="/"/>
+<head>
+    <meta charset="utf-8"/>
 
-        <link rel="stylesheet"
-              href="@Assets["style/shared/fonts.css"]" />
-        
-        <link rel="stylesheet" 
-              href="@Assets["style/shared/global.css"]" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
 
-        <link rel="stylesheet"
-              href="Xaelith.Micro.styles.css"  />
-        
-        <ImportMap/>
-        <HeadOutlet/>
-    </head>
+    <base href="/"/>
+    
+    <link rel="stylesheet"
+          href="@Assets["lib/highlightjs/styles/gradient-v.css"]"/>
 
-    <body>
-        <Routes/>
-        <script src="_framework/blazor.web.js"></script>
-    </body>
+    <link rel="stylesheet"
+          href="@Assets["style/shared/fonts.css"]"/>
+
+    <link rel="stylesheet"
+          href="@Assets["style/shared/global.css"]"/>
+
+    <link rel="stylesheet"
+          href="Xaelith.Micro.styles.css"/>
+
+    <script src="lib/highlightjs/highlight.min.js"></script>
+    
+    <script>
+        (function() {
+          function highlightAll() {
+            hljs.highlightAll();
+          }
+
+          window.xaelith = window.xaelith || {};
+
+          window.xaelith.onLoad = {
+            highlightAll: highlightAll
+          };
+        })();
+    </script>
+
+    <ImportMap/>
+    <HeadOutlet/>
+</head>
+
+<body>
+<Routes @rendermode="InteractiveServer"/>
+<script src="_framework/blazor.web.js"></script>
+</body>
 </html>

@@ -3,6 +3,7 @@
 @using Xaelith.Micro.Infrastructure.ServiceModel.Core
 @using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
 
+@inject IJSRuntime JsRuntime
 @inject IConfigService Configuration
 @inject IContentService Content
 @inject IMarkdownService Markdown
@@ -10,7 +11,7 @@
 <section class="post">
     <div class="post-titlebar">
         <h1 class="post-title">
-            <a href="/post/@Post.Slug">@Post.Title</a>
+            <a href="/view/@Post.Slug">@Post.Title</a>
         </h1>
 
         <div class="post-toolbar">
@@ -21,7 +22,7 @@
         </div>
     </div>
 
-    @if (!string.IsNullOrWhiteSpace(@Post.Description))
+    @if (!string.IsNullOrWhiteSpace(Post.Description))
     {
         <h2 class="post-subtitle">
             @Post.Description
@@ -30,8 +31,8 @@
 
     <div class="post-content">
         @{
-            var body = @Content.GetPostBody(@Id);
-            var pbToken = @Configuration.Root!.Rendering.PageBreakToken;
+            var body = Content.GetPostBody(Id);
+            var pbToken = Configuration.Root!.Rendering.PageBreakToken;
             var pbIndex = -1;
             
             if (!string.IsNullOrWhiteSpace(pbToken))
@@ -68,7 +69,7 @@
 
             <span class="post-meta-item post-meta-date">
                 @Post.PublishDate.ToString(
-                    @Configuration.Root!.General.DateFormat
+                    Configuration.Root!.General.DateFormat
                 )
             </span>
 
@@ -80,7 +81,7 @@
             {
                 <div class="post-meta-item post-meta-tags">
                     <ul>
-                        @foreach (var tag in @Post.Tags)
+                        @foreach (var tag in Post.Tags)
                         {
                             <li><a href="/tag/@tag">@tag</a></li>
                         }
@@ -92,7 +93,7 @@
         @if (pbIndex > 0)
         {
             <div class="post-meta-break">
-                <a href="/post/@Post.Slug">// read more _</a>
+                <a href="/view/@Post.Slug">// read more _</a>
             </div>
         }
     </div>
@@ -104,4 +105,14 @@
 
     [Parameter, Required]
     public Post Post { get; set; } = null!;
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await JsRuntime.InvokeVoidAsync("xaelith.onLoad.highlightAll");
+        }
+    }
 }

@@ -64,26 +64,21 @@ public class ContentService : IContentService
                 ));
 
                 var direction = _configService.Root!.General.PostOrderDirection;
-                switch (_configService.Root!.General.PostOrderCriteria)
+                
+                posts = _configService.Root!.General.PostOrderCriteria switch
                 {
-                    case PostOrderCriteria.Date:
-                    {
-                        posts = direction == PostOrderDirection.Ascending 
-                              ? posts.OrderBy(x => x.Post.PublishDate).ToList()
-                              : posts.OrderByDescending(x => x.Post.PublishDate).ToList();
-                        
-                        break;
-                    }
-
-                    case PostOrderCriteria.Alphabetical:
-                    {
-                        posts = direction == PostOrderDirection.Ascending
-                              ? posts.OrderBy(x => x.Post.Title).ToList()
-                              : posts.OrderByDescending(x => x.Post.Title).ToList();
-                        
-                        break;
-                    }
-                }
+                    PostOrderCriteria.Date =>
+                        direction == PostOrderDirection.Ascending
+                            ? posts.OrderBy(x => x.Post.PublishDate).ToList()
+                            : posts.OrderByDescending(x => x.Post.PublishDate)
+                                .ToList(),
+                    PostOrderCriteria.Alphabetical =>
+                        direction == PostOrderDirection.Ascending
+                            ? posts.OrderBy(x => x.Post.Title).ToList()
+                            : posts.OrderByDescending(x => x.Post.Title)
+                                .ToList(),
+                    _ => posts
+                };
             }
             catch
             {
@@ -98,10 +93,10 @@ public class ContentService : IContentService
     {
         var collection = GetAllPosts(p => p.Slug == slug);
 
-        if (!collection.Any())
+        if (collection.Count == 0)
             return null;
         
-        return collection.First();
+        return collection.Single();
     }
 
     public string GetPostBody(Guid postId)

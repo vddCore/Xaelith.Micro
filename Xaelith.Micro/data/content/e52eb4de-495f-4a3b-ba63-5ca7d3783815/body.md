@@ -35,13 +35,15 @@ paragraph text under h5.
 ###### h6
 paragraph text under h6.
 
+
 ---
 
 **bold text**  
 normal text  
 *italic text*
 <u>underline text</u>  
-~~strikethrough text~~
+~~strikethrough text~~  
+`some text in backticks`.
 
 |  head title  |    title2    |    title3    |    title4    |
 | ------------ | -----------: | ------------ | ------------ |

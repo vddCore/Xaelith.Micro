@@ -1,0 +1,6 @@
+﻿@font-face {
+    font-family: "Ubuntu Mono";
+    font-weight: 400;
+    
+    src: url("./ubuntu-mono-regular.ttf") format("opentype");
+}

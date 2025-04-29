@@ -1,0 +1,26 @@
+﻿@page "/view/{slug}"
+
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
+
+@inject IContentService Content;
+
+<NavBar />
+
+<main>
+    @{
+        var post = Content.GetPostBySlug(Slug);
+
+        if (post != null)
+        {
+            <PostFull Id="post.Value.Id"
+                      Post="post.Value.Post" />
+        }
+    }
+</main>
+
+<Footer />
+
+@code {
+    [Parameter]
+    public required string Slug { get; set; }
+}

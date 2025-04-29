@@ -6,7 +6,7 @@
 <NavBar/>
 
 <main>
-    @foreach (var (id, post) in @Content.GetAllPosts(p => p.Published))
+    @foreach (var (id, post) in Content.GetAllPosts(p => p.Published))
     {
         <PostBrief Id="@id" Post="@post"/>
     }
