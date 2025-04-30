@@ -194,6 +194,13 @@ section.post .post-content {
     margin-top: 8px;
 }
 
+section.post .post-content .empty-notification {
+    font-size: 1.4rem;
+    font-weight: 300;
+    
+    color: var(--post-empty-notification-foreground);
+}
+
 section.post p {
     margin-top: 8px;
     margin-bottom: 8px;

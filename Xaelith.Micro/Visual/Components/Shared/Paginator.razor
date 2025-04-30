@@ -1,16 +1,13 @@
 ﻿@implements IDisposable
 
-@using Xaelith.Micro.Infrastructure.Utilities
-
 @inject NavigationManager NavigationManager;
 @inject IConfigService Configuration;
 @inject IContentService Content;
 
-@{    
-    foreach (var (id, post) in PostsToRender)
+@{
+    foreach (var post in PostsToRender)
     {
-        <PostBrief Id="@id" 
-                   Post="@post"/>
+        <PostBrief Post="@post"/>
     }
 }
 
@@ -67,60 +64,59 @@
 }
 
 @code {
-
-    [Parameter, Required]
-    public List<(Guid Id, Post Post)> Posts { get; set; } = [];
+    [Parameter]
+    public required List<Post> Posts { get; set; }
 
     protected int PaginationLimit { get; private set; }
-    
+
     protected int PaginationStart => Math.Max(
-        1, 
+        1,
         Math.Min(
             CurrentPage - PaginationLimit / 2,
             PageCount - PaginationLimit + 1
         )
     );
-    
+
     protected int PaginationEnd => Math.Min(
-        PageCount, 
+        PageCount,
         PaginationStart + PaginationLimit - 1
     );
 
     protected int CurrentPage { get; private set; } = 1;
     protected int PostsPerPage { get; private set; }
     protected int PageCount { get; private set; }
-    
-    protected List<(Guid Id, Post Post)> PostsToRender { get; private set; } = [];
-    
+
+    protected List<Post> PostsToRender { get; private set; } = [];
+
     protected override void OnInitialized()
     {
         PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
         PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
         PageCount = (Posts.Count / PostsPerPage) + 1;
         UpdatePageFromQuery();
-        
+
         NavigationManager.LocationChanged += OnLocationChanged;
 
         base.OnInitialized();
     }
-    
+
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         UpdatePageFromQuery();
         StateHasChanged();
     }
-    
+
     private void UpdatePageFromQuery()
     {
         int page;
-        
+
         var pageString = NavigationManager.QueryString("page");
         if (!int.TryParse(pageString, out page))
             page = 1;
 
         page = Math.Clamp(page, 1, PageCount);
         CurrentPage = page;
-        
+
         var startAt = (CurrentPage - 1) * PostsPerPage;
 
         PostsToRender = Posts
@@ -128,7 +124,7 @@
             .Take(PostsPerPage)
             .ToList();
     }
-    
+
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;

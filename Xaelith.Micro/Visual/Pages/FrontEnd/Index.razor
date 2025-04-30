@@ -22,14 +22,18 @@
 <Footer/>
 
 @code {
-    private List<(Guid Id, Post Post)> Posts { get; set; } = [];
+    private List<Post> Posts { get; set; } = [];
     
     protected override string Title => "home";
 
     protected override void OnInitialized()
     {
         Posts = Content.GetAllPosts(
-            p => p is { Published: true, Type: PostType.Normal }
+            p => p is
+            {
+                Metadata.Published: true, 
+                Metadata.Type: PostType.Normal
+            }
         );
     }
 }

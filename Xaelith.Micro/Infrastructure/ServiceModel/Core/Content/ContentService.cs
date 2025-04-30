@@ -16,10 +16,10 @@ public class ContentService : IContentService
         Directory.CreateDirectory(WellKnown.Content);
     }
 
-    public List<(Guid Id, Post Post)> GetAllPosts(Predicate<Post>? filter = null)
+    public List<Post> GetAllPosts(Predicate<Post>? filter = null)
     {
         var postDirectories = Directory.GetDirectories(WellKnown.Content);
-        var posts = new List<(Guid Id, Post Post)>();
+        var posts = new List<Post>();
         
         foreach (var postRoot in postDirectories)
         {
@@ -35,7 +35,7 @@ public class ContentService : IContentService
             
             var bodyPath = Path.Combine(
                 postRoot, 
-                WellKnown.PostContentFileName
+                WellKnown.PostBodyFileName
             );
             
             if (!File.Exists(metadataPath)) 
@@ -48,70 +48,59 @@ public class ContentService : IContentService
             {
                 using var sr = new StreamReader(metadataPath);
                     
-                var metadata = JsonConvert.DeserializeObject<Post>(
+                var metadata = JsonConvert.DeserializeObject<PostMetadata>(
                     sr.ReadToEnd()
                 );
                 
                 if (metadata == null)
                     continue;
 
-                if (!filter?.Invoke(metadata) ?? false)
+                var post = new Post(
+                    postId,
+                    metadata,
+                    postRoot,
+                    _configService.Root!.Rendering.PageBreakToken
+                );
+
+                if (!filter?.Invoke(post) ?? false)
                     continue;
                     
-                posts.Add((
-                    postId,
-                    metadata
-                ));
-
-                var direction = _configService.Root!.General.PostOrderDirection;
-                
-                posts = _configService.Root!.General.PostOrderCriteria switch
-                {
-                    PostOrderCriteria.Date =>
-                        direction == PostOrderDirection.Ascending
-                            ? posts.OrderBy(x => x.Post.PublishDate).ToList()
-                            : posts.OrderByDescending(x => x.Post.PublishDate)
-                                .ToList(),
-                    PostOrderCriteria.Alphabetical =>
-                        direction == PostOrderDirection.Ascending
-                            ? posts.OrderBy(x => x.Post.Title).ToList()
-                            : posts.OrderByDescending(x => x.Post.Title)
-                                .ToList(),
-                    _ => posts
-                };
+                posts.Add(post);
             }
             catch
             {
                 /* Just skip the corrupt post for now. */
             }
         }
-
+        
+        var direction = _configService.Root!.General.PostOrderDirection;
+                
+        posts = _configService.Root!.General.PostOrderCriteria switch
+        {
+            PostOrderCriteria.Date =>
+                direction == PostOrderDirection.Ascending
+                    ? posts.OrderBy(x => x.Metadata.PublishDate).ToList()
+                    : posts.OrderByDescending(x => x.Metadata.PublishDate)
+                        .ToList(),
+            PostOrderCriteria.Alphabetical =>
+                direction == PostOrderDirection.Ascending
+                    ? posts.OrderBy(x => x.Metadata.Title).ToList()
+                    : posts.OrderByDescending(x => x.Metadata.Title)
+                        .ToList(),
+            _ => posts
+        };
+        
         return posts;
     }
 
-    public (Guid Id, Post Post)? GetPostBySlug(string slug)
+    public Post? GetPostBySlug(string slug)
     {
-        var collection = GetAllPosts(p => p.Slug == slug);
+        var collection = GetAllPosts(p => p.Metadata.Slug == slug);
 
         if (collection.Count == 0)
             return null;
         
         return collection.Single();
-    }
-
-    public string GetPostBody(Guid postId)
-    {
-        var postBodyPath = Path.Combine(
-            WellKnown.Content, 
-            postId.ToString("D"),
-            WellKnown.PostContentFileName
-        );
-
-        if (!File.Exists(postBodyPath))
-            return string.Empty;
-        
-        using var sr = new StreamReader(postBodyPath);
-        return sr.ReadToEnd();
     }
 
     public string GetCategoryDescription(string category)

@@ -3,41 +3,19 @@
 @inject IMarkdownService Markdown
 
 <section class="post post-full">
-    <div class="post-titlebar">
-        <h1 class="post-title">
-            <a href="/view/@Post.Slug">@Post.Title</a>
-        </h1>
+    <PostTitleBar Post="@Post"/>
 
-        <div class="post-toolbar">
-            <a class="post-toolbar-link" href="/admin/edit/@Id.ToString("D")">
-                <i class="las la-edit"></i>
-                edit
-            </a>
-        </div>
-    </div>
+    <PostContent Post="@Post"
+                 ForceFullRender="@true"/>
 
-    @if (!string.IsNullOrWhiteSpace(Post.Description))
-    {
-        <h2 class="post-subtitle">
-            @Post.Description
-        </h2>
-    }
-
-    <div class="post-content">
-        @((MarkupString)Markdown.Render(Content.GetPostBody(Id)))
-    </div>
-
-    <PostMeta Post="Post" 
-              ShowReadMore="@false" />
+    <PostMeta Post="@Post"
+              ShowReadMore="@false"/>
 </section>
 
 @code {
-    [Parameter, Required]
-    public Guid Id { get; set; } = Guid.Empty;
+    [Parameter]
+    public required Post Post { get; set; }
 
-    [Parameter, Required]
-    public Post Post { get; set; } = null!;
-    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);

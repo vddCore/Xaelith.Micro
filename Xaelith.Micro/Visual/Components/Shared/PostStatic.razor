@@ -1,16 +1,12 @@
 ﻿@inject IJSRuntime JS
-@inject IConfigService Configuration
 @inject IContentService Content
 @inject IMarkdownService Markdown
 
-<section class="post">
+<section class="post post-static">
     <PostTitleBar Post="@Post"/>
 
     <PostContent Post="@Post"
-                 ForceFullRender="@false"/>
-
-    <PostMeta Post="@Post"
-              ShowReadMore="@Post.HasPageBreak" />
+                 ForceFullRender="@true"/>
 </section>
 
 @code {

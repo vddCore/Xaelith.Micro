@@ -1,0 +1,19 @@
+﻿<div class="post-titlebar">
+    <h1 class="post-title">
+        <a href="/view/@Post.Metadata.Slug">@Post.Metadata.Title</a>
+    </h1>
+
+    <PostToolbar Post="@Post" />
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Post.Metadata.Description))
+{
+    <h2 class="post-subtitle">
+        @Post.Metadata.Description
+    </h2>
+}
+
+@code {
+    [Parameter]
+    public required Post Post { get; set; }
+}

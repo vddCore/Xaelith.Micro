@@ -11,5 +11,5 @@ public static class WellKnown
 
     public static string ConfigurationFileName { get; } = "xaelith.json";
     public static string PostMetadataFileName { get; } = "meta.json";
-    public static string PostContentFileName { get; } = "body.md";
+    public static string PostBodyFileName { get; } = "body.md";
 }

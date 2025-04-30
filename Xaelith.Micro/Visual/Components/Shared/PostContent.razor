@@ -1,0 +1,48 @@
+﻿@inject IConfigService Configuration;
+@inject IContentService Content
+@inject IMarkdownService Markdown
+
+<div class="post-content">
+    @{
+        var body = @Post.Body;
+        
+        if (string.IsNullOrWhiteSpace(body))
+        {
+            <div class="empty-notification">
+                @((MarkupString)Markdown.Render(
+                    "This post has no body." +
+                    "Could say it's a *ghost* or something."
+                ));
+            </div>
+        }
+        else
+        {
+            if (ForceFullRender)
+            {
+                @((MarkupString)Markdown.Render(body))
+            }
+            else
+            {
+                if (@Post.HasPageBreak)
+                {                        
+                    @((MarkupString)Markdown.RenderBrief(
+                        body,
+                        @Post.PageBreakIndex
+                    ))
+                }
+                else
+                {
+                    @((MarkupString)Markdown.Render(body))
+                }
+            }
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public required Post Post { get; set; }
+
+    [Parameter]
+    public bool ForceFullRender { get; set; }
+}

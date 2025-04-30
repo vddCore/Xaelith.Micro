@@ -1,38 +1,70 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Xaelith.Micro.Infrastructure.Utilities;
 
 public record Post
 {
-    [JsonProperty("slug")]
-    public string Slug { get; set; } = "untitled";
-    
-    [JsonProperty("published")]
-    public bool Published { get; set; }
+    public Guid Id { get; set; }
+    public PostMetadata Metadata { get; set; }
 
-    [JsonProperty("publish_date")]
-    public required DateTime PublishDate { get; set; } = DateTime.Now;
-    
-    [JsonProperty("edit_date")]
-    public DateTime? EditDate { get; set; }
-    
-    [JsonProperty("author")]
-    public required string Author { get; set; } = "nobody";
-    
-    [JsonProperty("title")]
-    public required string Title { get; set; } = "untitled";
-    
-    [JsonProperty("description")]
-    public string Description { get; set; } = string.Empty;
+    public string RootDirectoryDirectory { get; set; }
 
-    [JsonProperty("category")]
-    public required string Category { get; set; } = string.Empty;
-    
-    [JsonProperty("tags")]
-    public List<string> Tags { get; set; } = [];
-    
-    [JsonProperty("type")]
-    [JsonConverter(typeof(StringEnumConverter))]
-    public PostType Type { get; set; }
+    public string PageBreakToken { get; set; }
+    public int PageBreakIndex { get; set; }
+
+    public bool HasPageBreak
+    {
+        get
+        {
+            FetchBody();
+            return PageBreakIndex >= 0;
+        }
+    }
+
+    public string BodyPath => Path.Combine(
+        RootDirectoryDirectory,
+        WellKnown.PostBodyFileName
+    );
+
+    public string Body => FetchBody();
+
+    public Post(Guid id, PostMetadata metadata, string rootDirectory, string pageBreakToken)
+    {
+        Id = id;
+        Metadata = metadata;
+        RootDirectoryDirectory = rootDirectory;
+        PageBreakToken = pageBreakToken;
+    }
+
+    private string FetchBody()
+    {
+        var body = string.Empty;
+
+        if (File.Exists(BodyPath))
+        {
+            try
+            {
+                using var sr = new StreamReader(BodyPath);
+                body = sr.ReadToEnd();
+            }
+            catch
+            {
+                body = string.Empty;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(PageBreakToken))
+        {
+            PageBreakIndex = body.IndexOf(
+                PageBreakToken,
+                StringComparison.InvariantCulture
+            );
+        }
+        else
+        {
+            PageBreakIndex = -1;
+        }
+        
+        return body;
+    }
 }

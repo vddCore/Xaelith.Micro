@@ -4,13 +4,26 @@
 <NavBar/>
 
 <main>
-    @if (Post == null)
+    @if (@Post == null)
     {
         <NotFound Message="@NotFoundMessage"/>
     }
     else
     {
-        <PostFull Id="Id" Post="Post"/>
+        switch (Post.Metadata.Type)
+        {
+            case PostType.Normal:
+                <PostFull Post="@Post"/>
+                break;
+
+            case PostType.Static:
+                <PostStatic Post="@Post"/>
+                break;
+
+            default:
+                <NotFound Message="This post type doesn't have a template."/>
+                break;
+        }
     }
 </main>
 
@@ -22,10 +35,9 @@
 
     protected override string Title
         => Post != null
-            ? Post.Title
+            ? Post.Metadata.Title
             : "post not found";
-    
-    private Guid Id { get; set; }
+
     private Post? Post { get; set; }
 
     private string NotFoundMessage
@@ -33,11 +45,6 @@
 
     protected override void OnInitialized()
     {
-        var kvp = Content.GetPostBySlug(Slug);
-
-        if (kvp != null)
-        {
-            (Id, Post) = (kvp.Value.Id, kvp.Value.Post);
-        }
+        Post = Content.GetPostBySlug(Slug);
     }
 }

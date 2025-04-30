@@ -37,12 +37,12 @@
     [Parameter, Required]
     public string CategoryName { get; set; } = string.Empty;
 
-    protected override string Title 
+    protected override string Title
         => Posts.Any()
             ? $"category '{CategoryName}'"
             : "category not found";
 
-    private List<(Guid Id, Post Post)> Posts { get; set; } = [];
+    private List<Post> Posts { get; set; } = [];
 
     private string NotFoundMessage
         => $"The are no posts under the requested category <code>{CategoryName}</code> _";
@@ -50,8 +50,11 @@
     protected override void OnInitialized()
     {
         Posts = Content.GetAllPosts(
-            p => p is { Published: true, Type: PostType.Normal }
-              && p.Category == CategoryName
+            p => p is
+            {
+                Metadata.Published: true,
+                Metadata.Type: PostType.Normal
+            } && p.Metadata.Category == CategoryName
         );
     }
 }

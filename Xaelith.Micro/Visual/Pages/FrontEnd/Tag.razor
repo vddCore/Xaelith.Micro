@@ -42,19 +42,19 @@
             ? $"tag '{TagName}'"
             : "tag not found";
     
-    private List<(Guid Id, Post Post)> Posts { get; set; } = [];
+    private List<Post> Posts { get; set; } = [];
 
     private string NotFoundMessage
         => $"There are no posts tagged <code>{TagName}</code> _";
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-        
         Posts = Content.GetAllPosts(
-            p => p is { Published: true, Type: PostType.Normal }
-                 && p.Tags.Contains(TagName)
+            p => p is
+            {
+                Metadata.Published: true,
+                Metadata.Type: PostType.Normal
+            } && p.Metadata.Tags.Contains(TagName)
         );
-        
     }
 }

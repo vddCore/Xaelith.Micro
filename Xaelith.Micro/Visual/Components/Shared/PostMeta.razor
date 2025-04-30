@@ -3,45 +3,46 @@
 <div class="post-meta">
     <div class="post-meta-items">
         <span class="post-meta-item post-meta-author">
-            @Post.Author
+            @Post.Metadata.Author
         </span>
 
         <span class="post-meta-item post-meta-date">
-            @Post.PublishDate.ToString(
+            @Post.Metadata.PublishDate.ToString(
                 Configuration.Root!.General.DateFormat
             )
         </span>
 
         <span class="post-meta-item post-meta-category">
-            <a href="/category/@Post.Category">@Post.Category</a>
+            <a href="/category/@Post.Metadata.Category">
+                @Post.Metadata.Category
+            </a>
         </span>
 
-        @if (Post.Tags.Any())
+        @if (Post.Metadata.Tags.Any())
         {
             <div class="post-meta-item post-meta-tags">
                 <ul>
-                    @foreach (var tag in Post.Tags)
+                    @foreach (var tag in Post.Metadata.Tags)
                     {
                         <li><a href="/tag/@tag">@tag</a></li>
                     }
                 </ul>
             </div>
         }
-        
     </div>
-    
+
     @if (ShowReadMore)
     {
         <div class="post-meta-break">
-            <a href="/view/@Post.Slug">// read more _</a>
+            <a href="/view/@Post.Metadata.Slug">// read more _</a>
         </div>
     }
 </div>
 
 @code {
-    [Parameter, Required]
-    public Post Post { get; set; } = null!;
+    [Parameter]
+    public required Post Post { get; set; }
 
-    [Parameter, Required]
-    public bool ShowReadMore { get; set; } 
+    [Parameter]
+    public required bool ShowReadMore { get; set; }
 }
