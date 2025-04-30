@@ -61,42 +61,8 @@
         }
     </div>
 
-    <div class="post-meta">
-        <div class="post-meta-items">
-            <span class="post-meta-item post-meta-author">
-                @Post.Author
-            </span>
-
-            <span class="post-meta-item post-meta-date">
-                @Post.PublishDate.ToString(
-                    Configuration.Root!.General.DateFormat
-                )
-            </span>
-
-            <span class="post-meta-item post-meta-category">
-                <a href="/category/@Post.Category">@Post.Category</a>
-            </span>
-
-            @if (Post.Tags.Any())
-            {
-                <div class="post-meta-item post-meta-tags">
-                    <ul>
-                        @foreach (var tag in Post.Tags)
-                        {
-                            <li><a href="/tag/@tag">@tag</a></li>
-                        }
-                    </ul>
-                </div>
-            }
-        </div>
-
-        @if (pbIndex > 0)
-        {
-            <div class="post-meta-break">
-                <a href="/view/@Post.Slug">// read more _</a>
-            </div>
-        }
-    </div>
+    <PostMeta Post="Post" 
+              ShowReadMore="@(pbIndex > 0)" />
 </section>
 
 @code {

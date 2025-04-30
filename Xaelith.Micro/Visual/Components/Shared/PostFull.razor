@@ -1,10 +1,4 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using Xaelith.Micro.Infrastructure.DataModel.Core.Content
-@using Xaelith.Micro.Infrastructure.ServiceModel.Core
-@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
-
-@inject IJSRuntime JsRuntime
-@inject IConfigService Configuration
+﻿@inject IJSRuntime JsRuntime
 @inject IContentService Content
 @inject IMarkdownService Markdown
 
@@ -33,35 +27,8 @@
         @((MarkupString)Markdown.Render(Content.GetPostBody(Id)))
     </div>
 
-    <div class="post-meta">
-        <div class="post-meta-items">
-            <span class="post-meta-item post-meta-author">
-                @Post.Author
-            </span>
-
-            <span class="post-meta-item post-meta-date">
-                @Post.PublishDate.ToString(
-                    Configuration.Root!.General.DateFormat
-                )
-            </span>
-
-            <span class="post-meta-item post-meta-category">
-                <a href="/category/@Post.Category">@Post.Category</a>
-            </span>
-
-            @if (Post.Tags.Any())
-            {
-                <div class="post-meta-item post-meta-tags">
-                    <ul>
-                        @foreach (var tag in Post.Tags)
-                        {
-                            <li><a href="/tag/@tag">@tag</a></li>
-                        }
-                    </ul>
-                </div>
-            }
-        </div>
-    </div>
+    <PostMeta Post="Post" 
+              ShowReadMore="@false" />
 </section>
 
 @code {
