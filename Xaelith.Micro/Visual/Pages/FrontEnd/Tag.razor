@@ -1,35 +1,15 @@
 ﻿@page "/tag/{tagname}"
-
-@inject IConfigService Configuration
-@inject IContentService Content
-@inject IMarkdownService Markdown
-
-@{
-    var posts = Content.GetAllPosts(
-        p => p is { Published: true, Type: PostType.Normal }
-          && p.Tags.Contains(TagName)
-    );
-}
+@inherits XaelithPage
 
 <NavBar/>
 
 <main>
-    @if (!posts.Any())
+    @if (!Posts.Any())
     {
-        <PageTitle>@Configuration.Root!.General.SiteTitle // Tag Not Found</PageTitle>
         <NotFound Message="@NotFoundMessage" />
     }
     else
     {
-        <PageTitle>@Configuration.Root!.General.SiteTitle // Tag '@TagName'
-        </PageTitle>
-
-        <HeadContent>
-            <meta name="description"
-                  content="@Configuration.Root!.General.SiteDescription"/>
-        </HeadContent>
-
-
         <div class="filter-header">
             <h1>Displaying posts tagged
                 <pre>@TagName</pre>
@@ -47,7 +27,7 @@
             }
         </div>
 
-        <Paginator Posts="@posts"/>
+        <Paginator Posts="Posts"/>
     }
 </main>
 
@@ -56,7 +36,25 @@
 @code {
     [Parameter, Required]
     public string TagName { get; set; } = string.Empty;
+    
+    protected override string Title
+        => Posts.Any()
+            ? $"tag '{TagName}'"
+            : "tag not found";
+    
+    private List<(Guid Id, Post Post)> Posts { get; set; } = [];
 
     private string NotFoundMessage
         => $"There are no posts tagged <code>{TagName}</code> _";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        Posts = Content.GetAllPosts(
+            p => p is { Published: true, Type: PostType.Normal }
+                 && p.Tags.Contains(TagName)
+        );
+        
+    }
 }

@@ -1,25 +1,35 @@
 ﻿@page "/"
-
-@inject IConfigService Configuration
-@inject IContentService Content
-
-<PageTitle>@Configuration.Root!.General.SiteTitle // Home</PageTitle>
-
-<HeadContent>
-    <meta name="description" 
-          content="@Configuration.Root!.General.SiteDescription" />
-</HeadContent>
+@inherits XaelithPage
     
 <NavBar/>
 
 <main>
     @{
-        var posts = Content.GetAllPosts(
-            p => p is { Published: true, Type: PostType.Normal }
-        );
-        
-        <Paginator Posts="@posts" />
+        if (!Posts.Any())
+        {
+            <div class="no-posts-notice">
+                <h1>No posts to display</h1>
+                <h2>There are no posts yet, you better start writing!</h2>
+            </div>
+        }
+        else
+        {
+            <Paginator Posts="Posts"/>
+        }
     }
 </main>
 
 <Footer/>
+
+@code {
+    private List<(Guid Id, Post Post)> Posts { get; set; } = [];
+    
+    protected override string Title => "home";
+
+    protected override void OnInitialized()
+    {
+        Posts = Content.GetAllPosts(
+            p => p is { Published: true, Type: PostType.Normal }
+        );
+    }
+}

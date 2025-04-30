@@ -1,50 +1,34 @@
 ﻿@page "/category/{categoryname}"
-
-@inject IConfigService Configuration
-@inject IContentService Content
-@inject IMarkdownService Markdown
-
-@{
-    var posts = Content.GetAllPosts(
-        p => p is { Published: true, Type: PostType.Normal }
-             && p.Category == CategoryName
-    );
-}
+@inherits XaelithPage
 
 <NavBar/>
 
 <main>
-@if(!posts.Any())
-{
-    <PageTitle>@Configuration.Root!.General.SiteTitle // Category Not Found</PageTitle>
-    <NotFound Message="@NotFoundMessage" />
-}
-else
-{
-    <PageTitle>@Configuration.Root!.General.SiteTitle // Category '@CategoryName'</PageTitle>
+    @if (!Posts.Any())
+    {
+        <NotFound Message="@NotFoundMessage"/>
+    }
+    else
+    {
+        <div class="filter-header">
+            <h1>Displaying posts in category
+                <pre>@CategoryName</pre>
+            </h1>
 
-    <HeadContent>
-        <meta name="description"
-              content="@Configuration.Root!.General.SiteDescription" />
-    </HeadContent>
+            @{
+                var contentDescription = Content.GetCategoryDescription(
+                    CategoryName
+                );
 
-    <div class="filter-header">
-        <h1>Displaying posts in category <pre>@CategoryName</pre></h1>
-        
-        @{
-            var contentDescription = @Content.GetCategoryDescription(
-                CategoryName
-            );
-
-            if (!string.IsNullOrWhiteSpace(contentDescription))
-            {
-                <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+                if (!string.IsNullOrWhiteSpace(contentDescription))
+                {
+                    <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+                }
             }
-        }
-    </div>
-    
-    <Paginator Posts="@posts" />
-}
+        </div>
+
+        <Paginator Posts="Posts"/>
+    }
 </main>
 
 <Footer/>
@@ -53,6 +37,21 @@ else
     [Parameter, Required]
     public string CategoryName { get; set; } = string.Empty;
 
+    protected override string Title 
+        => Posts.Any()
+            ? $"category '{CategoryName}'"
+            : "category not found";
+
+    private List<(Guid Id, Post Post)> Posts { get; set; } = [];
+
     private string NotFoundMessage
         => $"The are no posts under the requested category <code>{CategoryName}</code> _";
+
+    protected override void OnInitialized()
+    {
+        Posts = Content.GetAllPosts(
+            p => p is { Published: true, Type: PostType.Normal }
+              && p.Category == CategoryName
+        );
+    }
 }

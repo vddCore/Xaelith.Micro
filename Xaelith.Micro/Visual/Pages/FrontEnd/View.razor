@@ -1,34 +1,17 @@
 ﻿@page "/view/{slug}"
-
-@inject IConfigService Configuration;
-@inject IContentService Content;
-
-@{
-    var post = Content.GetPostBySlug(Slug);
-}
+@inherits XaelithPage
 
 <NavBar/>
 
 <main>
-@if (post == null)
-{
-    <PageTitle>@Configuration.Root!.General.SiteTitle // Post Not Found</PageTitle>
-    <NotFound Message="@NotFoundMessage" />
-}
-else
-{
-    <PageTitle>
-        @Configuration.Root!.General.SiteTitle // @post.Value.Post.Title
-    </PageTitle>
-
-    <HeadContent>
-        <meta name="description"
-              content="@Configuration.Root!.General.SiteDescription"/>
-    </HeadContent>
-
-    <PostFull Id="post.Value.Id"
-              Post="post.Value.Post"/>
-}
+    @if (Post == null)
+    {
+        <NotFound Message="@NotFoundMessage"/>
+    }
+    else
+    {
+        <PostFull Id="Id" Post="Post"/>
+    }
 </main>
 
 <Footer/>
@@ -37,6 +20,24 @@ else
     [Parameter]
     public required string Slug { get; set; }
 
-    private string NotFoundMessage 
+    protected override string Title
+        => Post != null
+            ? Post.Title
+            : "post not found";
+    
+    private Guid Id { get; set; }
+    private Post? Post { get; set; }
+
+    private string NotFoundMessage
         => $"No post with slug <code>{Slug}</code> exists _";
+
+    protected override void OnInitialized()
+    {
+        var kvp = Content.GetPostBySlug(Slug);
+
+        if (kvp != null)
+        {
+            (Id, Post) = (kvp.Value.Id, kvp.Value.Post);
+        }
+    }
 }

@@ -1,0 +1,28 @@
+﻿.no-posts-notice h1 {
+    padding: 0 0 0 8px;
+
+    margin: 0;
+
+    font-size: 3rem;
+    font-weight: 300;
+
+    text-align: left;
+    text-transform: uppercase;
+
+    color: var(--warning-foreground);
+    border-left: 6px solid var(--warning-border);
+}
+
+.no-posts-notice h2 {
+    padding: 0 0 0 8px;
+
+    margin: 0;
+
+    font-size: 1.25rem;
+    font-weight: 300;
+
+    text-align: left;
+
+    color: var(--warning-foreground);
+    border-left: 6px solid var(--warning-border);
+}
