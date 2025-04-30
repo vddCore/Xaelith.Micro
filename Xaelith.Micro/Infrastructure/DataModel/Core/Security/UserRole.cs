@@ -1,4 +1,4 @@
-﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Authentication;
+﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 
 public enum UserRole
 {

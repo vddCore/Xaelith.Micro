@@ -44,18 +44,6 @@
     --error-border: #cf5049;
     --warning-foreground: #cfae49;
     --warning-border: #cfae49;
-    --button-background: #ff88ff;
-    --button-foreground: #200529;
-    --button-border: #ff88ff;
-    --button-hover-background: #ff88ffaa;
-    --button-hover-foreground: #200529;
-    --button-hover-border: #ff88ff;
-    --button-active-background: #200529;
-    --button-active-foreground: #ff88ff;
-    --button-active-border: #ff88ff;
-    --button-disabled-background: #774477;
-    --button-disabled-foreground: #200529;
-    --button-disabled-border: #774477;
     --post-separator: #ff88ff99;
     --header-border: #cfaee9;
     --filter-header-title-foreground: #ff88ffcc;
@@ -86,4 +74,40 @@
     --alert-caution-accent2: #ff889c99;
     --alert-caution-background: #ff889c22;
     --alert-caution-foreground: #ff889c;
+    
+    --label-foreground: #73e4afaa;
+    --label-marker: #73e4afcc;
+    
+    --login-box-title-foreground: #ff88ffcc;
+    --login-box-title-foreground-hover: #ff88ff;
+    --login-box-title-shadow: #ff88ff55;
+    --login-box-subtitle-foreground: #cfae49ff;
+    
+    --login-box-background: #15031a;
+    --login-box-border: #ff88ffaa;
+    --login-box-shadow: #ff88ff99;
+    
+    --textbox-border: #ff88ff66;
+    --textbox-hover-border: #ff88ffaa;
+    --textbox-focus-border: #ff88ff;
+    --textbox-foreground: #cfaee9;
+    --textbox-focus-foreground: #ff88ff;
+    --textbox-focus-shadow: #ff88ff55;
+    --textbox-background: #1a0421;
+    --textbox-placeholder-foreground: #ff88ff55;
+    
+    --button-border: #ff88ffaa;
+    --button-hover-border: #ff88ff;
+    --button-active-border: #ff88ff88;
+    --button-disabled-border: #ff88ff44;
+    --button-foreground: #ff88ffaa;
+    --button-hover-foreground: #ff88ff;
+    --button-active-foreground: #ff88ff88;
+    --button-disabled-foreground: #ff88ff66;
+    --button-hover-shadow: #ff88ff55;
+    
+    --checkbox-foreground: #ff88ff88;
+    --checkbox-hover-foreground: #ff88ffcc;
+    --checkbox-checked-foreground: #ff88ff;
+    --checkbox-disabled-foreground: #ff88ff66;
 }

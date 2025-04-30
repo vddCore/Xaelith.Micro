@@ -1,34 +1,90 @@
 ﻿@page "/admin/login"
 
+@inject HttpClient Http;
+@inject IToastService Toasts;
+@inject IConfigService Configuration;
 @inject SignInManager<User> SignInManager;
 @inject UserManager<User> UserManager;
 @inject NavigationManager Navigation;
 
+<HeadContent>
+    <link rel="stylesheet" href="style/admin/login.css"/>
+</HeadContent>
+
+<div class="login-container">
+    <div class="login-box">
+        <div class="login-title">
+            @Configuration.Root!.General.SiteTitle
+        </div>
+        
+        <div class="login-subtitle">
+            authentication required
+        </div>
+
+        <EditForm  Model="_credentials" OnValidSubmit="AttemptLogin">
+            <div class="input-group username-input">
+                <label for="username">Login</label>
+
+                <InputText id="username"
+                           type="text"
+                           placeholder="Awaiting User ID..."
+                           @bind-Value="@_credentials.Username"/>
+            </div>
+
+            <div class="input-group password-input">
+                <label for="password">Password</label>
+
+                <InputText id="password"
+                           type="password"
+                           placeholder="Awaiting password..."
+                           @bind-Value="@_credentials.Password"/>
+            </div>
+            
+            <div class="input-group">
+                <div class="input-row">
+                    <CustomInputCheckbox Id="remember-login"
+                                         Label="remember"
+                                         @bind-Value="@_credentials.RememberLogin"/>
+
+
+                    <div class="input-submit">
+                        <button type="submit">SIGN-IN //_</button>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
 @code {
-    private string _errorMessage;
-    private UserCredentials _credentials = new();
+    private readonly UserCredentials _credentials = new();
 
     private async Task AttemptLogin()
     {
-        var user = await UserManager.FindByNameAsync(_credentials.Username);
+        var formContent = new FormUrlEncodedContent([
+            new("username", _credentials.Username),
+            new("password", _credentials.Password),
+            new("rememberLogin", _credentials.RememberLogin.ToString())
+        ]);
+        
+        var response = await Http.PostAsync(
+            Infrastructure.Api.Auth.Endpoints.Login,
+            formContent
+        );
 
-        if (user != null)
+        if (response.IsSuccessStatusCode)
         {
-            var loginResult = await SignInManager.PasswordSignInAsync(
-                user,
-                _credentials.Password,
-                _credentials.RememberLogin,
-                false
+            Navigation.NavigateTo(
+                "/admin/dashboard",
+                true
             );
-
-            if (loginResult.Succeeded)
-            {
-                Navigation.NavigateTo("/admin/dashboard");
-            }
-            else
-            {
-                
-            }
+        }
+        else
+        {
+            Toasts.Show(
+                "Invalid credentials",
+                ToastSeverity.Error
+            );
         }
     }
 }

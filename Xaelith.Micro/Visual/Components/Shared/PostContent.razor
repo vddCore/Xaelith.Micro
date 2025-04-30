@@ -1,6 +1,4 @@
-﻿@inject IConfigService Configuration;
-@inject IContentService Content
-@inject IMarkdownService Markdown
+﻿@inject IMarkdownService Markdown
 
 <div class="post-content">
     @{
@@ -10,7 +8,7 @@
         {
             <div class="empty-notification">
                 @((MarkupString)Markdown.Render(
-                    "This post has no body." +
+                    "This post has no body. " +
                     "Could say it's a *ghost* or something."
                 ));
             </div>

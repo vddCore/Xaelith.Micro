@@ -62,6 +62,11 @@ a:active {
     color: var(--link-active-foreground);
 }
 
+*:focus,
+*:focus-within {
+    outline: none;
+}
+
 .filter-header h1,
 .filter-header h2 {
     border: none;
@@ -120,4 +125,185 @@ a:active {
     padding: 0;
     
     display: inline;
+}
+
+label {
+    padding: 0;
+    margin: 2px 0;
+    
+    display: block;
+
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    
+    color: var(--label-foreground);
+    
+    user-select: none;
+}
+
+label:not(:has(input[type="checkbox"]))::before {
+    content: "// ";
+    
+    font-size: 1.2rem;
+    font-weight: 500;
+        
+    color: var(--label-marker);
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 0.4rem;
+    margin: 0;
+    
+    border-radius: 4px;
+    border: 1px solid var(--textbox-border);
+    
+    font-family: "Rajdhani";
+    font-size: 1rem;
+    
+    color: var(--textbox-foreground);
+    background-color: var(--textbox-background);
+    
+    transition: .15s ease-in-out;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    text-transform: uppercase;
+    
+    color: var(--textbox-placeholder-foreground);
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover {
+    border-color: var(--textbox-hover-border);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border: 1px solid var(--textbox-focus-border);
+    
+    color: var(--textbox-focus-foreground);
+    box-shadow: 0 0 6px var(--textbox-focus-shadow);
+}
+
+.input-group {
+    margin-bottom: 0.6rem;
+}
+
+.input-group:last-of-type {
+    margin-bottom: 0;
+}
+
+button {
+    padding: 1px 0 0 8px;
+    margin: 0;
+    
+    border: none;
+    border-left: 8px solid var(--button-border);
+    
+    font-family: "Rajdhani";
+    font-size: 1.5rem;
+    
+    line-height: 1;
+    text-transform: uppercase;
+    
+    color: var(--button-foreground);
+    background-color: transparent;
+    
+    transition: 0.15s ease-in-out;
+    
+    cursor: pointer;
+}
+
+button:hover {
+    border-left: 8px solid var(--button-hover-border);
+    
+    text-shadow: 0 0 4px var(--button-hover-shadow);
+    
+    color: var(--button-hover-foreground);
+}
+
+button:active {
+    border-left: 8px solid var(--button-active-border);
+    
+    color: var(--button-active-foreground);
+}
+
+button:disabled {
+    cursor: default;
+    
+    border-left: 6px solid var(--button-disabled-foreground);
+    
+    color: var(--button-disabled-foreground);
+}
+
+.custom-checkbox {
+    cursor: pointer;
+}
+
+.custom-checkbox .label-text {
+    display: inline-block;
+    
+    padding-left: 2px;
+    margin-top: -10px;
+    
+    vertical-align: middle;
+    line-height: 1;
+    
+    color: var(--checkbox-foreground);
+    transition: .15s ease-in-out;
+}
+
+.custom-checkbox input {
+    display: none;
+}
+
+.custom-checkbox svg {
+    width: 1.2em;
+    
+    padding-right: 2px;
+    
+    overflow: visible;
+}
+
+.custom-checkbox .path {
+    fill: none;
+    
+    stroke: var(--checkbox-foreground);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 241 9999999;
+    stroke-dashoffset: 0;
+    
+    transition: 0.5s ease,
+                stroke .15s ease-in-out, 
+                stroke-dashoffset 0.5s ease;
+}
+
+.custom-checkbox:hover svg .path {
+    stroke: var(--checkbox-hover-foreground);
+}
+
+.custom-checkbox:hover .label-text {
+    color: var(--checkbox-hover-foreground);
+}
+
+.custom-checkbox input:checked ~ svg .path {
+    stroke: var(--checkbox-checked-foreground);
+    stroke-dasharray: 70.5096664428711 9999999;
+    stroke-dashoffset: -262.2723388671875;
+}
+
+.custom-checkbox input:checked ~ .label-text {
+    color: var(--checkbox-checked-foreground);
+}
+
+.custom-checkbox input:disabled~svg .path {
+    stroke: #ff88ff66;
+    
+    opacity: 0.6;
+    
+    text-decoration: line-through;
 }

@@ -5,10 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="data\config\users\" />
     <Folder Include="data\logs\" />
-    <Folder Include="Shared\" />
-    <Folder Include="wwwroot\style\admin\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +26,9 @@
     </Compile>
     <Compile Update="Infrastructure\ServiceModel\Core\Security\BCryptPasswordHasher.cs">
       <DependentUpon>IBCryptPasswordHasher.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infrastructure\ServiceModel\FrontEnd\ToastService.cs">
+      <DependentUpon>IToastService.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 

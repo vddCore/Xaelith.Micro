@@ -1,0 +1,66 @@
+﻿@implements IDisposable
+@inject IToastService Toasts
+
+<div class="toast-container">
+    @if (_currentToastData != null)
+    {
+        switch (_currentToastData.Severity)
+        {
+            case ToastSeverity.Information:
+                <div class="toast toast-information">
+                    @_currentToastData.Message
+                </div>
+                break;
+
+            case ToastSeverity.Success:
+                <div class="toast toast-success">
+                    @_currentToastData.Message
+                </div>
+                break;
+
+            case ToastSeverity.Warning:
+                <div class="toast toast-warning">
+                    @_currentToastData.Message
+                </div>
+                break;
+
+            case ToastSeverity.Error:
+                <div class="toast toast-error">
+                    @_currentToastData.Message
+                </div>
+                break;
+        }
+    }
+</div>
+
+@code {
+    private ToastData? _currentToastData;
+
+    protected override void OnInitialized()
+    {
+        Toasts.OnDisplayed += OnDisplayed;
+    }
+
+    private async void OnDisplayed(ToastData toastData)
+    {
+        try
+        {
+            _currentToastData = toastData;
+            StateHasChanged();
+
+            await Toasts.DisplayedAsync();
+
+            _currentToastData = null;
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            /* Ignore */
+        }
+    }
+
+    public void Dispose()
+    {
+        Toasts.OnDisplayed -= OnDisplayed;
+    }
+}

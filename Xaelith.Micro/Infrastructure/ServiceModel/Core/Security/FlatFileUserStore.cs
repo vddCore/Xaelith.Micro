@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
-using Xaelith.Micro.Infrastructure.DataModel.Core.Authentication;
+using Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public class FlatFileUserStore : IUserPasswordStore<User>
@@ -172,7 +172,8 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<User?> FindByIdAsync(string userId,
+    public Task<User?> FindByIdAsync(
+        string userId,
         CancellationToken cancellationToken)
     {
         var userPath = Path.Combine(WellKnown.UserStore, $"{userId}.json");
@@ -189,7 +190,8 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         );
     }
 
-    public Task<User?> FindByNameAsync(string normalizedUserName,
+    public Task<User?> FindByNameAsync(
+        string normalizedUserName,
         CancellationToken cancellationToken)
     {
         var users = LoadUsers();
@@ -209,7 +211,7 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         if (passwordHash == null)
             return Task.CompletedTask;
         
-        user.Password = passwordHash;
+        user.PasswordHash = passwordHash;
         SaveUser(user);
         
         return Task.CompletedTask;
@@ -218,14 +220,15 @@ public class FlatFileUserStore : IUserPasswordStore<User>
     public Task<string?> GetPasswordHashAsync(
         User user,
         CancellationToken cancellationToken
-    ) => Task.FromResult<string?>(user.Password);
+    ) => Task.FromResult<string?>(user.PasswordHash);
 
     public Task<bool> HasPasswordAsync(
         User user, 
         CancellationToken cancellationToken
-    ) => Task.FromResult(!string.IsNullOrWhiteSpace(user.Password)); 
+    ) => Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash)); 
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
     }
 }

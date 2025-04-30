@@ -1,6 +1,7 @@
-﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Authentication;
+﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 public record User
 {
@@ -14,11 +15,15 @@ public record User
     public string DisplayName { get; set; } = string.Empty;
 
     [JsonProperty("password_hash")]
-    public string Password { get; set; } = string.Empty;
+    public string PasswordHash { get; set; } = string.Empty;
     
     [JsonProperty("created_at")]
     public DateTime CreatedAt { get; set; } = DateTime.UnixEpoch;
     
     [JsonProperty("is_enabled")]
     public bool IsEnabled { get; set; }
+    
+    [JsonProperty("user_role")]
+    [JsonConverter(typeof(StringEnumConverter))]
+    public UserRole UserRole { get; set; }
 }

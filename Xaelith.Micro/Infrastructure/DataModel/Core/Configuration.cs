@@ -6,6 +6,9 @@ using Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
 
 public class Configuration
 {
+    [JsonProperty("core")]
+    public CoreSettings Core { get; set; } = new();
+    
     [JsonProperty("general")]
     public GeneralSettings General { get; } = new();
     
@@ -19,6 +22,15 @@ public class Configuration
     public ContentSettings Content { get; } = new();
 }
 
+public record CoreSettings
+{
+    [JsonProperty("is_installed")]
+    public bool IsInstalled { get; set; }
+    
+    [JsonProperty("api_url")]
+    public string ApiUrl { get; set; } = "https://localhost:5271";
+}
+
 public record GeneralSettings
 {
     [JsonProperty("site_title")]
@@ -28,7 +40,7 @@ public record GeneralSettings
     public string SiteDescription { get; set; } = "A blog powered by Xaelith";
     
     [JsonProperty("site_url")]
-    public string SiteUrl { get; set; } = "https://localhost";
+    public string SiteUrl { get; set; } = "https://localhost:5271";
     
     [JsonProperty("footer_text")]
     public string FooterText { get; set; } = "Copyright (c) 2025 Xaelith Project";

@@ -1,0 +1,9 @@
+﻿{
+  "id": "c09f99b3-5612-4c31-a6cf-8b8abc889c63",
+  "login_name": "test",
+  "display_name": "Test User",
+  "password_hash": "$2a$12$fopfv6Gnf2xRYso9oNtmxOkMOZEdqpgjKbMJ.No.DnBb.aKcnGfES",
+  "created_at": "2025-05-01T10:20:30Z",
+  "is_enabled": true,
+  "user_role": "admin"
+}

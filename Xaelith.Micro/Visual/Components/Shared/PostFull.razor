@@ -1,6 +1,4 @@
-﻿@inject IJSRuntime JsRuntime
-@inject IContentService Content
-@inject IMarkdownService Markdown
+﻿@inject IJSRuntime JS
 
 <section class="post post-full">
     <PostTitleBar Post="@Post"/>
@@ -22,7 +20,7 @@
 
         if (firstRender)
         {
-            await JsRuntime.InvokeVoidAsync("xaelith.onLoad.highlightAll");
+            await JS.InvokeVoidAsync("xaelith.onLoad.highlightAll");
         }
     }
 }

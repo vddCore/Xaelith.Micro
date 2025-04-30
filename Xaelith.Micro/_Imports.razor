@@ -1,6 +1,8 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using System.ComponentModel.DataAnnotations
+@using System.Diagnostics.CodeAnalysis
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -14,12 +16,13 @@
 @using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content
 @using Xaelith.Micro.Infrastructure.ServiceModel.FrontEnd
 @using Xaelith.Micro.Infrastructure.DataModel.Core
-@using Xaelith.Micro.Infrastructure.DataModel.Core.Authentication
 @using Xaelith.Micro.Infrastructure.DataModel.Core.Content
+@using Xaelith.Micro.Infrastructure.DataModel.Core.Security
 @using Xaelith.Micro.Infrastructure.DataModel.FrontEnd
 @using Xaelith.Micro.Infrastructure.Utilities
 @using Xaelith.Micro.Visual.Components
 @using Xaelith.Micro.Visual.Components.Shared
+@using Xaelith.Micro.Visual.Components.Shared.Controls
 @using Xaelith.Micro.Visual.Components.FrontEnd
 @using Xaelith.Micro.Visual.Pages
 @using Xaelith.Micro.Visual.Pages.Base;

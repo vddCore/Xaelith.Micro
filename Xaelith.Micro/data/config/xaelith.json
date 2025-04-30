@@ -1,5 +1,6 @@
 ﻿{
   "core": {
+    "api_url": "http://localhost:5271",
     "is_installed": true
   },
   "general": {
