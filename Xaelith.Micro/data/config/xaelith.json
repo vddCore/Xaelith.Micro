@@ -1,4 +1,7 @@
 ﻿{
+  "core": {
+    "is_installed": true
+  },
   "general": {
     "site_title": "aura's binary forge",
     "site_description": "digital witch's vibrant recluse: tech, tinkering, stories and... poetry? wtf girl you have issues.",

@@ -1,0 +1,34 @@
+﻿@page "/admin/login"
+
+@inject SignInManager<User> SignInManager;
+@inject UserManager<User> UserManager;
+@inject NavigationManager Navigation;
+
+@code {
+    private string _errorMessage;
+    private UserCredentials _credentials = new();
+
+    private async Task AttemptLogin()
+    {
+        var user = await UserManager.FindByNameAsync(_credentials.Username);
+
+        if (user != null)
+        {
+            var loginResult = await SignInManager.PasswordSignInAsync(
+                user,
+                _credentials.Password,
+                _credentials.RememberLogin,
+                false
+            );
+
+            if (loginResult.Succeeded)
+            {
+                Navigation.NavigateTo("/admin/dashboard");
+            }
+            else
+            {
+                
+            }
+        }
+    }
+}

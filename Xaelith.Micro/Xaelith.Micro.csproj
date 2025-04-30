@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="data\config\users\" />
     <Folder Include="data\logs\" />
     <Folder Include="Shared\" />
     <Folder Include="wwwroot\style\admin\" />
@@ -26,6 +27,9 @@
     <Compile Update="Infrastructure\ServiceModel\Core\ConfigService.cs">
       <DependentUpon>IConfigService.cs</DependentUpon>
     </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Core\Security\BCryptPasswordHasher.cs">
+      <DependentUpon>IBCryptPasswordHasher.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="JsonFlatFileDataStore" Version="2.4.2" />
     <PackageReference Include="Markdig" Version="0.41.0" />
   </ItemGroup>

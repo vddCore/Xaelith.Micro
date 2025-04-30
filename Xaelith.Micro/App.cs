@@ -1,6 +1,9 @@
 namespace Xaelith.Micro;
 
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Xaelith.Micro.Infrastructure.DataModel.Core.Authentication;
+using Xaelith.Micro.Infrastructure.ServiceModel.Core.Security;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public partial class App
@@ -13,6 +16,24 @@ public partial class App
             .AttachXaelithServices(Assembly.GetExecutingAssembly())
             .AddRazorComponents()
             .AddInteractiveServerComponents();
+        
+        builder.Services.AddScoped(
+            typeof(IPasswordHasher<>),
+            typeof(BCryptPasswordHasher<>)
+        );
+
+        builder.Services.AddIdentity<User, IdentityRole>()
+            .AddUserStore<FlatFileUserStore>()
+            .AddDefaultTokenProviders();
+
+        builder.Services.AddAuthentication()
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/admin/login";
+                options.LogoutPath = "/admin/logout";
+                options.AccessDeniedPath = "/admin/denied";
+                options.Cookie.Name = "Xaelith.Micro__AuthCookie";
+            });
 
         var app = builder.Build();
 
