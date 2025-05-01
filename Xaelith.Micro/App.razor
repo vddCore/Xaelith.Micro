@@ -5,40 +5,50 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta name="description"
-              content="@Configuration.Root!.General.SiteDescription"/>
+<head>
+    <meta name="description"
+          content="@Configuration.Root!.General.SiteDescription"/>
         
-        <meta charset="utf-8"/>
+    <meta charset="utf-8"/>
 
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0"/>
 
-        <base href="/"/>
+    <base href="/"/>
 
-        <link rel="stylesheet"
-              href="@Assets["lib/highlightjs/styles/gradient-v.css"]"/>
+    <link rel="stylesheet"
+          href="@Assets["lib/highlightjs/styles/gradient-v.css"]"/>
 
-        <link rel="stylesheet"
-              href="@Assets["style/shared/fonts.css"]"/>
+    <link rel="stylesheet"
+          href="@Assets["style/shared/fonts.css"]"/>
 
-        <link rel="stylesheet"
-              href="@Assets["style/shared/global.css"]"/>
+    <link rel="stylesheet"
+          href="@Assets["style/shared/global.css"]"/>
 
-        <link rel="stylesheet"
-              href="Xaelith.Micro.styles.css"/>
+    <link rel="stylesheet"
+          href="Xaelith.Micro.styles.css"/>
 
-        <script src="lib/highlightjs/highlight.min.js"></script>
-        <script src="lib/init/init.js"></script>
+    <script src="lib/highlightjs/highlight.min.js"></script>
+    <script src="lib/init/init.js"></script>
 
-        <ImportMap/>
-        <HeadOutlet/>
-    </head>
+    <ImportMap/>
+    <HeadOutlet/>
+</head>
 
-    <body>
-        <Routes @rendermode="InteractiveServer"/>
+<body>
+<Routes @rendermode="RenderModeForPage"/>
     
-        <script src="_framework/blazor.web.js"></script>
-        <script src="lib/rejoin-restyle/rejoin-observer.js"></script>
-    </body>
+<script src="_framework/blazor.web.js"></script>
+<script src="lib/rejoin-restyle/rejoin-observer.js"></script>
+</body>
 </html>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = null!;
+
+    private IComponentRenderMode? RenderModeForPage
+        => HttpContext.Request.Path.StartsWithSegments("/admin/login")
+            ? null
+            : InteractiveServer;
+}

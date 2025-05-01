@@ -1,10 +1,14 @@
 ﻿@page "/admin/login"
 
-@inject HttpClient Http;
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Xaelith.Micro.Infrastructure.ServiceModel.Core.Security
+
+@inject IFlatFileUserStore UserStore;
+@inject IBCryptPasswordHasher Hasher;
 @inject IToastService Toasts;
 @inject IConfigService Configuration;
-@inject SignInManager<User> SignInManager;
-@inject UserManager<User> UserManager;
 @inject NavigationManager Navigation;
 
 <HeadContent>
@@ -21,14 +25,14 @@
             authentication required
         </div>
 
-        <EditForm  Model="_credentials" OnValidSubmit="AttemptLogin">
+        <EditForm FormName="UserLogin" Model="Credentials" OnValidSubmit="AttemptLogin">
             <div class="input-group username-input">
                 <label for="username">Login</label>
 
                 <InputText id="username"
                            type="text"
                            placeholder="Awaiting User ID..."
-                           @bind-Value="@_credentials.Username"/>
+                           @bind-Value="@Credentials.Username"/>
             </div>
 
             <div class="input-group password-input">
@@ -37,14 +41,14 @@
                 <InputText id="password"
                            type="password"
                            placeholder="Awaiting password..."
-                           @bind-Value="@_credentials.Password"/>
+                           @bind-Value="@Credentials.Password"/>
             </div>
             
             <div class="input-group">
                 <div class="input-row">
                     <CustomInputCheckbox Id="remember-login"
                                          Label="remember"
-                                         @bind-Value="@_credentials.RememberLogin"/>
+                                         @bind-Value="@Credentials.RememberLogin"/>
 
 
                     <div class="input-submit">
@@ -57,34 +61,58 @@
 </div>
 
 @code {
-    private readonly UserCredentials _credentials = new();
+    [CascadingParameter]
+    public HttpContext HttpContext { get; set; } = null!;
+
+    [SupplyParameterFromForm]
+    public UserCredentials Credentials { get; set; } = new();
 
     private async Task AttemptLogin()
     {
-        var formContent = new FormUrlEncodedContent([
-            new("username", _credentials.Username),
-            new("password", _credentials.Password),
-            new("rememberLogin", _credentials.RememberLogin.ToString())
-        ]);
-        
-        var response = await Http.PostAsync(
-            Infrastructure.Api.Auth.Endpoints.Login,
-            formContent
-        );
+        var user = await UserStore.FindByNameAsync(Credentials.Username);
 
-        if (response.IsSuccessStatusCode)
-        {
-            Navigation.NavigateTo(
-                "/admin/dashboard",
-                true
-            );
-        }
-        else
+        if (user == null)
         {
             Toasts.Show(
                 "Invalid credentials",
                 ToastSeverity.Error
             );
+            
+            return;
         }
+
+        var passwordVerificationResult = Hasher.Verify(
+            Credentials.Password,
+            user.PasswordHash
+        );
+
+        if (passwordVerificationResult == PasswordVerificationResult.Failed)
+        {
+            Toasts.Show(
+                "Invalid credentials",
+                ToastSeverity.Error
+            );
+            
+            return;
+        }
+
+        var claims = new List<Claim>
+        {
+            new(type: ClaimTypes.Name, Credentials.Username)
+        };
+
+        var identity = new ClaimsIdentity(
+            claims,
+            CookieAuthenticationDefaults.AuthenticationScheme
+        );
+
+        var principal = new ClaimsPrincipal(identity);
+
+        await HttpContext.SignInAsync(principal);
+        
+        Navigation.NavigateTo(
+            "/admin/dashboard",
+            true
+        );
     }
 }

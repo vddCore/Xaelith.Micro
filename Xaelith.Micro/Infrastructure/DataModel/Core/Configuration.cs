@@ -26,9 +26,6 @@ public record CoreSettings
 {
     [JsonProperty("is_installed")]
     public bool IsInstalled { get; set; }
-    
-    [JsonProperty("api_url")]
-    public string ApiUrl { get; set; } = "https://localhost:5271";
 }
 
 public record GeneralSettings

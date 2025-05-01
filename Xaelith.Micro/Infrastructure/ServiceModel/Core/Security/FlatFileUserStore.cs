@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 using Xaelith.Micro.Infrastructure.Utilities;
 
-public class FlatFileUserStore : IUserPasswordStore<User>
+public class FlatFileUserStore : IFlatFileUserStore
 {
     public FlatFileUserStore()
     {
@@ -45,43 +45,23 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         File.WriteAllText(userPath, JsonConvert.SerializeObject(user));
     }
 
-    public Task<string> GetUserIdAsync(
-        User user,
-        CancellationToken cancellationToken
-    ) => Task.FromResult(user.Id.ToString("D"));
+    public Task<string> GetUserIdAsync(User user)
+        => Task.FromResult(user.Id.ToString("D"));
 
-    public Task<string?> GetUserNameAsync(
-        User user,
-        CancellationToken cancellationToken
-    ) => Task.FromResult<string?>(user.LoginName);
+    public Task<string?> GetUserNameAsync(User user) 
+        => Task.FromResult<string?>(user.LoginName);
 
-    public Task SetUserNameAsync(
-        User user,
-        string? userName,
-        CancellationToken cancellationToken)
+    public Task SetUserNameAsync(User user, string? newUserName)
     {
-        if (userName != null)
-            user.LoginName = userName;
+        if (newUserName != null)
+            user.LoginName = newUserName;
         
         SaveUser(user);
 
         return Task.CompletedTask;
     }
 
-    public Task<string?> GetNormalizedUserNameAsync(
-        User user,
-        CancellationToken cancellationToken
-    ) => GetUserNameAsync(user, cancellationToken);
-
-    public Task SetNormalizedUserNameAsync(
-        User user, 
-        string? normalizedName,
-        CancellationToken cancellationToken
-    ) => SetUserNameAsync(user, normalizedName, cancellationToken);
-
-    public Task<IdentityResult> CreateAsync(
-        User user,
-        CancellationToken cancellationToken)
+    public Task<IdentityResult> CreateAsync(User user)
     {
         var users = LoadUsers();
         
@@ -122,9 +102,7 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<IdentityResult> UpdateAsync(
-        User user,
-        CancellationToken cancellationToken)
+    public Task<IdentityResult> UpdateAsync(User user)
     {
         var userPath = Path.Combine(WellKnown.UserStore, $"{user.Id:D}.json");
 
@@ -149,9 +127,7 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<IdentityResult> DeleteAsync(
-        User user,
-        CancellationToken cancellationToken)
+    public Task<IdentityResult> DeleteAsync(User user)
     {
         var userPath = Path.Combine(WellKnown.UserStore, $"{user.Id:D}.json");
 
@@ -172,9 +148,7 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<User?> FindByIdAsync(
-        string userId,
-        CancellationToken cancellationToken)
+    public Task<User?> FindByIdAsync(string userId)
     {
         var userPath = Path.Combine(WellKnown.UserStore, $"{userId}.json");
 
@@ -190,23 +164,18 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         );
     }
 
-    public Task<User?> FindByNameAsync(
-        string normalizedUserName,
-        CancellationToken cancellationToken)
+    public Task<User?> FindByNameAsync(string userName)
     {
         var users = LoadUsers();
         
         return Task.FromResult(
             users.FirstOrDefault(
-                x => x.LoginName == normalizedUserName
+                x => x.LoginName == userName
             )
         );
     }
 
-    public Task SetPasswordHashAsync(
-        User user,
-        string? passwordHash,
-        CancellationToken cancellationToken)
+    public Task SetPasswordHashAsync(User user, string? passwordHash)
     {
         if (passwordHash == null)
             return Task.CompletedTask;
@@ -217,18 +186,9 @@ public class FlatFileUserStore : IUserPasswordStore<User>
         return Task.CompletedTask;
     }
 
-    public Task<string?> GetPasswordHashAsync(
-        User user,
-        CancellationToken cancellationToken
-    ) => Task.FromResult<string?>(user.PasswordHash);
+    public Task<string?> GetPasswordHashAsync(User user)
+        => Task.FromResult<string?>(user.PasswordHash);
 
-    public Task<bool> HasPasswordAsync(
-        User user, 
-        CancellationToken cancellationToken
-    ) => Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash)); 
-
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
+    public Task<bool> HasPasswordAsync(User user) 
+        => Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash)); 
 }

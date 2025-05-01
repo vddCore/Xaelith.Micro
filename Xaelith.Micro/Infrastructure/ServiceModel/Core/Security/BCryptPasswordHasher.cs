@@ -4,17 +4,14 @@ using BCrypt.Net;
 using Microsoft.AspNetCore.Identity;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 
-public class BCryptPasswordHasher<T> : IBCryptPasswordHasher<T>
+public class BCryptPasswordHasher : IBCryptPasswordHasher
 {
-    public string HashPassword(User user, string password)
+    public string Hash(string password)
         => BCrypt.HashPassword(password);
 
-    public PasswordVerificationResult VerifyHashedPassword(
-        User user,
-        string hashedPassword,
-        string providedPassword)
+    public PasswordVerificationResult Verify(string plaintext, string hash)
     {
-        return BCrypt.Verify(providedPassword, hashedPassword)
+        return BCrypt.Verify(plaintext, hash)
             ? PasswordVerificationResult.Success
             : PasswordVerificationResult.Failed;
     }
