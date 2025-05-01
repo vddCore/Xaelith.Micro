@@ -1,0 +1,73 @@
+﻿@inject NavigationManager Navigation
+
+<nav>
+    <h1>Control Center</h1>
+    <div class="nav-group">
+        <ul>
+            <li>
+                <i class="las la-chart-line"></i>
+                <a href="/admin/dashboard">Dashboard</a>
+            </li>
+            <li>
+                <i class="las la-home"></i>
+                <a href="/">Website</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nav-group">
+        <h2>Create</h2>
+        <ul>
+            <li>
+                <i class="las la-pen-alt"></i>
+                <a href="/admin/new">New Entry</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nav-group">
+        <h2>Manage</h2>
+        <ul>
+            <li>
+                <i class="las la-file-alt"></i>
+                <a href="/admin/manage/content">Content</a>
+            </li>
+            <li>
+                <i class="las la-archive"></i>
+                <a href="/admin/manage/categories">Categories</a>
+            </li>
+            <li>
+                <i class="las la-tags"></i>
+                <a href="/admin/manage/tags">Tags</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nav-group">
+        <h2>System</h2>
+        <ul>
+            <li>
+                <i class="las la-cog"></i>
+                <a href="/admin/system/settings">Settings</a>
+            </li>
+            <li>
+                <i class="las la-info-circle"></i>
+                <a href="/admin/system/about">About</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="nav-group separated">
+        <ul>
+            <li>
+                <i class="las la-sign-out-alt"></i>
+                <a @onclick='() => Navigation.NavigateTo("/admin/logout", true)'>
+                    Sign-Out
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+@code {
+}

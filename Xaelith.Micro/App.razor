@@ -14,7 +14,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0"/>
 
-    <base href="/"/>
+    <base href="@BaseUrl" />
 
     <link rel="stylesheet"
           href="@Assets["lib/highlightjs/styles/gradient-v.css"]"/>
@@ -46,6 +46,8 @@
 @code {
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = null!;
+
+    private string BaseUrl => $"{HttpContext.Request.PathBase}/";
     
     private IComponentRenderMode? RenderModeForPage
         => RenderModeSelector.GetRenderMode(HttpContext);

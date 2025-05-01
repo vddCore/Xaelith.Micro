@@ -1,0 +1,119 @@
+﻿:root {
+    --admin-nav-header-foreground: #ff88ffcc;
+    
+    --admin-nav-group-header-foreground: #73e4af99;
+    --admin-nav-group-border: #ff88ff88;
+    --admin-icon-foreground: #ff88ff;
+}
+
+main#admin {
+    display: flex;
+    flex-direction: row;
+    
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    
+    text-align: left;
+}
+
+main#admin nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 20px;
+    padding-right: 8px;
+}
+
+main#admin nav h1 {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 18px;
+
+    font-family: "Vermin Vibes V";
+    font-size: 1.1rem;
+    font-weight: 400;
+
+    text-transform: uppercase;
+
+    color: var(--admin-nav-header-foreground);
+    
+    user-select: none;
+}
+
+main#admin nav h2 {
+    padding: 0;
+    margin: 0;
+
+    font-size: 1.5rem;
+    font-weight: 400;
+    
+    text-transform: uppercase;
+    
+    color: var(--admin-nav-group-header-foreground);
+    
+    user-select: none;
+}
+
+main#admin nav h2::before {
+    content: "// ";
+}
+
+main#admin nav h2::after {
+    content: " _";
+}
+
+main#admin nav ul {
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+}
+
+main#admin nav ul li {
+    margin-bottom: 2px;
+    
+    text-transform: uppercase;
+}
+
+main#admin nav ul li i {
+    margin-top: -2px;
+    
+    vertical-align: middle;
+    
+    font-size: 1.3rem;
+    
+    color: var(--admin-icon-foreground);
+}
+
+main#admin nav ul li a {
+    padding-left: 8px;
+    margin-left: 3px;
+    
+    border-left: 6px solid var(--link-normal-foreground);
+    
+    font-size: 1.4rem;
+    font-weight: 300;
+    
+    transition: 0.15s ease-out;
+}
+
+main#admin nav ul li a:hover {
+    padding-left: 12px;
+    
+    border-left: 6px solid var(--link-normal-foreground);
+}
+
+main#admin nav .nav-group {
+    margin-bottom: 13px;
+}
+
+main#admin nav .nav-group.separated {
+    border-top: 1px dotted var(--admin-nav-group-border);
+    padding-top: 16px;
+}
+
+main#admin nav .nav-group:last-of-type {
+    margin: 0;
+}

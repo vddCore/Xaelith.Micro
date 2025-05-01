@@ -1,9 +1,17 @@
 ﻿@page "/admin/dashboard"
 @inherits XaelithRestrictedPage
 
-<h3>Hello, @(UserContext.User?.DisplayName) @("<3") </h3>
+<HeadContent>
+    <link rel="stylesheet" href="style/admin/panel.css" />
+</HeadContent>
+
+<main id="admin">
+    <AdminNav />
+</main>
 
 @code {
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
+
+    protected override string Title => "dashboard";
 }

@@ -38,14 +38,13 @@
             @if (UserContext.IsAuthenticated)
             {
                 <li>
-                    <a href="/admin/dashboard">
+                    <a href="#" @onclick='() => Navigation.NavigateTo("/admin/dashboard", true)'>
                         <i class="las la-cog"></i>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#" @onclick='() => Navigation.NavigateTo
-                    ("/admin/logout", true)'>
+                    <a href="#" @onclick='() => Navigation.NavigateTo("/admin/logout", true)'>
                         <i class="las la-sign-out-alt"></i>
                     </a>
                 </li>
@@ -64,5 +63,5 @@
 
 @code {
     [CascadingParameter]
-    public UserContext UserContext { get; set; }
+    public UserContext UserContext { get; set; } = null!;
 }
