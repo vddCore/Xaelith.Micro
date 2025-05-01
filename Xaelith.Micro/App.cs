@@ -2,9 +2,6 @@ namespace Xaelith.Micro;
 
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Xaelith.Micro.Infrastructure.ServiceModel.Core;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public partial class App

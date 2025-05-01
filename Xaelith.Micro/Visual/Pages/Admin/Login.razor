@@ -1,27 +1,45 @@
 ﻿@page "/admin/login"
 @attribute [RequiresStaticRendering]
 
+@inject NavigationManager Navigation;
+
 @inject IFlatFileUserStore UserStore;
 @inject IBCryptPasswordHasher Hasher;
-@inject IToastService Toasts;
 @inject IConfigService Configuration;
-@inject NavigationManager Navigation;
+@inject IToastService Toasts;
 
 <HeadContent>
     <link rel="stylesheet" href="style/admin/login.css"/>
+    <script src="lib/xaelith/login.js" defer></script>
 </HeadContent>
+
+<div class="wave-row top"></div>
 
 <div class="login-container">
     <div class="login-box">
         <div class="login-title">
-            @Configuration.Root!.General.SiteTitle
+            <a href="@Configuration.Root!.General.SiteUrl">
+                @Configuration.Root!.General.SiteTitle
+            </a>
         </div>
         
-        <div class="login-subtitle">
-            authentication required
-        </div>
-
-        <EditForm FormName="UserLogin" Model="Credentials" OnValidSubmit="AttemptLogin">
+        @if (Navigation.QueryString("failure") == "1")
+        {
+            <div class="login-subtitle failure">
+                authentication failure
+            </div>
+        }
+        else
+        {
+            <div class="login-subtitle">
+                authentication required
+            </div>
+        }
+        
+        <EditForm class="user-login"
+                  FormName="UserLogin" 
+                  Model="Credentials" 
+                  OnValidSubmit="AttemptLogin">
             <div class="input-group username-input">
                 <label for="username">Login</label>
 
@@ -48,13 +66,16 @@
 
 
                     <div class="input-submit">
-                        <button type="submit">SIGN-IN //_</button>
+                        <button id="login-submit"
+                                type="submit">SIGN-IN //</button>
                     </div>
                 </div>
             </div>
         </EditForm>
     </div>
 </div>
+
+<div class="wave-row bottom"></div>
 
 @code {
     [CascadingParameter]
@@ -69,11 +90,6 @@
 
         if (user == null)
         {
-            Toasts.Show(
-                "Invalid credentials",
-                ToastSeverity.Error
-            );
-            
             return;
         }
 
@@ -84,11 +100,7 @@
 
         if (passwordVerificationResult == PasswordVerificationResult.Failed)
         {
-            Toasts.Show(
-                "Invalid credentials",
-                ToastSeverity.Error
-            );
-            
+            Navigation.NavigateTo("/admin/login?failure=1");
             return;
         }
 
@@ -110,7 +122,7 @@
         {
             IsPersistent = Credentials.RememberLogin
         });
-        
+                
         Navigation.NavigateTo(
             "/admin/dashboard",
             true

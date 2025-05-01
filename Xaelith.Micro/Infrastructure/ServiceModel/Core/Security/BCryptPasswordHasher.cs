@@ -2,7 +2,6 @@
 
 using BCrypt.Net;
 using Microsoft.AspNetCore.Identity;
-using Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 
 public class BCryptPasswordHasher : IBCryptPasswordHasher
 {

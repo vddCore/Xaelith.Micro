@@ -196,6 +196,8 @@ input[type="password"]:focus {
 }
 
 button {
+    width: auto;
+    
     padding: 1px 0 0 8px;
     margin: 0;
     

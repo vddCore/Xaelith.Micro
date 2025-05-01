@@ -1,4 +1,28 @@
-﻿* {
+﻿:root {
+    --login-box-title-foreground: #ff88ffcc;
+    --login-box-title-foreground-hover: #ff88ff;
+    --login-box-title-shadow: #ff88ff55;
+    --login-box-subtitle-warning-foreground: #cfae49;
+    --login-box-subtitle-failure-foreground: #cf4949;
+
+    --login-box-background: #15031a77;
+    --login-box-border: #ff88ffaa;
+    --login-box-shadow: #ff88ff99;
+    
+    --bar-background: #ff88ff;
+    --bar-shadow: #ff88ff99;
+    
+    --bar-width: 4px;
+    --bar-gap: 2px;
+    
+    --bar-row-height: 100%;
+    --bar-full-height: 72px;
+    --bar-start-scale: 0.3;
+    
+    --wave-duration: 8s;
+}
+
+* {
     box-sizing: border-box;
 }
 
@@ -6,15 +30,21 @@
     display: grid;
     place-items: center;
     height: 100%;
+    
+    position: relative;
+    z-index: 2;    
 }
 
 .login-box {
     padding: 2rem;
-    
+        
     border-radius: 4px;
     border: 1px solid var(--login-box-border);
+    background: var(--login-box-background);
     
     box-shadow: 0 0 6px var(--login-box-shadow);
+    
+    backdrop-filter: blur(10px);
 }
 
 .login-box .login-title {
@@ -45,7 +75,7 @@
 
     user-select: none;
     
-    color: var(--login-box-subtitle-foreground);
+    color: var(--login-box-subtitle-warning-foreground);
 }
 
 .login-box .login-subtitle::before {
@@ -60,6 +90,16 @@
     font-size: 2.8rem;
     font-weight: 700;
     font-family: "Line Awesome Free";
+}
+
+.login-box .login-subtitle.failure {
+    color: var(--login-box-subtitle-failure-foreground);
+}
+
+.login-box .login-subtitle.failure::before {
+    color: var(--login-box-subtitle-failure-foreground);
+    
+    content: "\F54C";
 }
 
 .login-box .login-title:hover {
@@ -84,8 +124,83 @@
 }
 
 .input-submit button {
-    
     align-self: flex-end;
     
     text-align: right;
+}
+
+.wave-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--bar-gap);
+    
+    position: absolute;
+    height: var(--bar-row-height);
+    width: 100%;
+    z-index: 1;
+    
+    overflow: hidden;
+    
+    pointer-events: none;
+}
+
+.wave-row.top {
+    top: 0;
+}
+
+.wave-row.bottom {
+    position: absolute;
+    bottom: 0;
+    
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.wave-row::before {
+    display: block;
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    
+    content: '';
+}
+
+.bar {
+    width: var(--bar-width);
+    height: var(--bar-full-height);
+    
+    opacity: 0;
+    
+    transform-origin: center bottom;
+    transform: scaleY(var(--bar-start-scale));
+    
+    background: var(--bar-background);
+    box-shadow: 0 0 12px var(--bar-shadow);
+
+    transition: opacity 1s ease;
+}
+
+.bar.visible {
+    opacity: 1;
+}
+
+.wave-row.top .bar {
+    transform-origin: top;
+    animation: wave-top var(--wave-duration) infinite ease-in-out;
+}
+
+.wave-row.bottom .bar {
+    transform-origin: bottom;
+    animation: wave-bottom var(--wave-duration) infinite ease-in-out;
+}
+
+@keyframes wave-top {
+    0%, 100% { transform: scaleY(var(--bar-start-scale)); }
+    50% { transform: scaleY(1); }
+}
+
+@keyframes wave-bottom {
+    0%, 100% { transform: scaleY(var(--bar-start-scale)); }
+    50% { transform: scaleY(1); }
 }

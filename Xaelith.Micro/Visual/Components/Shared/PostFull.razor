@@ -16,11 +16,9 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("xaelith.onLoad.highlightAll");
+            await JS.InvokeVoidAsync("xaelith.highlightAll");
         }
     }
 }

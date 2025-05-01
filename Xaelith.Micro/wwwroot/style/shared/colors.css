@@ -78,15 +78,6 @@
     --label-foreground: #73e4afaa;
     --label-marker: #73e4afcc;
     
-    --login-box-title-foreground: #ff88ffcc;
-    --login-box-title-foreground-hover: #ff88ff;
-    --login-box-title-shadow: #ff88ff55;
-    --login-box-subtitle-foreground: #cfae49ff;
-    
-    --login-box-background: #15031a;
-    --login-box-border: #ff88ffaa;
-    --login-box-shadow: #ff88ff99;
-    
     --textbox-border: #ff88ff66;
     --textbox-hover-border: #ff88ffaa;
     --textbox-focus-border: #ff88ff;
