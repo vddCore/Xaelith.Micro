@@ -1,16 +1,20 @@
 ﻿@page "/admin/login"
+@inherits XaelithPage
 @attribute [RequiresStaticRendering]
 
 @inject NavigationManager Navigation;
-
-@inject IFlatFileUserStore UserStore;
 @inject IBCryptPasswordHasher Hasher;
-@inject IConfigService Configuration;
-@inject IToastService Toasts;
 
 <HeadContent>
     <link rel="stylesheet" href="style/admin/login.css"/>
     <script src="lib/xaelith/login.js" defer></script>
+
+    @if (UserContext.IsAuthenticated)
+    {
+        <script>
+            window.location.href = '/admin/dashboard';
+        </script>
+    }
 </HeadContent>
 
 <div class="wave-row top"></div>
@@ -64,7 +68,6 @@
                                          Label="remember"
                                          @bind-Value="@Credentials.RememberLogin"/>
 
-
                     <div class="input-submit">
                         <button id="login-submit"
                                 type="submit">SIGN-IN //</button>
@@ -81,6 +84,9 @@
     [CascadingParameter]
     public HttpContext HttpContext { get; set; } = null!;
 
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+
     [SupplyParameterFromForm]
     public UserCredentials Credentials { get; set; } = new();
 
@@ -90,9 +96,14 @@
 
         if (user == null)
         {
+            Navigation.NavigateTo(
+                "/admin/login?failure=1",
+                true
+            );
+            
             return;
         }
-
+        
         var passwordVerificationResult = Hasher.Verify(
             Credentials.Password,
             user.PasswordHash
@@ -100,7 +111,11 @@
 
         if (passwordVerificationResult == PasswordVerificationResult.Failed)
         {
-            Navigation.NavigateTo("/admin/login?failure=1");
+            Navigation.NavigateTo(
+                "/admin/login?failure=1",
+                true
+            );
+            
             return;
         }
 
@@ -108,7 +123,7 @@
         {
             new(ClaimTypes.Name, Credentials.Username),
             new(ClaimTypes.IsPersistent, Credentials.RememberLogin.ToString()),
-            new(ClaimTypes.Sid, user.Id.ToString("D"))
+            new(ClaimTypes.Sid, user!.Id.ToString("D"))
         };
 
         var identity = new ClaimsIdentity(

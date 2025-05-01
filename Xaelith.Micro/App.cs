@@ -16,7 +16,9 @@ public partial class App
             .AttachXaelithServices(Assembly.GetExecutingAssembly())
             .AddRazorComponents()
             .AddInteractiveServerComponents();
-       
+        
+        builder.Services.AddHttpContextAccessor();
+        
         builder.Services
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(x =>

@@ -1,4 +1,5 @@
 ﻿@inject IConfigService Configuration
+@inject NavigationManager Navigation
 
 <nav id="main-nav">
     <div class="left-side">
@@ -16,14 +17,14 @@
             @for (var i = 0; i < Configuration.Root!.Navigation.NavigationLists.Count; i++)
             {
                 var list = Configuration.Root!.Navigation.NavigationLists[i];
-                
+
                 <ul class="nav-links">
                     @foreach (var link in list.Links)
                     {
                         <li><a href="@link.Target">@link.Label</a></li>
                     }
                 </ul>
-                
+
                 if (i < Configuration.Root!.Navigation.NavigationLists.Count - 1)
                 {
                     <span class="separator nav-separator"></span>
@@ -34,13 +35,34 @@
 
     <div class="right-side">
         <ul class="nav-links">
-            <li>
-                <a href="#"><i class="las la-cog"></i></a>
-            </li>
+            @if (UserContext.IsAuthenticated)
+            {
+                <li>
+                    <a href="/admin/dashboard">
+                        <i class="las la-cog"></i>
+                    </a>
+                </li>
 
-            <li>
-                <a href="#"><i class="las la-sign-out-alt"></i></a>
-            </li>
+                <li>
+                    <a href="#" @onclick='() => Navigation.NavigateTo
+                    ("/admin/logout", true)'>
+                        <i class="las la-sign-out-alt"></i>
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="#" @onclick='() => Navigation.NavigateTo("/admin/login", true)'>
+                        <i class="las la-key"></i>
+                    </a>
+                </li>
+            }
         </ul>
     </div>
 </nav>
+
+@code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; }
+}

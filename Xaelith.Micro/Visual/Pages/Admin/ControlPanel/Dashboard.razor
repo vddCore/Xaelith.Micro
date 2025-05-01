@@ -1,4 +1,9 @@
 ﻿@page "/admin/dashboard"
 @inherits XaelithRestrictedPage
 
-<h3>Hello, @(User?.DisplayName) @("<3") </h3>
+<h3>Hello, @(UserContext.User?.DisplayName) @("<3") </h3>
+
+@code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+}

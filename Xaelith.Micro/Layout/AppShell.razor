@@ -1,3 +1,40 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+@inject IFlatFileUserStore UserStore;
+
+@if (_isReady)
+{
+    <CascadingValue Value="UserContext">
+        @Body
+    </CascadingValue>
+}
+
+@code {
+    private bool _isReady;
+    
+    [CascadingParameter]
+    protected Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    public UserContext UserContext { get; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationState != null)
+        {
+            var state = await AuthenticationState;
+
+            UserContext.User = await UserStore.FindByIdAsync(
+                state.User.FindFirst(
+                    x => x.Type == ClaimTypes.Sid
+                )?.Value
+            );
+            
+            UserContext.IsAuthenticated = state
+                .User
+                .Identity?
+                .IsAuthenticated ?? false;
+        }
+
+        _isReady = true;
+    }
+}

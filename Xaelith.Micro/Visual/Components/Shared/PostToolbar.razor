@@ -1,11 +1,17 @@
-﻿<div class="post-toolbar">
-    <a class="post-toolbar-link" href="/admin/edit/@Post.Id.ToString("D")">
-        <i class="las la-edit"></i>
-        edit
-    </a>
-</div>
+﻿@if (UserContext.IsAuthenticated)
+{
+    <div class="post-toolbar">
+        <a class="post-toolbar-link" href="/admin/edit/@Post.Id.ToString("D")">
+            <i class="las la-edit"></i>
+            edit
+        </a>
+    </div>
+}
 
 @code {
     [Parameter]
     public required Post Post { get; set; }
+
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
 }
