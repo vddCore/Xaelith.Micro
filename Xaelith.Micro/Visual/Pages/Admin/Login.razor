@@ -98,7 +98,9 @@
 
         var claims = new List<Claim>
         {
-            new(type: ClaimTypes.Name, Credentials.Username)
+            new(ClaimTypes.Name, Credentials.Username),
+            new(ClaimTypes.IsPersistent, Credentials.RememberLogin.ToString()),
+            new(ClaimTypes.Sid, user.Id.ToString("D"))
         };
 
         var identity = new ClaimsIdentity(
@@ -108,7 +110,10 @@
 
         var principal = new ClaimsPrincipal(identity);
 
-        await HttpContext.SignInAsync(principal);
+        await HttpContext.SignInAsync(principal, new AuthenticationProperties
+        {
+            IsPersistent = Credentials.RememberLogin
+        });
         
         Navigation.NavigateTo(
             "/admin/dashboard",
