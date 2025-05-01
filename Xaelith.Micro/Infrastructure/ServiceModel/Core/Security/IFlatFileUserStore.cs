@@ -11,8 +11,8 @@ public interface IFlatFileUserStore : IXaelithService
     Task<IdentityResult> CreateAsync(User user);
     Task<IdentityResult> UpdateAsync(User user);
     Task<IdentityResult> DeleteAsync(User user);
-    Task<User?> FindByIdAsync(string userId);
-    Task<User?> FindByNameAsync(string userName);
+    Task<User?> FindByIdAsync(string? userId);
+    Task<User?> FindByNameAsync(string? userName);
     Task SetPasswordHashAsync(User user, string? passwordHash);
     Task<string?> GetPasswordHashAsync(User user);
 }

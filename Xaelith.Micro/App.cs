@@ -2,13 +2,17 @@ namespace Xaelith.Micro;
 
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Xaelith.Micro.Infrastructure.ServiceModel.Core;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public partial class App
-{
+{    
     public static void Main(string[] args)
     {
+        RenderModeSelector.RegisterRenderModeOverrides();
+
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services
@@ -20,14 +24,20 @@ public partial class App
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(x =>
             {
+                x.Cookie.Name = "Xaelith__Auth";
+                x.Cookie.IsEssential = true;
+
                 x.LoginPath = "/admin/login";
                 x.LogoutPath = "/admin/logout";
                 x.AccessDeniedPath = "/admin/denied";
+                
+                x.ExpireTimeSpan = TimeSpan.FromHours(1);
+                x.SlidingExpiration = true;
             });
         
         builder.Services.AddAuthorization();
         builder.Services.AddCascadingAuthenticationState();
-
+        
         var app = builder.Build();
 
         if (!app.Environment.IsDevelopment())

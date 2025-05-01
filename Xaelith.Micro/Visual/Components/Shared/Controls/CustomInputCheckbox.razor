@@ -1,6 +1,4 @@
-﻿@inherits InputBase<bool>
-
-<label class="custom-checkbox">
+﻿<label class="custom-checkbox">
     <input type="checkbox"
            id="@Id"
            checked="@CurrentValue"
@@ -20,8 +18,21 @@
 
     [Parameter]
     public required string Label { get; set; }
+    
+    [Parameter]
+    public bool Value
+    {
+        get => CurrentValue;
+        set => CurrentValue = value;
+    }
 
-    protected override bool TryParseValueFromString(string? value, out bool result, [NotNullWhen(false)] out string? validationErrorMessage)
+    [Parameter]
+    public bool CurrentValue { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+ 
+    protected bool TryParseValueFromString(string? value, out bool result, [NotNullWhen(false)] out string? validationErrorMessage)
     {
         validationErrorMessage = null;
 
@@ -32,11 +43,12 @@
         return false;
     }
     
-    private void OnValueChanged(ChangeEventArgs e)
+    private async Task OnValueChanged(ChangeEventArgs e)
     {
         if (bool.TryParse(e.Value?.ToString(), out var value))
         {
             CurrentValue = value;
+            await ValueChanged.InvokeAsync(value); // 👈 fires two-way binding
         }
     }
 }

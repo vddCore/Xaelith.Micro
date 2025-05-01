@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Xaelith.Micro.Infrastructure.ServiceModel.Core;
 using Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
+using Xaelith.Micro.Infrastructure.ServiceModel.Core.Security;
 
 public partial class XaelithPage : ComponentBase
 {
@@ -11,6 +12,7 @@ public partial class XaelithPage : ComponentBase
     [Inject] protected IConfigService Configuration { get; private set; } = null!;
     [Inject] protected IContentService Content { get; private set; } = null!;
     [Inject] protected IMarkdownService Markdown { get; private set; } = null!;
+    [Inject] protected IFlatFileUserStore UserStore { get; private set; } = null!;
 
     protected virtual string Title => string.Empty;
 

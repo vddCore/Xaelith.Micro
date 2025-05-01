@@ -148,8 +148,11 @@ public class FlatFileUserStore : IFlatFileUserStore
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<User?> FindByIdAsync(string userId)
+    public Task<User?> FindByIdAsync(string? userId)
     {
+        if (string.IsNullOrWhiteSpace(userId))
+            return Task.FromResult<User?>(null);
+        
         var userPath = Path.Combine(WellKnown.UserStore, $"{userId}.json");
 
         if (!File.Exists(userPath))
@@ -164,8 +167,11 @@ public class FlatFileUserStore : IFlatFileUserStore
         );
     }
 
-    public Task<User?> FindByNameAsync(string userName)
+    public Task<User?> FindByNameAsync(string? userName)
     {
+        if (string.IsNullOrWhiteSpace(userName))
+            return Task.FromResult<User?>(null);
+        
         var users = LoadUsers();
         
         return Task.FromResult(
