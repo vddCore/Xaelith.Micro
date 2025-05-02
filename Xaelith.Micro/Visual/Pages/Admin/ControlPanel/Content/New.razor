@@ -1,15 +1,51 @@
 ﻿@page "/admin/content/new"
+@using Xaelith.Micro.Infrastructure.DataModel.Admin
 @inherits XaelithRestrictedPage
 
 <HeadContent>
-    <link rel="stylesheet" href="style/admin/panel.css" />
+    <link rel="stylesheet" href="style/admin/panel.css"/>
 </HeadContent>
 
 <main id="admin">
-    <AdminNav />
-    
+    <AdminNav/>
+
     <div class="admin-content">
         <h1 class="admin-view-title">@Title</h1>
+
+        <div class="admin-inner-content">
+            <TabView>
+                <Tab Header="Edit">
+                    <EditForm Model="PostEditModel">
+                        <label for="post-title">Title</label>
+                        <InputText id="post-title"
+                                   type="text"
+                                   Value="@PostEditModel.Title" 
+                                   ValueChanged="@((string? v) => PostEditModel.Title = v ?? string.Empty)"
+                                   ValueExpression="@(() => PostEditModel.Title)"/>
+                        
+                        <label for="post-content">Content</label>
+                        <InputTextArea id="post-content"
+                                       type="text"
+                                       class="post-editor-textarea"
+                                       Value="@PostEditModel.Content" 
+                                       ValueChanged="@((string? v) => PostEditModel.Content = v ?? string.Empty)"
+                                       ValueExpression="@(() => PostEditModel.Content)"/>
+                    </EditForm>
+                </Tab>
+
+                <Tab Header="Preview">
+                    <div>
+                        Here would be a preview. If I had one.
+                    </div>
+                </Tab>
+
+                <Tab Header="Properties">
+                    <div>
+                        Here would be post properties. IF I HAD ANY.
+                    </div>
+                </Tab>
+            </TabView>
+        </div>
     </div>
 </main>
 
@@ -18,4 +54,6 @@
     public UserContext UserContext { get; set; } = null!;
 
     protected override string Title => "new entry";
+
+    public PostEditModel PostEditModel { get; set; } = new();
 }

@@ -101,4 +101,8 @@
     --checkbox-hover-foreground: #ff88ffcc;
     --checkbox-checked-foreground: #ff88ff;
     --checkbox-disabled-foreground: #ff88ff66;
+    
+    --tab-view-border: #ff88ff;
+    --tab-button-selected-border: #ff88ff;
+    --tab-button-selected-foreground: #ff88ff;
 }

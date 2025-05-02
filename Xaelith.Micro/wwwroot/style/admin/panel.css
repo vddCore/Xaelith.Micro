@@ -6,6 +6,10 @@
     --admin-icon-foreground: #ff88ff;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 main#admin {
     display: flex;
     flex-direction: row;
@@ -121,7 +125,11 @@ main#admin nav .nav-group:last-of-type {
 
 main#admin .admin-content {
     width: 100%;
-    padding: 19px 8px 20px 16px;
+    padding: 17px 20px 20px 20px;
+}
+
+main#admin .admin-inner-content {
+    padding-left: 16px;
 }
 
 main#admin h1.admin-view-title {
@@ -141,4 +149,9 @@ main#admin h1.admin-view-title::before {
 
 main#admin h1.admin-view-title::after {
     content: " _";
+}
+
+main#admin .post-editor-textarea {
+    resize: none;
+    height: 100%;
 }

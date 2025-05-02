@@ -153,9 +153,12 @@ label:not(:has(input[type="checkbox"]))::before {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+textarea {
     padding: 0.4rem;
     margin: 0;
+    
+    width: 100%;
     
     border-radius: 4px;
     border: 1px solid var(--textbox-border);
@@ -170,23 +173,30 @@ input[type="password"] {
 }
 
 input[type="text"]::placeholder,
-input[type="password"]::placeholder {
+input[type="password"]::placeholder
+textarea::placeholder {
     text-transform: uppercase;
     
     color: var(--textbox-placeholder-foreground);
 }
 
 input[type="text"]:hover,
-input[type="password"]:hover {
+input[type="password"]:hover,
+textarea:hover {
     border-color: var(--textbox-hover-border);
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+textarea:focus {
     border: 1px solid var(--textbox-focus-border);
     
     color: var(--textbox-focus-foreground);
     box-shadow: 0 0 6px var(--textbox-focus-shadow);
+}
+
+textarea {
+    margin: 0;
 }
 
 .input-group {
@@ -310,4 +320,44 @@ button:disabled {
     opacity: 0.6;
     
     text-decoration: line-through;
+}
+
+.tab-view {
+    height: 100%;
+}
+
+.tab-headers {
+    margin-bottom: 12px;
+}
+
+.tab-button {
+    display: inline-block;
+    margin-right: 12px;
+    
+    padding: 0;
+
+    border: none;
+    
+    transition: 0s border-bottom-width ease-in-out, 
+                0.15s color ease-in-out,
+                1s border-bottom-color ease-in-out;
+    
+}
+
+.tab-button:last-of-type {
+    margin-right: 0;
+}
+
+.tab-button:hover {
+    border: none;
+}
+
+.tab-button.selected {
+    border-bottom: 2px solid var(--tab-button-selected-border);
+    
+    color: var(--tab-button-selected-foreground);
+}
+
+.tab-content {
+    padding: 0;
 }
