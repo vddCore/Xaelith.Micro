@@ -115,12 +115,7 @@
 .input-row {
     margin-top: 24px;
     
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    align-content: center;
-    
-    width: 100%;
 }
 
 .input-submit button {

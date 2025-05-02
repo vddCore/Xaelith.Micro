@@ -1,0 +1,40 @@
+﻿:root {
+    --md-editor-statusbar-foreground: #120217;
+    --md-editor-statusbar-background: #ff88ff;
+}
+
+main#admin #md-editor-area {
+    height: 760px;
+    padding: 12px;
+
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    
+    font-family: "NK57 Monospace";
+    font-weight: 300;
+
+    font-size: 16px;
+    
+    resize: none;
+}
+
+main#admin .md-editor-statusbar {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 16px;
+    
+    height: 32px;
+    padding: 12px;
+    
+    border-radius: 0 0 4px 4px;
+    
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 500;
+    
+    color: var(--md-editor-statusbar-foreground);
+    background-color: var(--md-editor-statusbar-background);
+    
+    user-select: none;
+}

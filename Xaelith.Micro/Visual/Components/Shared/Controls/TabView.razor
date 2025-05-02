@@ -25,6 +25,9 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
 
+    [Parameter]
+    public Action<Tab>? TabChanged { get; set; }
+    
     internal List<Tab> Tabs { get; } = [];
     internal Tab? ActiveTab { get; private set; }
 
@@ -36,9 +39,12 @@
         StateHasChanged();
     }
 
-    private void SetActive(Tab tab) 
-        => ActiveTab = tab;
-    
+    private void SetActive(Tab tab)
+    {
+        ActiveTab = tab;
+        TabChanged?.Invoke(tab);
+    }
+
     public class Tab
     {
         public string Header { get; set; } = string.Empty;

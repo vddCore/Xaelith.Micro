@@ -1,0 +1,73 @@
+﻿@inject IConfigService Configuration;
+@inject IMarkdownService Markdown;
+
+<section class="post">
+    <div class="post-titlebar">
+        <h1 class="post-title">
+            @if (string.IsNullOrWhiteSpace(Context.Title))
+            {
+                @("Untitled")
+            }
+            else
+            {
+                @Context.Title
+            }
+        </h1>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Context.Description))
+    {
+        <h2 class="post-subtitle">
+            @((MarkupString)Markdown.Render(Context.Description))
+        </h2>
+    }
+
+    <div class="post-content">
+        @((MarkupString)@Context.PreviewMarkup)
+    </div>
+
+    <div class="post-meta">
+        <div class="post-meta-items">
+            <span class="post-meta-item post-meta-author">
+                @(UserContext.User?.DisplayName ?? "nobody")
+            </span>
+
+            <span class="post-meta-item post-meta-date">
+                @DateTime.Now.ToString(
+                    Configuration.Root!.General.DateFormat
+                )
+            </span>
+
+            <span class="post-meta-item post-meta-category">
+                @if (!string.IsNullOrWhiteSpace(Context.Category))
+                {
+                    @(Context.Category)
+                }
+                else
+                {
+                    @("no category")
+                }
+            </span>
+
+            @if (!string.IsNullOrWhiteSpace(Context.TagList))
+            {
+                <div class="post-meta-item post-meta-tags">
+                    <ul>
+                        @foreach (var tag in Context.TagList.Split(',', StringSplitOptions.TrimEntries))
+                        {
+                            <li>@tag</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+
+    [Parameter]
+    public required EditorContext Context { get; set; }
+}

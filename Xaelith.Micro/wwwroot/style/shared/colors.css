@@ -87,6 +87,18 @@
     --textbox-background: #1a0421;
     --textbox-placeholder-foreground: #ff88ff55;
     
+    --dropdown-background: #1a0421;
+    --dropdown-border: #ff88ff66;
+    --dropdown-hover-border: #ff88ffaa;
+    --dropdown-focus-border: #ff88ff;
+    --dropdown-placeholder-foreground: #ff88ff55;
+    --dropdown-option-foreground: #cfaee9;
+    --dropdown-option-hover-background: #ff88ff22;
+    --dropdown-option-hover-foreground: #ff88ff;
+    --dropdown-option-selected-background: #1a0421;
+    --dropdown-option-selected-foreground: #cfaee9;
+    --dropdown-clear-foreground: #f85252;
+    
     --button-border: #ff88ffaa;
     --button-hover-border: #ff88ff;
     --button-active-border: #ff88ff88;

@@ -15,6 +15,9 @@
           content="width=device-width, initial-scale=1.0"/>
 
     <base href="/" />
+    
+    <link rel="stylesheet"
+          href="@Assets["lib/selectr/selectr.min.css"]" />
 
     <link rel="stylesheet"
           href="@Assets["lib/highlightjs/styles/gradient-v.css"]"/>
@@ -25,11 +28,25 @@
     <link rel="stylesheet"
           href="@Assets["style/shared/global.css"]"/>
 
+    <link rel="stylesheet" 
+          href="@Assets["style/admin/panel.css"]"/>
+    
+    <link rel="stylesheet"
+          href="@Assets["style/admin/editor.css"]"/>
+    
+    <link rel="stylesheet"
+          href="@Assets["style/admin/login.css"]"/>
+    
+
     <link rel="stylesheet"
           href="Xaelith.Micro.styles.css"/>
 
-    <script src="lib/highlightjs/highlight.min.js"></script>
-    <script src="lib/xaelith/xaelith.js"></script>
+    <script src="@Assets["lib/xaelith/xaelith.js"]"></script>
+    <script src="@Assets["lib/xaelith/admin.js"]"></script>
+    
+    <script src="@Assets["lib/highlightjs/highlight.min.js"]"></script>
+    <script src="@Assets["lib/jquery/jquery-1.3.7.min.js"]"></script>
+    <script src="@Assets["lib/selectr/selectr.min.js"]"></script>
 
     <ImportMap/>
     <HeadOutlet/>

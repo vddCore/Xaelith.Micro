@@ -7,7 +7,7 @@
     container.innerHTML = "";
 
     let computedStyle = window.getComputedStyle(document.body);
-    
+
     const barWidth = parseInt(
         computedStyle
             .getPropertyValue("--bar-width")
@@ -25,7 +25,7 @@
             .getPropertyValue("--bar-full-height")
             .replace("px", "")
     ) || 4;
-    
+
     const totalWidth = container.offsetWidth;
     const count = Math.floor(totalWidth / (barWidth + spacing));
 
@@ -53,7 +53,6 @@ function setupWaveBars() {
     createBars(".wave-row.top");
     createBars(".wave-row.bottom");
 }
-
 
 let resizeTimeout;
 window.addEventListener("resize", () => {

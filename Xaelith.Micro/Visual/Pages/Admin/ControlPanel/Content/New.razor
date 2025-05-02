@@ -1,12 +1,6 @@
 ﻿@page "/admin/content/new"
-@using Xaelith.Micro.Infrastructure.DataModel.Admin
+
 @inherits XaelithRestrictedPage
-
-@inject IMarkdownService Markdown
-
-<HeadContent>
-    <link rel="stylesheet" href="style/admin/panel.css"/>
-</HeadContent>
 
 <main id="admin">
     <AdminNav/>
@@ -15,45 +9,15 @@
         <h1 class="admin-view-title">@Title</h1>
 
         <div class="admin-inner-content">
-            <TabView>
+            <TabView TabChanged="OnTabChanged">
                 <Tab Header="Edit">
-                    <EditForm Model="PostEditModel">
-                        <div class="input-group">
-                            <label for="post-title">Title</label>
-                            <InputText id="post-title"
-                                       type="text"
-                                       Value="@PostEditModel.Title"
-                                       ValueChanged="@((string? v) => PostEditModel.Title = v ?? string.Empty)"
-                                       ValueExpression="@(() => PostEditModel.Title)"/>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="post-content">Content</label>
-                            
-                            <div class="editor-window">
-                                <InputTextArea id="post-content"
-                                               type="text"
-                                               class="editor-textarea"
-                                               Value="@PostEditModel.Content"
-                                               ValueChanged="@EditedPostChanged"
-                                               ValueExpression="@(() => PostEditModel.Content)"/>
-                            </div>
-                        </div>
+                    <EditForm Model="@EditorContext">
+                        <ContentEditor Context="@EditorContext" />
                     </EditForm>
                 </Tab>
 
                 <Tab Header="Preview">
-                    <section class="post">
-                        <div class="post-content">
-                            @((MarkupString)PostPreview);
-                        </div>
-                    </section>
-                </Tab>
-
-                <Tab Header="Properties">
-                    <div>
-                        Here would be post properties. IF I HAD ANY.
-                    </div>
+                    <ContentPreview Context="@EditorContext" />
                 </Tab>
             </TabView>
         </div>
@@ -61,18 +25,37 @@
 </main>
 
 @code {
-    [CascadingParameter]
-    public UserContext UserContext { get; set; } = null!;
+    private bool _shouldRehighlightCodeInPreview = true;
 
     protected override string Title => "new entry";
 
-    public PostEditModel PostEditModel { get; set; } = new();
-    public string PostPreview { get; set; } = string.Empty;
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
 
-    private void EditedPostChanged(string? value)
+    public EditorContext EditorContext { get; set; } = new();
+
+    private void OnTabChanged(TabView.Tab tab)
     {
-        PostEditModel.Content = value ?? string.Empty;
-        PostPreview = Markdown.Render(value ?? string.Empty);
-        StateHasChanged();
+        if (tab.Header == "Preview")
+        {
+            EditorContext.PreviewMarkup = Markdown.Render(
+                EditorContext.Markdown
+            );
+
+            _shouldRehighlightCodeInPreview = true;
+
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        
+        if (_shouldRehighlightCodeInPreview)
+        {
+            await JS.InvokeVoidAsync("window.xaelith.highlightAll");
+            _shouldRehighlightCodeInPreview = false;
+        }
     }
 }

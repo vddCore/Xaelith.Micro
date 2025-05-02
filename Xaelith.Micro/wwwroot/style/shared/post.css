@@ -189,6 +189,7 @@ section.post .post-toolbar-link {
 }
 
 section.post .post-content {
+    text-align: justify;
     padding-bottom: 8px;
 
     margin-top: 8px;
@@ -487,5 +488,17 @@ section.post code {
     font-family: "NK57 Monospace";
     font-size: 16px;
 
+    background-color: var(--block-background);
+}
+
+section.post blockquote {
+    margin-left: 0;
+    margin-bottom: 0;
+    padding: 0.4rem 0.6rem;
+    
+    border-left: 4px solid var(--code-border);
+    font-style: italic;
+    
+    color: var(--block-foreground);
     background-color: var(--block-background);
 }

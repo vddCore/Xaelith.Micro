@@ -201,10 +201,20 @@ textarea {
 
 .input-group {
     margin-bottom: 0.6rem;
+    width: 100%;
 }
 
 .input-group:last-of-type {
     margin-bottom: 0;
+}
+
+.input-row {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    gap: 0.6rem;
+    
+    width: 100%;
 }
 
 button {
@@ -360,4 +370,89 @@ button:disabled {
 
 .tab-content {
     padding: 0;
+}
+
+.selectr-container,
+.selectr-selected {
+    cursor: default;
+    
+    background-color: var(--dropdown-background);
+}
+
+.selectr-selected {
+    padding: 0.4rem;
+    
+    border: 1px solid var(--dropdown-border);
+    
+    font-size: 1rem;
+    
+    transition: .15s ease-in-out;
+}
+
+.selectr-selected::before {
+    border-color: var(--dropdown-border) transparent transparent;
+    
+    transition: .15s ease-in-out;
+}
+
+.selectr-selected:hover {
+    border: 1px solid var(--dropdown-hover-border);
+}
+
+.selectr-selected:hover::before {
+    border-color: var(--dropdown-hover-border) transparent transparent;
+}
+
+.selectr-container.open .selectr-selected {
+    border: 1px solid var(--dropdown-focus-border);
+}
+
+.selectr-container.open .selectr-selected::before {
+    border-color: transparent transparent var(--dropdown-focus-border); 
+}
+
+.selectr-options-container {
+    background-color: var(--dropdown-background);
+    border-color: transparent var(--dropdown-focus-border) var(--dropdown-focus-border);
+}
+
+.selectr-placeholder {
+    color: var(--dropdown-placeholder-foreground);
+}
+
+.selectr-option {
+    cursor: default;
+    
+    padding: 0.4rem;
+    
+    font-size: 1rem;
+    
+    color: var(--dropdown-option-foreground);
+}
+
+.selectr-option.active {
+    color: var(--dropdown-option-hover-foreground);
+    background-color: var(--dropdown-option-hover-background);
+}
+
+.selectr-option.active.selected {
+    color: var(--dropdown-option-foreground);
+    background-color: var(--dropdown-option-hover-background);
+}
+
+.selectr-option.selected {
+    color: var(--dropdown-option-selected-foreground);
+    background-color: var(--dropdown-option-selected-background);
+}
+
+.selectr-container button,
+.selectr-container button:hover {
+    border: none;
+}
+
+.selectr-clear::after,
+.selectr-clear::before {
+    background-color: var(--dropdown-clear-foreground);
+    
+    transition: .15s ease-in-out;
 }

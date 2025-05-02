@@ -1,12 +1,11 @@
 ﻿@page "/admin/login"
-@using System.Web
+
 @inherits XaelithPage
 @attribute [RequiresStaticRendering]
 
 @inject IBCryptPasswordHasher Hasher;
 
 <HeadContent>
-    <link rel="stylesheet" href="style/admin/login.css"/>
     <script src="lib/xaelith/login.js" defer></script>
 
     @if (UserContext.IsAuthenticated)
