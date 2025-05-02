@@ -1,4 +1,5 @@
 ﻿@page "/admin/login"
+@using System.Web
 @inherits XaelithPage
 @attribute [RequiresStaticRendering]
 
@@ -136,9 +137,13 @@
         {
             IsPersistent = Credentials.RememberLogin
         });
-                
+
+        var returnUrl = Navigation.QueryString("ReturnUrl");
+
         Navigation.NavigateTo(
-            "/admin/dashboard",
+            string.IsNullOrWhiteSpace(returnUrl) 
+                ? "/admin/dashboard" 
+                : HttpUtility.UrlDecode(returnUrl),
             true
         );
     }

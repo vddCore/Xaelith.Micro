@@ -1,0 +1,21 @@
+﻿@page "/admin/content/new"
+@inherits XaelithRestrictedPage
+
+<HeadContent>
+    <link rel="stylesheet" href="style/admin/panel.css" />
+</HeadContent>
+
+<main id="admin">
+    <AdminNav />
+    
+    <div class="admin-content">
+        <h1 class="admin-view-title">@Title</h1>
+    </div>
+</main>
+
+@code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+
+    protected override string Title => "new entry";
+}
