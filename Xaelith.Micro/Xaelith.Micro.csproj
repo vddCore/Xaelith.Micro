@@ -485,6 +485,13 @@
     <_ContentIncludedByDefault Remove="wwwroot\lib\highlightjs\es\languages\zephir.js" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\highlightjs\es\languages\zephir.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\highlightjs\es\package.json" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\Content\Edit.razor" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\Content\New.razor" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\Manage\Categories.razor" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\Manage\Entries.razor" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\Manage\Tags.razor" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\System\About.razor" />
+    <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\System\Settings.razor" />
   </ItemGroup>
 
 </Project>

@@ -38,13 +38,23 @@
             @if (UserContext.IsAuthenticated)
             {
                 <li>
-                    <a href="#" @onclick='() => Navigation.NavigateTo("/admin/dashboard", true)'>
+                    <a @onclick='() => Navigation.NavigateTo("/admin/content/new", true)'>
+                        <i class="las la-pen-alt"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a @onclick='() => Navigation.NavigateTo("/admin/dashboard", true)'>
                         <i class="las la-cog"></i>
                     </a>
                 </li>
+                
+                <li>
+                    <span class="small-separator nav-tool-separator"></span>
+                </li>
 
                 <li>
-                    <a href="#" @onclick='() => Navigation.NavigateTo("/admin/logout", true)'>
+                    <a @onclick='() => Navigation.NavigateTo("/admin/logout", true)'>
                         <i class="las la-sign-out-alt"></i>
                     </a>
                 </li>
@@ -52,7 +62,7 @@
             else
             {
                 <li>
-                    <a href="#" @onclick='() => Navigation.NavigateTo("/admin/login", true)'>
+                    <a @onclick='() => Navigation.NavigateTo("/admin/login", true)'>
                         <i class="las la-key"></i>
                     </a>
                 </li>

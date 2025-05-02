@@ -31,8 +31,11 @@
         Posts = Content.GetAllPosts(
             p => p is
             {
-                Metadata.Published: true, 
-                Metadata.Type: PostType.Normal
+                Metadata:
+                {
+                    Published: true,
+                    Type: PostType.Normal
+                }
             }
         );
     }
