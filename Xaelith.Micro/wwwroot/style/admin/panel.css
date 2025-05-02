@@ -4,6 +4,9 @@
     --admin-nav-group-header-foreground: #73e4af99;
     --admin-nav-group-border: #ff88ff88;
     --admin-icon-foreground: #ff88ff;
+    
+    --admin-editor-toolbar-background: #120217;
+    --admin-editor-toolbar-border: #ff88ff44;
 }
 
 * {
@@ -15,12 +18,18 @@ main#admin {
     flex-direction: row;
     
     height: 100%;
-    width: 70%;
+    width: 80%;
     
     padding: 0;
     margin: 0 auto;
     
     text-align: left;
+}
+
+@media screen and (max-width: 1450px) {
+    main#admin {
+        width: 90%;
+    }
 }
 
 main#admin nav {
@@ -151,7 +160,13 @@ main#admin h1.admin-view-title::after {
     content: " _";
 }
 
-main#admin .post-editor-textarea {
+main#admin .editor-textarea {
+    min-height: 760px;
+    
     resize: none;
-    height: 100%;
+    
+    font-family: "NK57 Monospace";
+    font-weight: 300;
+    
+    font-size: 16px;
 }

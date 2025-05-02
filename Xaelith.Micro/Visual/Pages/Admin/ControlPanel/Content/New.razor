@@ -2,6 +2,8 @@
 @using Xaelith.Micro.Infrastructure.DataModel.Admin
 @inherits XaelithRestrictedPage
 
+@inject IMarkdownService Markdown
+
 <HeadContent>
     <link rel="stylesheet" href="style/admin/panel.css"/>
 </HeadContent>
@@ -16,27 +18,36 @@
             <TabView>
                 <Tab Header="Edit">
                     <EditForm Model="PostEditModel">
-                        <label for="post-title">Title</label>
-                        <InputText id="post-title"
-                                   type="text"
-                                   Value="@PostEditModel.Title" 
-                                   ValueChanged="@((string? v) => PostEditModel.Title = v ?? string.Empty)"
-                                   ValueExpression="@(() => PostEditModel.Title)"/>
-                        
-                        <label for="post-content">Content</label>
-                        <InputTextArea id="post-content"
+                        <div class="input-group">
+                            <label for="post-title">Title</label>
+                            <InputText id="post-title"
                                        type="text"
-                                       class="post-editor-textarea"
-                                       Value="@PostEditModel.Content" 
-                                       ValueChanged="@((string? v) => PostEditModel.Content = v ?? string.Empty)"
-                                       ValueExpression="@(() => PostEditModel.Content)"/>
+                                       Value="@PostEditModel.Title"
+                                       ValueChanged="@((string? v) => PostEditModel.Title = v ?? string.Empty)"
+                                       ValueExpression="@(() => PostEditModel.Title)"/>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="post-content">Content</label>
+                            
+                            <div class="editor-window">
+                                <InputTextArea id="post-content"
+                                               type="text"
+                                               class="editor-textarea"
+                                               Value="@PostEditModel.Content"
+                                               ValueChanged="@EditedPostChanged"
+                                               ValueExpression="@(() => PostEditModel.Content)"/>
+                            </div>
+                        </div>
                     </EditForm>
                 </Tab>
 
                 <Tab Header="Preview">
-                    <div>
-                        Here would be a preview. If I had one.
-                    </div>
+                    <section class="post">
+                        <div class="post-content">
+                            @((MarkupString)PostPreview);
+                        </div>
+                    </section>
                 </Tab>
 
                 <Tab Header="Properties">
@@ -56,4 +67,12 @@
     protected override string Title => "new entry";
 
     public PostEditModel PostEditModel { get; set; } = new();
+    public string PostPreview { get; set; } = string.Empty;
+
+    private void EditedPostChanged(string? value)
+    {
+        PostEditModel.Content = value ?? string.Empty;
+        PostPreview = Markdown.Render(value ?? string.Empty);
+        StateHasChanged();
+    }
 }
