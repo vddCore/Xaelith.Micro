@@ -1,24 +1,67 @@
 ﻿@page "/admin/content/edit/{postId}"
 @inherits XaelithRestrictedPage
+@layout AdminShell
 
-<HeadContent>
-    <link rel="stylesheet" href="style/admin/panel.css" />
-</HeadContent>
+<h1 class="admin-view-title">
+    @Title
+</h1>
 
-<main id="admin">
-    <AdminNav />
-    
-    <div class="admin-content">
-        <h1 class="admin-view-title">@Title</h1>
-    </div>
-</main>
+<div class="admin-inner-content">
+    <TabView TabChanged="OnTabChanged">
+        <Tab Header="Edit">
+            <EditForm Model="@EditorContext">
+                <ContentEditor Context="@EditorContext"/>
+            </EditForm>
+        </Tab>
+
+        <Tab Header="Preview">
+            <ContentPreview Context="@EditorContext"/>
+        </Tab>
+    </TabView>
+</div>
 
 @code {
+    private bool _shouldRehighlightCodeInPreview = true;
+
+    protected override string Title => "edit entry";
+
+    [Parameter, Required]
+    public string PostId { get; set; } = null!;
+
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
-    [Parameter, Required]
-    public string PostId { get; set; } = string.Empty;
+    public EditorContext EditorContext { get; set; } = new();
 
-    protected override string Title => "edit entry";
+    private void OnTabChanged(TabView.Tab tab)
+    {
+        if (tab.Header == "Preview")
+        {
+            EditorContext.PreviewMarkup = Markdown.Render(
+                EditorContext.Markdown
+            );
+
+            _shouldRehighlightCodeInPreview = true;
+
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (_shouldRehighlightCodeInPreview)
+        {
+            await JS.InvokeVoidAsync("window.xaelith.highlightAll");
+            _shouldRehighlightCodeInPreview = false;
+        }
+    }
 }

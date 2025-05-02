@@ -13,7 +13,7 @@
             }
         </div>
 
-        <div class="tab-content">
+        <div class="tab-content @(_transitionInProgress ? "fade-out" : "fade-in")">
             @ActiveTab?.Content
         </div>
     </div>
@@ -22,6 +22,9 @@
 </CascadingValue>
 
 @code {
+    private bool _transitionInProgress;
+    private Tab? _nextTab;
+    
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
 
@@ -39,10 +42,23 @@
         StateHasChanged();
     }
 
-    private void SetActive(Tab tab)
+    private async void SetActive(Tab tab)
     {
-        ActiveTab = tab;
+        if (tab == ActiveTab)
+            return;
+
+        _transitionInProgress = true;
+        _nextTab = tab;
+        StateHasChanged();
+
+        await Task.Delay(200);
+
+        ActiveTab = _nextTab;
+        _nextTab = null;
+        _transitionInProgress = false;
+        
         TabChanged?.Invoke(tab);
+        StateHasChanged();
     }
 
     public class Tab

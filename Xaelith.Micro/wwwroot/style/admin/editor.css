@@ -4,7 +4,7 @@
 }
 
 main#admin #md-editor-area {
-    height: 760px;
+    height: 600px;
     padding: 12px;
 
     border-bottom: none;
@@ -25,6 +25,7 @@ main#admin .md-editor-statusbar {
     gap: 16px;
     
     height: 32px;
+
     padding: 12px;
     
     border-radius: 0 0 4px 4px;
@@ -37,4 +38,9 @@ main#admin .md-editor-statusbar {
     background-color: var(--md-editor-statusbar-background);
     
     user-select: none;
+}
+
+main#admin .content-preview {
+    margin-left: 4px;
+    height: 100%;
 }
