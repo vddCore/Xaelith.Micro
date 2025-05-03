@@ -31,7 +31,18 @@
 
     [Parameter]
     public EventCallback<bool> ValueChanged { get; set; }
- 
+
+    [Parameter]
+    public Func<bool>? ValueExpression { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValueExpression != null)
+        {
+            Value = ValueExpression();
+        }
+    }
+
     protected bool TryParseValueFromString(string? value, out bool result, [NotNullWhen(false)] out string? validationErrorMessage)
     {
         validationErrorMessage = null;
@@ -48,7 +59,7 @@
         if (bool.TryParse(e.Value?.ToString(), out var value))
         {
             CurrentValue = value;
-            await ValueChanged.InvokeAsync(value); // 👈 fires two-way binding
+            await ValueChanged.InvokeAsync(value);
         }
     }
 }

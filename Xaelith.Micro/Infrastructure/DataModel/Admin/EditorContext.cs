@@ -1,6 +1,5 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Admin;
 
-using System.ComponentModel.DataAnnotations;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
 public class EditorContext
@@ -25,14 +24,12 @@ public class EditorContext
         }
     }
 
-    [Required]
     public string Title { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
     public string Category { get; set; } = string.Empty;
     public string TagList { get; set; } = string.Empty;
 
-    [Required]
     public string Markdown
     {
         get => _markdown;
@@ -44,6 +41,9 @@ public class EditorContext
             Characters = _markdown.Length;
         }
     }
+
+    public string EditingUser { get; set; } = "nobody";
+    public bool IsPublished { get; set; }
 
     public string PreviewMarkup { get; set; } = string.Empty;
     

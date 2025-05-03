@@ -1,39 +1,13 @@
 ﻿@implements IDisposable
+
 @inject IToastService Toasts
 
-<div class="toast-container">
-    @if (_currentToastData != null)
-    {
-        switch (_currentToastData.Severity)
-        {
-            case ToastSeverity.Information:
-                <div class="toast toast-information">
-                    @_currentToastData.Message
-                </div>
-                break;
-
-            case ToastSeverity.Success:
-                <div class="toast toast-success">
-                    @_currentToastData.Message
-                </div>
-                break;
-
-            case ToastSeverity.Warning:
-                <div class="toast toast-warning">
-                    @_currentToastData.Message
-                </div>
-                break;
-
-            case ToastSeverity.Error:
-                <div class="toast toast-error">
-                    @_currentToastData.Message
-                </div>
-                break;
-        }
-    }
+<div class="toast @(_visibilityClass) @(_currentToastData != null ? _currentToastData?.Severity.ToString().ToLower() : string.Empty)">
+    @(_currentToastData?.Message ?? string.Empty)
 </div>
 
 @code {
+    private string _visibilityClass = "hide";
     private ToastData? _currentToastData;
 
     protected override void OnInitialized()
@@ -46,9 +20,16 @@
         try
         {
             _currentToastData = toastData;
-            StateHasChanged();
-
+            _visibilityClass = "show";
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(400);
+            
             await Toasts.DisplayedAsync();
+            await InvokeAsync(StateHasChanged);
+
+            _visibilityClass = "hide";
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(400);
 
             _currentToastData = null;
             await InvokeAsync(StateHasChanged);

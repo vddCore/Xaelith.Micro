@@ -206,6 +206,7 @@ section.post .post-content .empty-notification {
 section.post p {
     margin-top: 8px;
     margin-bottom: 8px;
+    word-break: break-word;
 }
 
 section.post p:first-of-type {

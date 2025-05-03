@@ -6,6 +6,7 @@
             @foreach (var tab in Tabs)
             {
                 <button 
+                    type="button"
                     class="tab-button @((tab == ActiveTab && _nextTab == null) || tab == _nextTab ? "selected" : "")"
                     @onclick="@(() => SetActive(tab))">
                     @tab.Header

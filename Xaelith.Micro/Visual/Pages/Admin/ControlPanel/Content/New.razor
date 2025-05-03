@@ -1,17 +1,35 @@
-﻿@page "/admin/content/new"
+﻿@layout AdminShell
+
+@page "/admin/content/new"
 @inherits XaelithRestrictedPage
-@layout AdminShell
+@using Xaelith.Micro.Infrastructure.ServiceModel.Admin.Editor
+@implements IDisposable
+
+@inject IToastService Toast;
+@inject IAutosaveService Autosave;
 
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="@EditorContext">
+    <EditForm Model="@EditorContext"
+              OnSubmit="@SavePost">
+        <div class="editor-toolbar">
+            <CustomInputCheckbox Label="publish"
+                                 Value="@EditorContext.IsPublished" 
+                                 ValueChanged="PublishedStateChanged"
+                                 ValueExpression="ProvidePublishedState"/>
+            
+            <button type="submit"
+                    class="editor-save-button">SAVE</button>
+        </div>
+
         <TabView TabChanged="OnTabChanged">
             <Tab Header="Edit">
-                <ContentEditor Context="@EditorContext"/>
-                <ContentProperties Context="@EditorContext" />
+                <ContentEditor Context="@EditorContext"
+                               OnMarkdownEdited="@OnMarkdownEdited"/>
+                <ContentProperties Context="@EditorContext"/>
             </Tab>
-            
+
             <Tab Header="Preview">
                 <ContentPreview Context="@EditorContext"/>
             </Tab>
@@ -43,6 +61,13 @@
         }
     }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        EditorContext.EditingUser = UserContext.User?.DisplayName ?? "nobody";
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -53,4 +78,38 @@
             _shouldRehighlightCodeInPreview = false;
         }
     }
+
+    private void OnMarkdownEdited(string content)
+    {
+        if (!Autosave.IsEnabled)
+        {
+            Autosave.Start(() => EditorContext);
+        }
+    }
+
+    private async Task SavePost(EditContext context)
+    {
+        Autosave.Stop();
+        
+        var editorContext = (EditorContext)context.Model;
+
+        try
+        {
+            await Content.SavePostAsync(editorContext);
+            Toast.Show("Saved!", ToastSeverity.Success);
+        }
+        catch (Exception e)
+        {
+            Toast.Show(e.Message, ToastSeverity.Error);
+        }
+    }
+    
+    private void PublishedStateChanged(bool value)
+        => EditorContext.IsPublished = value;
+
+    private bool ProvidePublishedState()
+        => EditorContext.IsPublished;
+
+    public void Dispose()
+        => Autosave.Dispose();
 }

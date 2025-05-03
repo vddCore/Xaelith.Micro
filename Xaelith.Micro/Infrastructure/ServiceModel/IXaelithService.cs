@@ -1,5 +1,3 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel;
 
-public interface IXaelithService
-{
-}
+public interface IXaelithService;

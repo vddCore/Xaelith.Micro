@@ -6,28 +6,28 @@ using Newtonsoft.Json.Converters;
 public record PostMetadata
 {
     [JsonProperty("slug")]
-    public string Slug { get; set; } = "untitled";
+    public string Slug { get; set; } = string.Empty;
     
     [JsonProperty("published")]
     public bool Published { get; set; }
 
     [JsonProperty("publish_date")]
-    public required DateTime PublishDate { get; set; } = DateTime.Now;
+    public DateTime? PublishDate { get; set; }
     
     [JsonProperty("edit_date")]
     public DateTime? EditDate { get; set; }
-    
+
     [JsonProperty("author")]
-    public required string Author { get; set; } = "nobody";
-    
+    public string Author { get; set; } = string.Empty;
+
     [JsonProperty("title")]
-    public required string Title { get; set; } = "untitled";
+    public string Title { get; set; } = string.Empty;
     
     [JsonProperty("description")]
     public string Description { get; set; } = string.Empty;
 
     [JsonProperty("category")]
-    public required string Category { get; set; } = string.Empty;
+    public string Category { get; set; } = string.Empty;
     
     [JsonProperty("tags")]
     public List<string> Tags { get; set; } = [];

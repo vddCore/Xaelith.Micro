@@ -28,7 +28,7 @@ public class ToastService : IToastService
 
     public async Task DisplayedAsync()
     {
-        await Task.Delay(1200);
+        await Task.Delay(2000);
         _isDisplayingToast = false;
         TryShowNext();
     }

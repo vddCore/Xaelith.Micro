@@ -1,5 +1,6 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
 
+using Xaelith.Micro.Infrastructure.DataModel.Admin;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
 public interface IContentService : IXaelithService
@@ -9,4 +10,7 @@ public interface IContentService : IXaelithService
     
     string GetCategoryDescription(string category);
     string GetTagDescription(string tag);
+    
+    Task SavePostAsync(EditorContext context);
+    Task SetPublishedStateAsync(Guid postId, bool isPublished);
 }

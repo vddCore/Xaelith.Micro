@@ -117,4 +117,17 @@
     --tab-view-border: #ff88ff;
     --tab-button-selected-border: #ff88ff;
     --tab-button-selected-foreground: #ff88ff;
+
+    --toast-information-border: #ff88ff;
+    --toast-information-background: #ff88ff22;
+    --toast-information-foreground: #ff88ff;
+    --toast-success-border: #88ff92;
+    --toast-success-background: #88ff9222;
+    --toast-success-foreground: #88ff92;
+    --toast-warning-border: #ffcf88;
+    --toast-warning-background: #ffcf8822;
+    --toast-warning-foreground: #ffcf88;
+    --toast-error-border: #ff889c;
+    --toast-error-background: #ff889c22;
+    --toast-error-foreground: #ff889c;
 }

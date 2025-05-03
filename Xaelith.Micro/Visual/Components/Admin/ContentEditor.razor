@@ -23,9 +23,16 @@
     [Parameter]
     public required EditorContext Context { get; set; } = null!;
 
-    private void OnMarkdownInput(ChangeEventArgs e)
+    [Parameter]
+    public EventCallback<string> OnMarkdownEdited { get; set; }
+
+    private async Task OnMarkdownInput(ChangeEventArgs e)
     {
         Context.Markdown = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
+
+        if (OnMarkdownEdited.HasDelegate)
+        {
+            await OnMarkdownEdited.InvokeAsync(Context.Markdown);
+        }
     }
 }

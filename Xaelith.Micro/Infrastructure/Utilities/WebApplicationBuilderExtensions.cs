@@ -15,15 +15,28 @@ public static class WebApplicationBuilderExtensions
 
         foreach (var type in types)
         {
-            var iface = type.GetInterfaces().Single(
+            var ifaces = type.GetInterfaces().Where(
                 t => t != typeof(IXaelithService) 
                        && t.IsAssignableTo(typeof(IXaelithService))
             );
-            
-            services.AddSingleton(
-                iface!,
-                type
-            );
+
+            foreach (var iface in ifaces)
+            {
+                if (iface.IsAssignableTo(typeof(IXaelithTransientService)))
+                {
+                    services.AddTransient(
+                        iface,
+                        type
+                    );
+                }
+                else
+                {
+                    services.AddSingleton(
+                        iface,
+                        type
+                    );
+                }
+            }
         }
 
         return services;

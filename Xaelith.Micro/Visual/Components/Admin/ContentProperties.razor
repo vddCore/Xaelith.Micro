@@ -7,8 +7,7 @@
            type="text"
            spellcheck="false"
            placeholder="Enter a title..."
-           @bind="@Context.Title"
-           @oninput="OnTitleInput"/>
+           @bind="@Context.Title"/>
 </div>
 
 <div class="input-group">
@@ -17,8 +16,7 @@
            type="text"
            spellcheck="false"
            placeholder="Enter a description..."
-           @bind="@Context.Description"
-           @oninput="OnDescriptionInput"/>
+           @bind="@Context.Description"/>
 </div>
 
 <div class="input-row">
@@ -66,8 +64,7 @@
                    type="text"
                    spellcheck="false"
                    placeholder="Enter tags..."
-                   @bind="@Context.TagList"
-                   @oninput="OnTagsInput"/>
+                   @bind="@Context.TagList"/>
         </div>
     }
 </div>
@@ -75,24 +72,6 @@
 @code {
     [Parameter]
     public required EditorContext Context { get; set; } = null!;
-
-    private void OnTitleInput(ChangeEventArgs e)
-    {
-        Context.Title = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    private void OnDescriptionInput(ChangeEventArgs e)
-    {
-        Context.Description = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    private void OnTagsInput(ChangeEventArgs e)
-    {
-        Context.TagList = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

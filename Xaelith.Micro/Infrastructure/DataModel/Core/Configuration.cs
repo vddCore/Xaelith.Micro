@@ -26,6 +26,9 @@ public record CoreSettings
 {
     [JsonProperty("is_installed")]
     public bool IsInstalled { get; set; }
+
+    [JsonProperty("autosave_interval_seconds")]
+    public int AutosaveIntervalSeconds { get; set; } = 30;
 }
 
 public record GeneralSettings

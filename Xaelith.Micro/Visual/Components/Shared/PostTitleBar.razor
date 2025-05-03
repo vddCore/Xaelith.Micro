@@ -1,6 +1,15 @@
 ﻿<div class="post-titlebar">
     <h1 class="post-title">
-        <a href="/view/@Post.Metadata.Slug">@Post.Metadata.Title</a>
+        <a href="/view/@Post.Metadata.Slug">
+            @if (string.IsNullOrEmpty(Post.Metadata.Title))
+            {
+                @(Post.Id.ToString("D"))
+            }
+            else
+            {
+                @Post.Metadata.Title
+            }
+        </a>
     </h1>
 
     <PostToolbar Post="@Post" />

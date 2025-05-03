@@ -1,16 +1,20 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
 
 using Newtonsoft.Json;
+using Slugify;
+using Xaelith.Micro.Infrastructure.DataModel.Admin;
 using Xaelith.Micro.Infrastructure.DataModel.Core;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 using Xaelith.Micro.Infrastructure.Utilities;
 
 public class ContentService : IContentService
 {
+    private readonly SlugHelper _slugHelper;
     private readonly IConfigService _configService;
 
     public ContentService(IConfigService configService)
     {
+        _slugHelper = new SlugHelper();
         _configService = configService;
         
         Directory.CreateDirectory(WellKnown.Content);
@@ -117,5 +121,123 @@ public class ContentService : IContentService
             tag, out var tagDescription
         ) ? tagDescription 
           : string.Empty;
+    }
+
+    public async Task SavePostAsync(EditorContext context)
+    {
+        var postDirectory = Path.Combine(
+            WellKnown.Content,
+            context.Id.ToString("D")
+        );
+
+        var postMediaDirectory = Path.Combine(
+            postDirectory,
+            WellKnown.PostMediaDirectoryName
+        );
+        
+        Directory.CreateDirectory(postDirectory);
+        Directory.CreateDirectory(postMediaDirectory);
+
+        var postBodyPath = Path.Combine(
+            postDirectory,
+            WellKnown.PostBodyFileName
+        );
+
+        await using (var sw = new StreamWriter(postBodyPath)) 
+            await sw.WriteAsync(context.Markdown);
+
+        var postMetaPath = Path.Combine(
+            postDirectory,
+            WellKnown.PostMetadataFileName
+        );
+        
+        PostMetadata? postMeta = null;
+        
+        if (File.Exists(postMetaPath))
+        {
+            using (var sr = new StreamReader(postMetaPath))
+            {
+                postMeta = JsonConvert.DeserializeObject<PostMetadata>(
+                    await sr.ReadToEndAsync()
+                );
+            }
+        }
+
+        postMeta ??= new PostMetadata();
+        
+        postMeta.Title = context.Title;
+        postMeta.Description = context.Description;
+        postMeta.Author = context.EditingUser;
+        postMeta.Category = context.Category;
+        postMeta.Tags = context.TagList.Split(
+            ',',
+            StringSplitOptions.RemoveEmptyEntries
+            | StringSplitOptions.TrimEntries
+        ).ToList();
+        postMeta.EditDate = DateTime.Now;
+
+        if (!postMeta.PublishDate.HasValue && context.IsPublished)
+            postMeta.PublishDate = DateTime.Now;
+
+        postMeta.Published = context.IsPublished;
+
+        if (string.IsNullOrWhiteSpace(postMeta.Slug))
+        {
+            var slugBase = _slugHelper.GenerateSlug(context.Title);
+            var slug = slugBase;
+
+            var posts = GetAllPosts(p => p.Metadata.Slug.StartsWith(slugBase));
+
+            if (posts.Count > 0)
+            {
+                slug = $"{slugBase}-{posts.Count}";
+            }
+
+            postMeta.Slug = slug;
+        }
+
+        postMeta.Type = context.PostType;
+        
+        await using(var sw = new StreamWriter(postMetaPath))
+            await sw.WriteAsync(JsonConvert.SerializeObject(postMeta));
+    }
+
+    public async Task SetPublishedStateAsync(Guid postId, bool isPublished)
+    {
+        var postDirectory = Path.Combine(
+            WellKnown.Content,
+            postId.ToString("D")
+        );
+
+        var postMetaPath = Path.Combine(
+            postDirectory,
+            WellKnown.PostMetadataFileName
+        );
+        
+        PostMetadata? postMeta;
+
+        using (var sr = new StreamReader(postMetaPath))
+        {
+            postMeta = JsonConvert.DeserializeObject<PostMetadata>(
+                await sr.ReadToEndAsync()
+            );
+
+            if (postMeta == null)
+                return;
+
+            if (!postMeta.PublishDate.HasValue && isPublished)
+            {
+                postMeta.PublishDate = DateTime.Now;
+            }
+
+            postMeta.Published = isPublished;
+        }
+
+        await using (var sw = new StreamWriter(postMetaPath))
+        {
+            await sw.WriteAsync(
+                JsonConvert.SerializeObject(postMeta)
+            );
+        }
     }
 }

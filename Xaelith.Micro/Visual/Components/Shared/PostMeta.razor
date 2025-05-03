@@ -7,15 +7,22 @@
         </span>
 
         <span class="post-meta-item post-meta-date">
-            @Post.Metadata.PublishDate.ToString(
+            @(Post.Metadata.PublishDate?.ToString(
                 Configuration.Root!.General.DateFormat
-            )
+            ) ?? string.Empty)
         </span>
 
         <span class="post-meta-item post-meta-category">
-            <a href="/category/@Post.Metadata.Category">
-                @Post.Metadata.Category
-            </a>
+            @if (!string.IsNullOrWhiteSpace(Post.Metadata.Category))
+            {
+                <a href="/category/@Post.Metadata.Category">
+                    @Post.Metadata.Category
+                </a>
+            }
+            else
+            {
+                @("no category");
+            }
         </span>
 
         @if (Post.Metadata.Tags.Any())
