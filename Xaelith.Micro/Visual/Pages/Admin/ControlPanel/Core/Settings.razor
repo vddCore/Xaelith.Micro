@@ -1,17 +1,12 @@
-﻿@page "/admin/core/settings"
+﻿@layout AdminShell
+
+@page "/admin/core/settings"
 @inherits XaelithRestrictedPage
 
-<HeadContent>
-    <link rel="stylesheet" href="style/admin/panel.css" />
-</HeadContent>
+<h1 class="admin-view-title">@Title</h1>
 
-<main id="admin">
-    <AdminNav />
-    
-    <div class="admin-content">
-        <h1 class="admin-view-title">@Title</h1>
-    </div>
-</main>
+<div class="admin-inner-content">
+</div>
 
 @code {
     [CascadingParameter]

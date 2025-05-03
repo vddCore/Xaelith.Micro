@@ -1,6 +1,6 @@
 ﻿@layout AdminShell
 
-@page "/admin/core/about"
+@page "/admin/manage/links"
 @inherits XaelithRestrictedPage
 
 <h1 class="admin-view-title">@Title</h1>
@@ -12,5 +12,5 @@
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
-    protected override string Title => "about";
+    protected override string Title => "categories";
 }
