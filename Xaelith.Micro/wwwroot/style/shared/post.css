@@ -147,6 +147,7 @@ section.post h1.post-title {
     text-align: left;
 
     border-left: 8px solid var(--post-title-foreground);
+    color: var(--post-title-foreground);
 }
 
 section.post h1.post-title a {

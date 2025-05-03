@@ -7,17 +7,18 @@
 </h1>
 
 <div class="admin-inner-content">
-    <TabView TabChanged="OnTabChanged">
-        <Tab Header="Edit">
-            <EditForm Model="@EditorContext">
+    <EditForm Model="@EditorContext">
+        <TabView TabChanged="OnTabChanged">
+            <Tab Header="Edit">
                 <ContentEditor Context="@EditorContext"/>
-            </EditForm>
-        </Tab>
+                <ContentPreview Context="@EditorContext" />
+            </Tab>
 
-        <Tab Header="Preview">
-            <ContentPreview Context="@EditorContext"/>
-        </Tab>
-    </TabView>
+            <Tab Header="Preview">
+                <ContentPreview Context="@EditorContext"/>
+            </Tab>
+        </TabView>
+    </EditForm>
 </div>
 
 @code {
@@ -50,8 +51,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        
-        
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
