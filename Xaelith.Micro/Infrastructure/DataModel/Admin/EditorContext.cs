@@ -1,10 +1,29 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Admin;
 
 using System.ComponentModel.DataAnnotations;
+using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
 public class EditorContext
 {
     private string _markdown = string.Empty;
+    private PostType _postType = PostType.Normal;
+
+    public Guid Id { get; set; } = Guid.NewGuid();
+
+    public PostType PostType
+    {
+        get => _postType;
+        set
+        {
+            _postType = value;
+
+            if (_postType == PostType.Static)
+            {
+                Category = string.Empty;
+                TagList = string.Empty;
+            }
+        }
+    }
 
     [Required]
     public string Title { get; set; } = string.Empty;
@@ -27,6 +46,7 @@ public class EditorContext
     }
 
     public string PreviewMarkup { get; set; } = string.Empty;
+    
     public int Lines { get; set; } = 1;
     public int Characters { get; set; }
 }

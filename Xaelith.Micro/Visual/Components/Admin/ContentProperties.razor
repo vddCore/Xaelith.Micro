@@ -23,26 +23,53 @@
 
 <div class="input-row">
     <div class="input-group">
-        <label for="md-editor-category">Category</label>
-        <select id="md-editor-category"
+        <label for="md-editor-post-type">Type</label>
+        
+        <span id="md-editor-post-type-placeholder"
+              class="combobox-placeholder">
+            Initializing...    
+        </span>
+        
+        <select id="md-editor-post-type"
                 style="display: none;"
-                @bind="Context.Category">
-            @foreach (var (name, _) in Configuration.Root!.Content.Categories)
+                @bind="@Context.PostType">
+            @foreach (var value in Enum.GetValues<PostType>())
             {
-                <option>@name</option>
+                <option value="@value">@EnumUtility.GetDisplayName(value)</option>
             }
         </select>
     </div>
 
-    <div class="input-group">
-        <label for="md-editor-tags">Tags</label>
-        <input id="md-editor-tags"
-               type="text"
-               spellcheck="false"
-               placeholder="Enter tags..."
-               @bind="@Context.TagList"
-               @oninput="OnTagsInput"/>
-    </div>
+    @if (@Context.PostType == PostType.Normal)
+    {
+        <div class="input-group">
+            <label for="md-editor-category">Category</label>
+            
+            <span id="md-editor-category-placeholder"
+                  class="combobox-placeholder">
+                Initializing...    
+            </span>
+            
+            <select id="md-editor-category"
+                    style="display: none;"
+                    @bind="Context.Category">
+                @foreach (var (name, _) in Configuration.Root!.Content.Categories)
+                {
+                    <option>@name</option>
+                }
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="md-editor-tags">Tags</label>
+            <input id="md-editor-tags"
+                   type="text"
+                   spellcheck="false"
+                   placeholder="Enter tags..."
+                   @bind="@Context.TagList"
+                   @oninput="OnTagsInput"/>
+        </div>
+    }
 </div>
 
 @code {
@@ -60,26 +87,33 @@
         Context.Description = e.Value?.ToString() ?? string.Empty;
         StateHasChanged();
     }
-    
+
     private void OnTagsInput(ChangeEventArgs e)
     {
         Context.TagList = e.Value?.ToString() ?? string.Empty;
         StateHasChanged();
     }
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync(
-                "window.xaelith.admin.initSelect",
-                "#md-editor-category",
-                false,
-                true,
-                "Select a category..."
-            );
-        }
+        await JS.InvokeVoidAsync(
+            "window.xaelith.admin.initSelect",
+            "#md-editor-category",
+            false,
+            true,
+            "Select a category...",
+            "#md-editor-category-placeholder"
+        );
+
+        await JS.InvokeVoidAsync(
+            "window.xaelith.admin.initSelect",
+            "#md-editor-post-type",
+            false,
+            false,
+            "Select a type...",
+            "#md-editor-post-type-placeholder"
+        );
     }
 }

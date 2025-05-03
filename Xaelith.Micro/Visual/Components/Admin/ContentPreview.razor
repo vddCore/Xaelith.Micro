@@ -27,42 +27,43 @@
             @((MarkupString)@Context.PreviewMarkup)
         </div>
 
-        <div class="post-meta">
-            <div class="post-meta-items">
-            <span class="post-meta-item post-meta-author">
-                @(UserContext.User?.DisplayName ?? "nobody")
-            </span>
+        @if (Context.PostType == PostType.Normal)
+        {
+            <div class="post-meta">
+                <div class="post-meta-items">
+                    <span class="post-meta-item post-meta-author">
+                        @(UserContext.User?.DisplayName ?? "nobody")
+                    </span>
 
-                <span class="post-meta-item post-meta-date">
-                @DateTime.Now.ToString(
-                        Configuration.Root!.General.DateFormat
-                    )
-            </span>
+                    <span class="post-meta-item post-meta-date">
+                        @DateTime.Now.ToString(Configuration.Root!.General.DateFormat)
+                    </span>
 
-                <span class="post-meta-item post-meta-category">
-                @if (!string.IsNullOrWhiteSpace(Context.Category))
+                    <span class="post-meta-item post-meta-category">
+                        @if (!string.IsNullOrWhiteSpace(Context.Category))
+                        {
+                            @(Context.Category)
+                        }
+                        else
+                        {
+                            @("no category")
+                        }
+                    </span>
+
+                    @if (!string.IsNullOrWhiteSpace(Context.TagList))
                     {
-                        @(Context.Category)
+                        <div class="post-meta-item post-meta-tags">
+                            <ul>
+                                @foreach (var tag in Context.TagList.Split(',', StringSplitOptions.TrimEntries))
+                                {
+                                    <li>@tag</li>
+                                }
+                            </ul>
+                        </div>
                     }
-                    else
-                    {
-                        @("no category")
-                    }
-            </span>
-
-                @if (!string.IsNullOrWhiteSpace(Context.TagList))
-                {
-                    <div class="post-meta-item post-meta-tags">
-                        <ul>
-                            @foreach (var tag in Context.TagList.Split(',', StringSplitOptions.TrimEntries))
-                            {
-                                <li>@tag</li>
-                            }
-                        </ul>
-                    </div>
-                }
+                </div>
             </div>
-        </div>
+        }
     </section>
 </div>
 

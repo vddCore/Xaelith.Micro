@@ -112,13 +112,13 @@
     width: 100%;
 }
 
-.input-row {
+.login-box .input-row {
     margin-top: 24px;
     
     justify-content: space-between;
 }
 
-.input-submit button {
+.login-box .input-submit button {
     align-self: flex-end;
     
     text-align: right;

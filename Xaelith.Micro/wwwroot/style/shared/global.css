@@ -211,10 +211,7 @@ textarea {
 .input-row {
     display: flex;
     flex-direction: row;
-    align-content: center;
     gap: 0.6rem;
-    
-    width: 100%;
 }
 
 button {
@@ -394,6 +391,8 @@ button:disabled {
     cursor: default;
     
     background-color: var(--dropdown-background);
+    
+    user-select: none;
 }
 
 .selectr-selected {
