@@ -2,7 +2,7 @@
 
 <div class="post-content">
     @{
-        var body = @Post.Body;
+        var body = Post.Body;
         
         if (string.IsNullOrWhiteSpace(body))
         {
@@ -21,11 +21,11 @@
             }
             else
             {
-                if (@Post.HasPageBreak)
+                if (Post.HasPageBreak)
                 {                        
                     @((MarkupString)Markdown.RenderBrief(
                         body,
-                        @Post.PageBreakIndex
+                        Post.PageBreakIndex
                     ))
                 }
                 else

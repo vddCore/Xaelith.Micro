@@ -11,10 +11,10 @@
     }
 }
 
-@if (@PageCount > 1)
+@if (PageCount > 1)
 {
     <div class="pagination">
-        @if (@CurrentPage > 1)
+        @if (CurrentPage > 1)
         {
             <span class="pagination-button">
                 <a href="?page=@(CurrentPage - 1)">⇐ PREV </a>
@@ -48,7 +48,7 @@
             }
         </ul>
 
-        @if (@CurrentPage < @PageCount)
+        @if (CurrentPage < PageCount)
         {
             <span class="pagination-button">
                 <a href="?page=@(CurrentPage + 1)">NEXT ⇒</a>
