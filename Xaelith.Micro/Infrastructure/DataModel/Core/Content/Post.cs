@@ -7,7 +7,7 @@ public record Post
     public Guid Id { get; set; }
     public PostMetadata Metadata { get; set; }
 
-    public string RootDirectoryDirectory { get; set; }
+    public string RootDirectory { get; set; }
 
     public string PageBreakToken { get; set; }
     public int PageBreakIndex { get; set; }
@@ -22,7 +22,7 @@ public record Post
     }
 
     public string BodyPath => Path.Combine(
-        RootDirectoryDirectory,
+        RootDirectory,
         WellKnown.PostBodyFileName
     );
 
@@ -32,7 +32,7 @@ public record Post
     {
         Id = id;
         Metadata = metadata;
-        RootDirectoryDirectory = rootDirectory;
+        RootDirectory = rootDirectory;
         PageBreakToken = pageBreakToken;
     }
 

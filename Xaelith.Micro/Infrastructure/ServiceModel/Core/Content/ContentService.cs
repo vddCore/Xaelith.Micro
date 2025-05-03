@@ -107,6 +107,19 @@ public class ContentService : IContentService
         return collection.Single();
     }
 
+    public Post? GetPostById(string id)
+    {
+        if (!Guid.TryParse(id, out var postId))
+            return null;
+
+        var collection = GetAllPosts(p => p.Id == postId);
+        
+        if (collection.Count == 0)
+            return null;
+        
+        return collection.Single();
+    }
+
     public string GetCategoryDescription(string category)
     {
         return _configService.Root!.Content.Categories.TryGetValue(

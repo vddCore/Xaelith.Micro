@@ -1,17 +1,32 @@
-﻿@page "/admin/content/edit/{postId}"
-@inherits XaelithRestrictedPage
-@layout AdminShell
+﻿@layout AdminShell
 
-<h1 class="admin-view-title">
-    @Title
-</h1>
+@page "/admin/content/edit/{postId}"
+@inherits XaelithRestrictedPage
+@implements IDisposable
+
+@inject IToastService Toast;
+@inject IAutosaveService Autosave;
+
+<h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="@EditorContext">
+    <EditForm Model="@EditorContext"
+              OnSubmit="@SavePost">
+        <div class="editor-toolbar">
+            <CustomInputCheckbox Label="publish"
+                                 Value="@EditorContext.IsPublished" 
+                                 ValueChanged="PublishedStateChanged"
+                                 ValueExpression="ProvidePublishedState"/>
+            
+            <button type="submit"
+                    class="editor-save-button">SAVE</button>
+        </div>
+
         <TabView TabChanged="OnTabChanged">
             <Tab Header="Edit">
-                <ContentEditor Context="@EditorContext"/>
-                <ContentPreview Context="@EditorContext" />
+                <ContentEditor Context="@EditorContext"
+                               OnMarkdownEdited="@OnMarkdownEdited"/>
+                <ContentProperties Context="@EditorContext"/>
             </Tab>
 
             <Tab Header="Preview">
@@ -23,14 +38,15 @@
 
 @code {
     private bool _shouldRehighlightCodeInPreview = true;
+    private bool _redirectToNew;
 
-    protected override string Title => "edit entry";
-
-    [Parameter, Required]
-    public string PostId { get; set; } = null!;
+    protected override string Title => "new entry";
 
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
+
+    [Parameter]
+    public string PostId { get; set; } = string.Empty;
 
     public EditorContext EditorContext { get; set; } = new();
 
@@ -51,10 +67,44 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+
+        var post = Content.GetPostById(PostId);
+
+        if (post == null)
+        {
+            _redirectToNew = true;
+            return;
+        }
+
+        EditorContext.Id = post.Id;
+        EditorContext.IsPublished = post.Metadata.Published;
+
+        if (string.IsNullOrWhiteSpace(post.Metadata.Author))
+        {
+            EditorContext.EditingUser = UserContext.User?.DisplayName ?? "nobody";
+        }
+        else
+        {
+            EditorContext.EditingUser = post.Metadata.Author;
+        }
+
+        EditorContext.Title = post.Metadata.Title;
+        EditorContext.Description = post.Metadata.Description;
+        EditorContext.Category = post.Metadata.Category;
+        EditorContext.TagList = string.Join(",", post.Metadata.Tags);
+        EditorContext.PostType = post.Metadata.Type;
+
+        EditorContext.Markdown = post.Body;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (_redirectToNew)
+        {
+            Navigation.NavigateTo("/admin/content/new");
+            return;
+        }
+        
         await base.OnAfterRenderAsync(firstRender);
 
         if (_shouldRehighlightCodeInPreview)
@@ -63,4 +113,38 @@
             _shouldRehighlightCodeInPreview = false;
         }
     }
+
+    private void OnMarkdownEdited(string content)
+    {
+        if (!Autosave.IsEnabled)
+        {
+            Autosave.Start(() => EditorContext);
+        }
+    }
+
+    private async Task SavePost(EditContext context)
+    {
+        Autosave.Stop();
+        
+        var editorContext = (EditorContext)context.Model;
+
+        try
+        {
+            await Content.SavePostAsync(editorContext);
+            Toast.Show("Saved!", ToastSeverity.Success);
+        }
+        catch (Exception e)
+        {
+            Toast.Show(e.Message, ToastSeverity.Error);
+        }
+    }
+    
+    private void PublishedStateChanged(bool value)
+        => EditorContext.IsPublished = value;
+
+    private bool ProvidePublishedState()
+        => EditorContext.IsPublished;
+
+    public void Dispose()
+        => Autosave.Dispose();
 }
