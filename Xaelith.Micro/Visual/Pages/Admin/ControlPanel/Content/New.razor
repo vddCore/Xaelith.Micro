@@ -5,17 +5,19 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <TabView TabChanged="OnTabChanged">
-        <Tab Header="Edit">
-            <EditForm Model="@EditorContext">
+    <EditForm Model="@EditorContext">
+        <TabView TabChanged="OnTabChanged">
+            <Tab Header="Edit">
                 <ContentEditor Context="@EditorContext"/>
-            </EditForm>
-        </Tab>
-
-        <Tab Header="Preview">
-            <ContentPreview Context="@EditorContext"/>
-        </Tab>
-    </TabView>
+                
+                <ContentProperties Context="@EditorContext" />
+            </Tab>
+            
+            <Tab Header="Preview">
+                <ContentPreview Context="@EditorContext"/>
+            </Tab>
+        </TabView>
+    </EditForm>
 </div>
 
 @code {

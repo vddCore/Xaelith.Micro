@@ -388,7 +388,9 @@ button:disabled {
 }
 
 .selectr-container,
-.selectr-selected {
+.selectr-selected,
+.selectr-container.inverted,
+.selectr-container.inverted .selectr-options-container {
     cursor: default;
     
     background-color: var(--dropdown-background);
@@ -402,6 +404,10 @@ button:disabled {
     font-size: 1rem;
     
     transition: .15s ease-in-out;
+}
+
+.selectr-container.inverted .selectr-options-container {
+    border-color: var(--dropdown-focus-border) var(--dropdown-focus-border) transparent;
 }
 
 .selectr-selected::before {
@@ -426,7 +432,8 @@ button:disabled {
     border-color: transparent transparent var(--dropdown-focus-border); 
 }
 
-.selectr-options-container {
+.selectr-options-container,
+.selectr-container.open.inverted .selectr-selected {
     background-color: var(--dropdown-background);
     border-color: transparent var(--dropdown-focus-border) var(--dropdown-focus-border);
 }

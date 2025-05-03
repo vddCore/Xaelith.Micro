@@ -1,51 +1,4 @@
-﻿@inject IConfigService Configuration;
-@inject IJSRuntime JS;
-
-<div class="input-group">
-    <label for="md-editor-title">Title</label>
-    <input id="md-editor-title"
-           type="text"
-           spellcheck="false"
-           placeholder="Enter a title..."
-           @bind="@Context.Title"
-           @oninput="OnTitleInput"/>
-</div>
-
-<div class="input-group">
-    <label for="md-editor-description">Description</label>
-    <input id="md-editor-description"
-           type="text"
-           spellcheck="false"
-           placeholder="Enter a description..."
-           @bind="@Context.Description"
-           @oninput="OnDescriptionInput"/>
-</div>
-
-<div class="input-row">
-    <div class="input-group">
-        <label for="md-editor-category">Category</label>
-        <select id="md-editor-category"
-                style="display: none;"
-                @bind="Context.Category">
-            @foreach (var (name, _) in Configuration.Root!.Content.Categories)
-            {
-                <option>@name</option>
-            }
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label for="md-editor-tags">Tags</label>
-        <input id="md-editor-tags"
-               type="text"
-               spellcheck="false"
-               placeholder="Enter tags..."
-               @bind="@Context.TagList"
-               @oninput="OnTagsInput"/>
-    </div>
-</div>
-
-<div class="input-group">
+﻿<div class="input-group">
     <label for="md-editor-area">Content</label>
 
     <textarea id="md-editor-area"
@@ -53,7 +6,7 @@
               spellcheck="false"
               placeholder="Content goes here..."
               @bind="@Context.Markdown"
-              @oninput="OnMarkdownInput"/>
+              @oninput="OnMarkdownInput"></textarea>
 
     <div class="md-editor-statusbar">
          <span class="md-editor-status md-editor-status-lines">
@@ -70,43 +23,9 @@
     [Parameter]
     public required EditorContext Context { get; set; } = null!;
 
-    private void OnTitleInput(ChangeEventArgs e)
-    {
-        Context.Title = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    private void OnDescriptionInput(ChangeEventArgs e)
-    {
-        Context.Description = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
     private void OnMarkdownInput(ChangeEventArgs e)
     {
         Context.Markdown = e.Value?.ToString() ?? string.Empty;
         StateHasChanged();
-    }
-
-    private void OnTagsInput(ChangeEventArgs e)
-    {
-        Context.TagList = e.Value?.ToString() ?? string.Empty;
-        StateHasChanged();
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync(
-                "window.xaelith.admin.initSelect",
-                "#md-editor-category",
-                false,
-                true,
-                "Select a category..."
-            );
-        }
     }
 }
