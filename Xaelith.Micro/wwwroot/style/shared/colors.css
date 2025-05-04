@@ -97,7 +97,7 @@
     --dropdown-option-hover-foreground: #ff88ff;
     --dropdown-option-selected-background: #1a0421;
     --dropdown-option-selected-foreground: #cfaee9;
-    --dropdown-clear-foreground: #f85252;
+    --dropdown-clear-foreground: #ff889c;
     
     --button-border: #ff88ffaa;
     --button-hover-border: #ff88ff;
@@ -130,4 +130,11 @@
     --toast-error-border: #ff889c;
     --toast-error-background: #ff889c22;
     --toast-error-foreground: #ff889c;
+    
+    --action-danger-foreground: #ff889cdd;
+    --action-danger-hover-foreground: #ff889c;
+    --action-danger-active-foreground: #ff889c88;
+    --action-danger-shadow: #ff889c55;
+    
+    --modal-backdrop-background: #1a0421;
 }

@@ -1,4 +1,4 @@
-﻿namespace Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
+﻿namespace Xaelith.Micro.Infrastructure.DataModel.Shared;
 
 public enum ToastSeverity
 {

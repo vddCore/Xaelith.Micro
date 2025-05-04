@@ -1,6 +1,7 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Admin.Editor;
 
 using Xaelith.Micro.Infrastructure.DataModel.Admin;
+using Xaelith.Micro.Infrastructure.DataModel.Admin.Editor;
 
 public interface IAutosaveService : IXaelithTransientService, IDisposable
 {

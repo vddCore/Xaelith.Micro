@@ -6,6 +6,19 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+    <TabView>
+        <Tab Header="Posts">
+            <ContentTable Posts="@(Content.GetAllPosts(p => p.Metadata is { Type: PostType.Normal, Published: true }))" />
+        </Tab>
+        
+        <Tab Header="Static">
+            <ContentTable Posts="@(Content.GetAllPosts(p => p.Metadata is { Type: PostType.Static, Published: true }))" />
+        </Tab>
+        
+        <Tab Header="Drafts">
+            <ContentTable Posts="@(Content.GetAllPosts(p => !p.Metadata.Published))" />
+        </Tab>
+    </TabView>
 </div>
 
 @code {

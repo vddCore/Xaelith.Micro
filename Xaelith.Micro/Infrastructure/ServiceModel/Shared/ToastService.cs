@@ -1,6 +1,6 @@
-﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.FrontEnd;
+﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Shared;
 
-using Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
+using Xaelith.Micro.Infrastructure.DataModel.Shared;
 
 public class ToastService : IToastService
 {

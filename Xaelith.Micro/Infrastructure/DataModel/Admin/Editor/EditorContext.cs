@@ -1,4 +1,4 @@
-﻿namespace Xaelith.Micro.Infrastructure.DataModel.Admin;
+﻿namespace Xaelith.Micro.Infrastructure.DataModel.Admin.Editor;
 
 using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 

@@ -27,9 +27,6 @@
     <Compile Update="Infrastructure\ServiceModel\Core\Security\BCryptPasswordHasher.cs">
       <DependentUpon>IBCryptPasswordHasher.cs</DependentUpon>
     </Compile>
-    <Compile Update="Infrastructure\ServiceModel\FrontEnd\ToastService.cs">
-      <DependentUpon>IToastService.cs</DependentUpon>
-    </Compile>
     <Compile Update="Infrastructure\ServiceModel\Core\Security\FlatFileUserStore.cs">
       <DependentUpon>IFlatFileUserStore.cs</DependentUpon>
     </Compile>

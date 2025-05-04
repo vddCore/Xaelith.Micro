@@ -496,6 +496,8 @@ section.post code {
 section.post blockquote {
     margin-left: 0;
     margin-bottom: 0;
+    margin-right: 0;
+    
     padding: 0.4rem 0.6rem;
     
     border-left: 4px solid var(--code-border);

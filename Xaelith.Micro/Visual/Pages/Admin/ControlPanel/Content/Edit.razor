@@ -2,6 +2,8 @@
 
 @page "/admin/content/edit/{postId}"
 @inherits XaelithRestrictedPage
+@using Xaelith.Micro.Infrastructure.DataModel.Shared
+@using Xaelith.Micro.Infrastructure.ServiceModel.Shared
 @implements IDisposable
 
 @inject IToastService Toast;
@@ -40,7 +42,7 @@
     private bool _shouldRehighlightCodeInPreview = true;
     private bool _redirectToNew;
 
-    protected override string Title => "new entry";
+    protected override string Title => "edit";
 
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;

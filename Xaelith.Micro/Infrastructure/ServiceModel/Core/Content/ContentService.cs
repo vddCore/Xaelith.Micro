@@ -3,6 +3,7 @@
 using Newtonsoft.Json;
 using Slugify;
 using Xaelith.Micro.Infrastructure.DataModel.Admin;
+using Xaelith.Micro.Infrastructure.DataModel.Admin.Editor;
 using Xaelith.Micro.Infrastructure.DataModel.Core;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 using Xaelith.Micro.Infrastructure.Utilities;
@@ -134,6 +135,17 @@ public class ContentService : IContentService
             tag, out var tagDescription
         ) ? tagDescription 
           : string.Empty;
+    }
+
+    public void DeletePost(Guid postId)
+    {
+        var postRoot = Path.Combine(
+            WellKnown.Content,
+            postId.ToString("D")
+        );
+        
+        if (Directory.Exists(postRoot))
+            Directory.Delete(postRoot, true);
     }
 
     public async Task SavePostAsync(EditorContext context)

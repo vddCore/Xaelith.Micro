@@ -1,0 +1,73 @@
+﻿@inject IModalService Modals;
+@inject IContentService Content;
+@inject IJSRuntime JS;
+
+<table class="content-table">
+    <thead>
+    <tr>
+        <th class="title">title</th>
+        <th class="category">category</th>
+        <th class="author">author</th>
+        <th class="date-published">date published</th>
+        <th class="actions">actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var post in Posts)
+    {
+        <tr>
+            <td class="title">
+                <a href="/admin/content/edit/@(post.Id.ToString("D"))">
+                    @if (post.Metadata.Type == PostType.Normal)
+                    {
+                        <i class="las la-file-alt"></i>
+                    }
+                    else
+                    {
+                        <i class="las la-pen-fancy"></i>
+                    }
+                    @post.Metadata.Title
+                </a>
+            </td>
+            
+            @if (!string.IsNullOrWhiteSpace(post.Metadata.Category))
+            {
+                <td class="category">@post.Metadata.Category</td>
+            }
+            else
+            {
+                <td class="category missing">no category</td>
+            }
+            
+            <td class="author">@post.Metadata.Author</td>
+            <td class="date-published">@post.Metadata.PublishDate</td>
+            <td class="actions">
+                <ul class="content-tools-list">
+                    <li>
+                        <a href="/view/@post.Metadata.Slug" target="_blank">VIEW</a>
+                    </li>
+
+                    <li>
+                        <a class="danger" @onclick="(async () => await DeleteClicked(@post))">DELETE</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public required IEnumerable<Post> Posts { get; set; }
+
+    private async Task DeleteClicked(Post post)
+    {
+        await Modals.ShowAsync()
+        if (confirm)
+        {
+            Content.DeletePost(post.Id);
+            StateHasChanged();
+        }
+    }
+}

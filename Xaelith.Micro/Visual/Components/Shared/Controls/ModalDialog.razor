@@ -1,0 +1,69 @@
+﻿@implements IDisposable
+@inject IModalService Modals
+
+<div class="modal-backdrop @(IsOpen ? "open" : "")">
+    <div class="modal-box @(_modalData != null ? "open" : "") @(_modalData?.Severity.ToString().ToLower() ?? string.Empty)">
+        <h1 class="modal-title">@(_modalData?.Title ?? "title is missing")</h1>
+        <p class="modal-message">@(_modalData?.Message ?? "message is missing")</p>
+
+        <div class="modal-actions">
+            <button type="button" @onclick="Confirm">Delete</button>
+            <button type="button" @onclick="Cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ModalData? _modalData;
+
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Modals.OnDisplayed += OnDisplayed;
+    }
+
+    private async void OnDisplayed(ModalData modalData)
+    {
+        try
+        {
+            _modalData = modalData;
+            await InvokeAsync(StateHasChanged);
+            Modals.Displayed();
+        }
+        catch
+        {
+            /* Ignore */
+        }
+    }
+
+    private async Task Confirm()
+    {
+        if (_modalData?.OnClosed.HasDelegate ?? false)
+        {
+            await _modalData.OnClosed.InvokeAsync(true);
+        }
+
+        IsOpen = false;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Cancel()
+    {
+        if (_modalData?.OnClosed.HasDelegate ?? false)
+        {
+            await _modalData.OnClosed.InvokeAsync(false);
+        }
+        
+        IsOpen = false;
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Modals.OnDisplayed -= OnDisplayed;
+    }
+}

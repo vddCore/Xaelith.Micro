@@ -86,16 +86,14 @@ a:active {
 
 .filter-header h2 {
     padding: 0;
-    margin: 0;
-    margin-top: -8px;
+    margin: -8px 0 0;
     font-size: 1.6rem;
 
     color: var(--filter-header-subtitle-foreground);
 }
 
 .filter-header {
-    margin: 0;
-    margin-bottom: 8px;
+    margin: 0 0 8px;
 
     text-align: center;
 }
@@ -127,6 +125,37 @@ a:active {
     padding: 0;
 
     display: inline;
+}
+
+table {
+    empty-cells: show;
+    width: 100%;
+
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    border: 1px solid var(--table-border);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 4px;
+
+    background-color: var(--table-background);
+}
+
+table thead {
+    vertical-align: bottom;
+
+    color: var(--table-header-foreground);
+    background-color: var(--table-header-background);
+}
+
+table tr:nth-child(2n) {
+    background-color: var(--table-even-row-background);
+}
+
+table th,
+table td {
+    padding: 0.25em 0.5em;
 }
 
 label {
@@ -173,7 +202,7 @@ textarea {
 }
 
 input[type="text"]::placeholder,
-input[type="password"]::placeholder
+input[type="password"]::placeholder,
 textarea::placeholder {
     text-transform: uppercase;
 
@@ -527,4 +556,41 @@ button:disabled {
 
 .toast.show {
     transform: translateX(0%);
+}
+
+.danger {
+    color: var(--action-danger-foreground);
+}
+
+.danger:hover {
+    color: var(--action-danger-hover-foreground);
+    text-shadow: 0 0 5px var(--action-danger-shadow);
+}
+
+.danger:active {
+    color: var(--action-danger-active-foreground);
+}
+
+.modal-backdrop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    opacity: 0;
+    z-index: 3;
+
+    background-color: var(--modal-backdrop-background);
+
+    backdrop-filter: blur(10px);
+    transition: opacity 0.2s ease-in-out;
+}
+
+.modal-backdrop.open {
+    opacity: 1;
 }
