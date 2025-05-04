@@ -13,16 +13,16 @@
     <EditForm Model="@EditorContext"
               OnSubmit="@SavePost">
         <div class="editor-toolbar">
+            <button type="submit"
+                    class="editor-save-button">SAVE</button>
+            
             <CustomInputCheckbox Label="publish"
                                  Value="@EditorContext.IsPublished" 
                                  ValueChanged="PublishedStateChanged"
                                  ValueExpression="ProvidePublishedState"/>
-            
-            <button type="submit"
-                    class="editor-save-button">SAVE</button>
         </div>
 
-        <TabView TabChanged="OnTabChanged">
+        <TabView Classes="md-editor-tabview" TabChanged="OnTabChanged">
             <Tab Header="Edit">
                 <ContentEditor Context="@EditorContext"
                                OnMarkdownEdited="@OnMarkdownEdited"/>

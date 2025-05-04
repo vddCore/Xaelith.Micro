@@ -1,11 +1,65 @@
 ﻿@layout AdminShell
 
 @page "/admin/manage/categories"
+
+@inject IToastService Toasts;
+
 @inherits XaelithRestrictedPage
 
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+    <EditForm Model="Context" OnSubmit="@UpdateCategories">
+        <div class="editor-toolbar">
+            <button class="editor-save-button" type="submit">SAVE</button>
+
+            <button class="category-editor-add-button"
+                    type="button"
+                    @onclick="AddEmptyCategory">
+                NEW CATEGORY
+            </button>
+        </div>
+
+        <div class="category-editor">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th class="category">category</th>
+                    <th class="actions">actions</th>
+                </tr>
+                </thead>
+                @for (var i = 0; i < Context.Categories.Count; i++)
+                {
+                    <tr>
+                        @{
+                            var index = i;
+
+                            <td class="category">
+                                <input type="text"
+                                       id="category-name-@index"
+                                       class="category-name-edit-field"
+                                       @bind="@Context.Categories[index].Name"
+                                       placeholder="Awaiting category name..."/>
+
+                                <input type="text"
+                                       id="category-description-@index"
+                                       class="category-description-edit-field"
+                                       @bind="@Context.Categories[index].Description"
+                                       placeholder="Awaiting category description..."/>
+                            </td>
+
+                            <td class="actions">
+                                <a class="danger"
+                                   @onclick="@(() => DeleteCategory(index))">
+                                    DELETE
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </EditForm>
 </div>
 
 @code {
@@ -13,4 +67,69 @@
     public UserContext UserContext { get; set; } = null!;
 
     protected override string Title => "categories";
+
+    private CategoryEditContext Context { get; } = new();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        foreach (var (name, description) in Configuration.Root!.Content.Categories)
+        {
+            Context.Categories.Add(new CategoryEditContext.Category
+            {
+                Name = name,
+                Description = description
+            });
+        }
+
+        Context.Categories = Context.Categories.OrderBy(x => x.Name
+        ).ToList();
+    }
+
+    private void UpdateCategories(EditContext editContext)
+    {
+        var context = (CategoryEditContext)editContext.Model;
+
+        foreach (var category in context.Categories)
+        {
+            if (string.IsNullOrWhiteSpace(category.Name))
+                continue;
+
+            Configuration.Root!.Content.Categories[category.Name] = category.Description;
+        }
+
+        try
+        {
+            context.Categories = context.Categories
+                .OrderBy(x => x.Name)
+                .ToList();
+            StateHasChanged();
+
+            Configuration.Save();
+            Toasts.Show(
+                "Categories updated",
+                ToastSeverity.Success
+            );
+        }
+        catch (Exception e)
+        {
+            Toasts.Show(
+                $"Failed to update categories: {e.Message}",
+                ToastSeverity.Error
+            );
+        }
+    }
+
+    private void AddEmptyCategory()
+    {
+        Context.Categories.Insert(0, new CategoryEditContext.Category());
+        StateHasChanged();
+    }
+
+    private void DeleteCategory(int index)
+    {
+        Context.Categories.RemoveAt(index);
+        StateHasChanged();
+    }
 }

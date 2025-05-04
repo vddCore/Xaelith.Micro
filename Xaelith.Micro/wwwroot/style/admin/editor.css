@@ -13,6 +13,10 @@
     --md-editor-toolbar-save-button-hover-shadow: #73e4af55;
 }
 
+main#admin .md-editor-tabview {
+    margin-top: -42px;
+}
+
 main#admin #md-editor-area {
     height: 760px;
     padding: 12px;
@@ -53,41 +57,4 @@ main#admin .md-editor-statusbar {
 main#admin .content-preview {
     margin-left: 3px;
     height: 100%;
-}
-
-main#admin .editor-toolbar {
-    margin-top: -2px;
-    float: right;
-}
-
-main#admin .editor-toolbar .custom-checkbox {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
-}
-
-main#admin .editor-toolbar .editor-save-button {
-    border-color: var(--md-editor-toolbar-save-button-border);
-    
-    color: var(--md-editor-toolbar-save-button-foreground);
-}
-
-main#admin .editor-toolbar .editor-save-button:hover {
-    border-color: var(--md-editor-toolbar-save-button-hover-border);
-    
-    color: var(--md-editor-toolbar-save-button-hover-foreground);
-    
-    text-shadow: 0 0 4px var(--md-editor-toolbar-save-button-hover-shadow);
-}
-
-main#admin .editor-toolbar .editor-save-button:active {
-    border-color: var(--md-editor-toolbar-save-button-active-border);
-    
-    color: var(--md-editor-toolbar-save-button-active-foreground);
-}
-
-main#admin .editor-toolbar .editor-save-button:disabled {
-    border-color: var(--md-editor-toolbar-save-button-disabled-border);
-    
-    color: var(--md-editor-toolbar-save-button-disabled-foreground);
 }

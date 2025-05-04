@@ -263,3 +263,88 @@ main#admin ul.content-tools-list {
 main#admin ul.content-tools-list li {
     display: inline-block;
 }
+
+main#admin .editor-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 16px;
+    
+    margin-top: -2px;
+    margin-bottom: 8px;
+}
+
+main#admin .editor-toolbar .custom-checkbox {
+    display: inline-block;
+    margin-top: 4px;
+}
+
+main#admin .editor-toolbar .editor-save-button {
+    height: 30px;
+    border-color: var(--md-editor-toolbar-save-button-border);
+
+    color: var(--md-editor-toolbar-save-button-foreground);
+}
+
+main#admin .editor-toolbar .editor-save-button:hover {
+    border-color: var(--md-editor-toolbar-save-button-hover-border);
+
+    color: var(--md-editor-toolbar-save-button-hover-foreground);
+
+    text-shadow: 0 0 4px var(--md-editor-toolbar-save-button-hover-shadow);
+}
+
+main#admin .editor-toolbar .editor-save-button:active {
+    border-color: var(--md-editor-toolbar-save-button-active-border);
+
+    color: var(--md-editor-toolbar-save-button-active-foreground);
+}
+
+main#admin .editor-toolbar .editor-save-button:disabled {
+    border-color: var(--md-editor-toolbar-save-button-disabled-border);
+
+    color: var(--md-editor-toolbar-save-button-disabled-foreground);
+}
+
+main#admin .category-editor{
+    margin-top: 14px;
+}
+
+main#admin .category-editor .admin-table {
+    width: 100%;
+    
+    max-height: 760px;
+    
+    border-radius: 4px;
+    border: 1px solid var(--admin-table-border);
+}
+
+main#admin .category-editor .admin-table .name,
+main#admin .category-editor .admin-table .description {
+    text-align: left;
+}
+
+main#admin .category-editor input[type="text"] {
+    display: block;
+    
+    border: none;
+    background: none;
+    
+    padding: 0;
+}
+
+main#admin .category-editor input[type="text"]:focus {
+    box-shadow: none;
+}
+
+main#admin .category-editor .category-name-edit-field {
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+main#admin .category-editor .category-editor-add-button {
+    margin-right: 16px;
+}
+
+main#admin .category-editor a {
+    user-select: none;
+}

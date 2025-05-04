@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-    <div class="tab-view">
+    <div class="tab-view @Classes">
         <div class="tab-headers">
             @foreach (var tab in Tabs)
             {
@@ -31,7 +31,10 @@
 
     [Parameter]
     public Action<Tab>? TabChanged { get; set; }
-    
+
+    [Parameter]
+    public string Classes { get; set; } = string.Empty;
+
     internal List<Tab> Tabs { get; } = [];
     internal Tab? ActiveTab { get; private set; }
 
