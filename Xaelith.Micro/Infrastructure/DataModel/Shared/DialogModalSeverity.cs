@@ -1,6 +1,6 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Shared;
 
-public enum ModalSeverity
+public enum DialogModalSeverity
 {
     Information,
     Warning,

@@ -1,21 +1,19 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Shared;
 
+using Microsoft.AspNetCore.Components;
 using Xaelith.Micro.Infrastructure.DataModel.Shared;
 
 public interface IModalService : IXaelithService
 {
-    Task ShowAsync(
-        Action<bool> onClose,
-        string title,
-        string message,
-        string confirmLabel,
-        string cancelLabel,
-        ModalSeverity severity
-    );
+    Task ShowAsync<T>(T modalData)
+        where T : ModalData;
+
+    void MapComponent<TData, TComponent>()
+        where TData : ModalData
+        where TComponent : ComponentBase;
+
+    void RegisterDisplayedCallback(Func<ModalData, Type, Task> callback);
+    void UnregisterDisplayedCallback();
 
     Task DisplayedAsync();
-    
-    void RegisterDisplayedCallback(Func<ModalData, Task> callback);
-    void UnregisterDisplayedCallback(Func<ModalData, Task> callback);
-
 }

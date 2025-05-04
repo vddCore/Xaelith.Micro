@@ -622,9 +622,7 @@ button:disabled {
 }
 
 .modal-box .modal-title {
-    margin: 0;
-    margin-left: 10px;
-    margin-bottom: 2px;
+    margin: 0 0 2px 10px;
     padding: 0;
 
     font-weight: 300;
@@ -634,10 +632,7 @@ button:disabled {
 }
 
 .modal-box p {
-    margin: 0;
-    margin-left: 11px;
-    margin-right: 10px;
-    margin-bottom: 24px;
+    margin: 0 10px 24px 11px;
 
     padding: 0;
 
@@ -649,11 +644,11 @@ button:disabled {
 .modal-box .modal-actions {
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: 24px;
 
     align-self: flex-end;
     padding-bottom: 20px;
-    padding-right: 16px;
+    padding-right: 20px;
 }
 
 .modal-box .modal-caution-tape {
@@ -686,6 +681,10 @@ button:disabled {
     color: var(--modal-dialog-danger-title-foreground);
 }
 
+.modal-box.modal-danger .modal-message {
+    color: var(--modal-dialog-danger-content-foreground);
+}
+
 .modal-box.modal-warning .modal-caution-tape {
     background: repeating-linear-gradient(
             45deg,
@@ -705,6 +704,10 @@ button:disabled {
 
 .modal-box.modal-warning .modal-title {
     color: var(--modal-dialog-warning-title-foreground);
+}
+
+.modal-box.modal-warning .modal-message {
+    color: var(--modal-dialog-warning-content-foreground);
 }
 
 .modal-box.modal-information .modal-caution-tape {
@@ -727,6 +730,11 @@ button:disabled {
 .modal-box.modal-information .modal-title {
     color: var(--modal-dialog-information-title-foreground);
 }
+
+.modal-box.modal-information .modal-message {
+    color: var(--modal-dialog-information-content-foreground);
+}
+
 
 @keyframes slide-tape {
     from {

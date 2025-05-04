@@ -2,34 +2,35 @@
 
 using Microsoft.AspNetCore.Components;
 using Xaelith.Micro.Infrastructure.DataModel.Shared;
+using Xaelith.Micro.Visual.Components.Shared.Controls.Modals;
 
 public class ModalService : IModalService
 {
     private bool _isDisplayingModal;
+    
+    private readonly Dictionary<Type, Type> _dataComponentMap = new();
     private readonly Queue<ModalData> _modalQueue = new();
+    
+    private Func<ModalData, Type, Task>? _displayedCallback;
 
-    private List<Func<ModalData, Task>> _displayedCallbacks = new();
-
-    public async Task ShowAsync(
-        Action<bool> onClose,
-        string title,
-        string message,
-        string confirmLabel,
-        string cancelLabel,
-        ModalSeverity severity)
+    public ModalService()
     {
-        _modalQueue.Enqueue(
-            new ModalData(
-                onClose,
-                title,
-                message,
-                confirmLabel,
-                cancelLabel,
-                severity
-            )
-        );
+        MapComponent<DialogModalData, DialogModal>();
+    }
+    
+    public async Task ShowAsync<T>(T modalData)
+        where T : ModalData
+    {
+        _modalQueue.Enqueue(modalData);
         
         await TryShowNext();
+    }
+
+    public void MapComponent<TData, TComponent>() 
+        where TData : ModalData 
+        where TComponent : ComponentBase
+    {
+        _dataComponentMap[typeof(TData)] = typeof(TComponent);
     }
 
     private async Task TryShowNext()
@@ -37,15 +38,16 @@ public class ModalService : IModalService
         if (_isDisplayingModal || _modalQueue.Count == 0)
             return;
         
-        _isDisplayingModal = true;
-        
-        var modal = _modalQueue.Dequeue();
+        var modalData = _modalQueue.Dequeue();
+        var modalDataType = modalData.GetType();
+        if (!_dataComponentMap.TryGetValue(modalDataType, out var componentType))
+            return;
 
-        var tasks = new List<Task>();
-        foreach (var callback in _displayedCallbacks)
-            tasks.Add(callback(modal));
+        if (_displayedCallback == null)
+            return;
         
-        await Task.WhenAll(tasks);
+        _isDisplayingModal = true;
+        await _displayedCallback(modalData, componentType);
     }
 
     public async Task DisplayedAsync()
@@ -54,12 +56,9 @@ public class ModalService : IModalService
         await TryShowNext();
     }
 
-    public void RegisterDisplayedCallback(Func<ModalData, Task> callback)
-    {
-        if (!_displayedCallbacks.Contains(callback))
-            _displayedCallbacks.Add(callback);
-    }
+    public void RegisterDisplayedCallback(Func<ModalData, Type, Task> callback)
+        => _displayedCallback = callback;
 
-    public void UnregisterDisplayedCallback(Func<ModalData, Task> callback)
-        => _displayedCallbacks.Remove(callback);
+    public void UnregisterDisplayedCallback()
+        => _displayedCallback = null;
 }

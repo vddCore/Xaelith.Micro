@@ -11,6 +11,7 @@
         <th class="actions">actions</th>
     </tr>
     </thead>
+    
     <tbody>
     @foreach (var post in Posts)
     {
@@ -28,7 +29,7 @@
                     @post.Metadata.Title
                 </a>
             </td>
-            
+
             @if (!string.IsNullOrWhiteSpace(post.Metadata.Category))
             {
                 <td class="category">@post.Metadata.Category</td>
@@ -37,7 +38,7 @@
             {
                 <td class="category missing">no category</td>
             }
-            
+
             <td class="author">@post.Metadata.Author</td>
             <td class="date-published">@post.Metadata.PublishDate</td>
             <td class="actions">
@@ -66,26 +67,28 @@
     private async Task DeleteClicked(Post post)
     {
         await Modals.ShowAsync(
-            async (confirm) =>
-            {
-                if (confirm)
+            new DialogModalData(
+                "Delete entry?",
+                $"Confirm deletion of '{post.Metadata.Title}.'" +
+                $"<br/>This action is irreversible.",
+                "Confirm",
+                "Abort",
+                DialogModalSeverity.Danger,
+                async void (confirm) =>
                 {
-                    Content.DeletePost(post.Id);
-
-                    if (ReloadRequested.HasDelegate)
+                    if (confirm)
                     {
-                        await ReloadRequested.InvokeAsync();
+                        Content.DeletePost(post.Id);
+
+                        if (ReloadRequested.HasDelegate)
+                        {
+                            await ReloadRequested.InvokeAsync();
+                        }
+
+                        StateHasChanged();
                     }
-                    
-                    StateHasChanged();
                 }
-            },
-            "Delete entry?",
-            $"Confirm deletion of '{post.Metadata.Title}.'" +
-            $"<br/>This action is irreversible.",
-            "Confirm",
-            "Abort",
-            ModalSeverity.Danger
+            )
         );
     }
 }

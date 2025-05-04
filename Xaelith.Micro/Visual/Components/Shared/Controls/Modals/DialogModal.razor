@@ -1,0 +1,39 @@
+﻿@inherits ModalBase<DialogModalData>
+
+<div class="modal-box @(ModalData?.IsOpen ?? false ? "open" : "") modal-@(ModalData?.Severity.ToString().ToLower() ?? "information")">
+    <div class="modal-caution-tape"></div>
+    <div class="modal-box-content">
+        <h1 class="modal-title">@((MarkupString)(ModalData?.Title ?? "title is missing"))</h1>
+        <p class="modal-message">@((MarkupString)(ModalData?.Message ?? "message is missing"))</p>
+
+        <div class="modal-actions">
+            <button type="button" @onclick="Confirm">Delete</button>
+            <button type="button" @onclick="Cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private async Task Confirm()
+    {
+        if (ModalData != null)
+        {
+            ModalData.Close(true);
+
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(200);
+        }
+    }
+
+    private async Task Cancel()
+    {
+        if (ModalData != null)
+        {
+            ModalData.Close(false);
+            
+            await Task.Delay(200);
+            await InvokeAsync(StateHasChanged);
+        }
+
+    }
+}

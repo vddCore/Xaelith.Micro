@@ -1,10 +1,12 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Shared;
 
-public record ModalData(
-    Action<bool> OnClosed,
-    string Title,
-    string Message,
-    string ConfirmLabel,
-    string CancelLabel,
-    ModalSeverity Severity
-);
+public abstract record ModalData(Action<bool> OnClosed)
+{
+    public bool IsOpen { get; set; }
+
+    public void Close(bool result)
+    {
+        OnClosed(result);
+        IsOpen = false;
+    }
+}

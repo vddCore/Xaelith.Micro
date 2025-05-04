@@ -141,19 +141,22 @@
 
     --modal-dialog-information-tape-foreground: #ff88ff11;
     --modal-dialog-information-tape-foreground2: #ff88ffaa;
-    --modal-dialog-information-title-foreground: #ff88ff;
+    --modal-dialog-information-title-foreground: #ff88ffdd;
+    --modal-dialog-information-content-foreground: #cfaee9;
     --modal-dialog-information-border: #ff88ff;
     --modal-dialog-information-shadow: #ff88ff55;
     
     --modal-dialog-warning-tape-foreground: #ffcf8811;
     --modal-dialog-warning-tape-foreground2: #ffcf88aa;
-    --modal-dialog-warning-title-foreground: #ffcf88;
+    --modal-dialog-warning-title-foreground: #ffcf88dd;
+    --modal-dialog-warning-content-foreground: #ffcf88;
     --modal-dialog-warning-border: #ffcf88;
     --modal-dialog-warning-shadow: #ffcf8855;
     
     --modal-dialog-danger-tape-foreground: #ff889c11;
     --modal-dialog-danger-tape-foreground2: #ff889caa;
     --modal-dialog-danger-title-foreground: #ff889c;
+    --modal-dialog-danger-content-foreground: #ff889cdd;
     --modal-dialog-danger-border: #ff889c;
     --modal-dialog-danger-shadow: #ff889c55;
 }

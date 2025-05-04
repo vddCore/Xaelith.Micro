@@ -1,0 +1,53 @@
+﻿@implements IDisposable
+
+<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
+    @if (ComponentType != null)
+    {
+        <DynamicComponent Type="@ComponentType" Parameters="ModalParameters"/>
+    }
+</div>
+
+@code {
+    [Inject]
+    protected IModalService Modal { get; set; } = null!;
+
+    protected ModalData? ModalData { get; private set; }
+    protected Dictionary<string, object?> ModalParameters { get; } = new();
+    
+    private Type? ComponentType { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Modal.RegisterDisplayedCallback(OnDisplayed);
+    }
+    
+    private async Task OnDisplayed(ModalData modalData, Type componentType)
+    {
+        try
+        {
+            ModalData = modalData;
+            ModalParameters[nameof(ModalData)] = modalData;
+            
+            ComponentType = componentType;
+            ModalData.IsOpen = true;
+            
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(200);
+
+            while (ModalData.IsOpen)
+                await Task.Delay(1);
+            
+            await Modal.DisplayedAsync();            
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            /* Ignore */
+        }
+    }
+    
+    public void Dispose()
+    {
+        Modal.UnregisterDisplayedCallback();
+    }
+}
