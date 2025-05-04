@@ -305,7 +305,7 @@ main#admin .editor-toolbar .editor-save-button:disabled {
     color: var(--md-editor-toolbar-save-button-disabled-foreground);
 }
 
-main#admin .category-editor{
+main#admin .category-editor {
     margin-top: 14px;
 }
 
@@ -341,8 +341,8 @@ main#admin .category-editor .category-name-edit-field {
     font-weight: 500;
 }
 
-main#admin .category-editor .category-editor-add-button {
-    margin-right: 16px;
+main#admin .category-editor-add-button {
+    margin-right: auto;
 }
 
 main#admin .category-editor a {

@@ -2,5 +2,6 @@
 
 public record ToastData(
     string Message,
-    ToastSeverity Severity
+    ToastSeverity Severity,
+    int DelayMilliseconds = 2000
 );

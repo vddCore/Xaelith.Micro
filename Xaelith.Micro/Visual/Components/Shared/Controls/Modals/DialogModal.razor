@@ -7,8 +7,8 @@
         <p class="modal-message">@((MarkupString)(ModalData?.Message ?? "message is missing"))</p>
 
         <div class="modal-actions">
-            <button type="button" @onclick="Confirm">Delete</button>
-            <button type="button" @onclick="Cancel">Cancel</button>
+            <button type="button" @onclick="Confirm">@(ModalData?.ConfirmLabel ?? "Proceed")</button>
+            <button type="button" @onclick="Cancel">@(ModalData?.CancelLabel ?? "Cancel")</button>
         </div>
     </div>
 </div>

@@ -7,9 +7,14 @@ public class ToastService : IToastService
     public event Action<ToastData>? OnDisplayed;
 
     private bool _isDisplayingToast;
+    private ToastData? _toastData;
+    
     private readonly Queue<ToastData> _toastQueue = new();
     
-    public void Show(string message, ToastSeverity severity)
+    public void Show(
+        string message,
+        ToastSeverity severity,
+        int delayMilliseconds = 2000)
     {
         _toastQueue.Enqueue(new(message, severity));
         TryShowNext();
@@ -22,13 +27,13 @@ public class ToastService : IToastService
         
         _isDisplayingToast = true;
         
-        var toast = _toastQueue.Dequeue();
-        OnDisplayed?.Invoke(toast);
+        _toastData = _toastQueue.Dequeue();
+        OnDisplayed?.Invoke(_toastData);
     }
 
     public async Task DisplayedAsync()
     {
-        await Task.Delay(2000);
+        await Task.Delay(_toastData?.DelayMilliseconds ?? 2000);
         _isDisplayingToast = false;
         TryShowNext();
     }

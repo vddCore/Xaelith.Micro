@@ -6,6 +6,11 @@ public interface IToastService : IXaelithService
 {
     event Action<ToastData> OnDisplayed;
     
-    void Show(string message, ToastSeverity severity);
+    void Show(
+        string message,
+        ToastSeverity severity,
+        int delayMilliseconds = 2000
+    );
+    
     Task DisplayedAsync();
 }

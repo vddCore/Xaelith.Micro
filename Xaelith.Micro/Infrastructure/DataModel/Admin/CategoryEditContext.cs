@@ -2,11 +2,11 @@
 
 public class CategoryEditContext
 {
-    public class Category
+    public record Category(string name, string description)
     {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string Name { get; set; } = name;
+        public string Description { get; set; } = description;
     }
-    
+
     public List<Category> Categories { get; set; } = [];
 }

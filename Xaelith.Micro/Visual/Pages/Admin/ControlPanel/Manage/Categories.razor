@@ -2,6 +2,7 @@
 
 @page "/admin/manage/categories"
 
+@inject IModalService Modals;
 @inject IToastService Toasts;
 
 @inherits XaelithRestrictedPage
@@ -12,6 +13,12 @@
     <EditForm Model="Context" OnSubmit="@UpdateCategories">
         <div class="editor-toolbar">
             <button class="editor-save-button" type="submit">SAVE</button>
+
+            <button class="category-editor-reset-button"
+                    type="button"
+                    @onclick="ResetState">
+                DISCARD
+            </button>
 
             <button class="category-editor-add-button"
                     type="button"
@@ -69,6 +76,7 @@
     protected override string Title => "categories";
 
     private CategoryEditContext Context { get; } = new();
+    private List<CategoryEditContext.Category> PreviousState { get; set; } = [];
 
     protected override void OnInitialized()
     {
@@ -76,15 +84,14 @@
 
         foreach (var (name, description) in Configuration.Root!.Content.Categories)
         {
-            Context.Categories.Add(new CategoryEditContext.Category
-            {
-                Name = name,
-                Description = description
-            });
+            Context.Categories.Add(new(name, description));
         }
 
-        Context.Categories = Context.Categories.OrderBy(x => x.Name
-        ).ToList();
+        Context.Categories = Context.Categories
+            .OrderBy(x => x.Name)
+            .ToList();
+
+        PreviousState = new(Context.Categories);
     }
 
     private void UpdateCategories(EditContext editContext)
@@ -101,10 +108,35 @@
 
         try
         {
+            var uniqueEntries = context.Categories.Select(x => x.Name).Distinct();
+            
+            if (uniqueEntries.Count() != context.Categories.Count)
+            {
+                Toasts.Show(
+                    "Category names must be unique",
+                    ToastSeverity.Error,
+                    3500
+                );
+
+                return;
+            }
+
+            if (context.Categories.SequenceEqual(PreviousState))
+            {
+                Toasts.Show(
+                    "No changes detected - nothing to save",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+
             context.Categories = context.Categories
                 .OrderBy(x => x.Name)
                 .ToList();
-            StateHasChanged();
+
+            PreviousState = new(context.Categories);
 
             Configuration.Save();
             Toasts.Show(
@@ -122,14 +154,27 @@
     }
 
     private void AddEmptyCategory()
-    {
-        Context.Categories.Insert(0, new CategoryEditContext.Category());
-        StateHasChanged();
-    }
+        => Context.Categories.Insert(0, new(string.Empty, string.Empty));
 
     private void DeleteCategory(int index)
+        => Context.Categories.RemoveAt(index);
+
+    private async Task ResetState()
     {
-        Context.Categories.RemoveAt(index);
-        StateHasChanged();
+        await Modals.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding any changes made.<br/>" +
+                "This action is irreversible.",
+                "Discard",
+                "Cancel",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        Context.Categories = [..PreviousState];
+                }
+            )
+        );
     }
 }
