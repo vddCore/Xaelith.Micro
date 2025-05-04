@@ -1,9 +1,7 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Shared;
 
-using Microsoft.AspNetCore.Components;
-
 public record ModalData(
-    EventCallback<bool> OnClosed,
+    Action<bool> OnClosed,
     string Title,
     string Message,
     string ConfirmLabel,

@@ -7,16 +7,40 @@
 
 <div class="admin-inner-content">
     <TabView>
-        <Tab Header="Posts">
-            <ContentTable Posts="@(Content.GetAllPosts(p => p.Metadata is { Type: PostType.Normal, Published: true }))" />
-        </Tab>
+        <Tab Header="Blog Posts">
+            @if (BlogPosts.Any())
+            {
+                <ContentTable Posts="@(BlogPosts)"
+                              ReloadRequested="OnBlogPostsReloadRequested"/>
+            }
+            else
+            {
+                @("There are no blog posts to display.")
+            }
+       </Tab>
         
         <Tab Header="Static">
-            <ContentTable Posts="@(Content.GetAllPosts(p => p.Metadata is { Type: PostType.Static, Published: true }))" />
-        </Tab>
+            @if (StaticPages.Any())
+            {
+                <ContentTable Posts="@(StaticPages)"
+                              ReloadRequested="OnStaticPagesReloadRequested"/>
+            }
+            else
+            {
+                @("There are no static pages to display.")
+            }
+       </Tab>
         
         <Tab Header="Drafts">
-            <ContentTable Posts="@(Content.GetAllPosts(p => !p.Metadata.Published))" />
+            @if (Drafts.Any())
+            {
+                <ContentTable Posts="@(Drafts)"
+                              ReloadRequested="OnDraftsReloadRequested"/>
+            }
+            else
+            {
+                @("There are no drafts to display.")
+            }
         </Tab>
     </TabView>
 </div>
@@ -25,5 +49,36 @@
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
+    private List<Post> BlogPosts { get; set; } = new();
+    private List<Post> StaticPages { get; set; } = new();
+    private List<Post> Drafts { get; set; } = new();
+
     protected override string Title => "content";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        ReloadBlogPosts();
+        ReloadStaticPages();
+        ReloadDrafts();
+    }
+
+    private void OnBlogPostsReloadRequested()
+        => ReloadBlogPosts();
+
+    private void OnStaticPagesReloadRequested()
+        => ReloadStaticPages();
+
+    private void OnDraftsReloadRequested()
+        => ReloadDrafts();
+
+    private void ReloadBlogPosts()
+        => BlogPosts = Content.GetAllPosts(p => p.Metadata is { Type: PostType.Normal, Published: true });
+
+    private void ReloadStaticPages()
+        => StaticPages = Content.GetAllPosts(p => p.Metadata is { Type: PostType.Static, Published: true });
+
+    private void ReloadDrafts()
+        => Drafts = Content.GetAllPosts(p => !p.Metadata.Published);
 }

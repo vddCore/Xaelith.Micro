@@ -3,6 +3,6 @@
 public enum ModalSeverity
 {
     Information,
-    Caution,
+    Warning,
     Danger
 }

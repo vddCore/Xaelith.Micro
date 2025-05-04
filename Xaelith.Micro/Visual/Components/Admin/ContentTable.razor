@@ -1,6 +1,5 @@
 ﻿@inject IModalService Modals;
 @inject IContentService Content;
-@inject IJSRuntime JS;
 
 <table class="content-table">
     <thead>
@@ -24,7 +23,7 @@
                     }
                     else
                     {
-                        <i class="las la-pen-fancy"></i>
+                        <i class="las la-pen-alt"></i>
                     }
                     @post.Metadata.Title
                 </a>
@@ -48,7 +47,7 @@
                     </li>
 
                     <li>
-                        <a class="danger" @onclick="(async () => await DeleteClicked(@post))">DELETE</a>
+                        <a class="danger" @onclick="@(() => DeleteClicked(post))">DELETE</a>
                     </li>
                 </ul>
             </td>
@@ -61,13 +60,32 @@
     [Parameter]
     public required IEnumerable<Post> Posts { get; set; }
 
+    [Parameter]
+    public EventCallback ReloadRequested { get; set; }
+
     private async Task DeleteClicked(Post post)
     {
-        await Modals.ShowAsync()
-        if (confirm)
-        {
-            Content.DeletePost(post.Id);
-            StateHasChanged();
-        }
+        await Modals.ShowAsync(
+            async (confirm) =>
+            {
+                if (confirm)
+                {
+                    Content.DeletePost(post.Id);
+
+                    if (ReloadRequested.HasDelegate)
+                    {
+                        await ReloadRequested.InvokeAsync();
+                    }
+                    
+                    StateHasChanged();
+                }
+            },
+            "Delete entry?",
+            $"Confirm deletion of '{post.Metadata.Title}.'" +
+            $"<br/>This action is irreversible.",
+            "Confirm",
+            "Abort",
+            ModalSeverity.Danger
+        );
     }
 }

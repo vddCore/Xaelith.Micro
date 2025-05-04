@@ -5,13 +5,13 @@ using Xaelith.Micro.Infrastructure.DataModel.Shared;
 
 public class ModalService : IModalService
 {
-    public event Action<ModalData>? OnDisplayed;
-
     private bool _isDisplayingModal;
     private readonly Queue<ModalData> _modalQueue = new();
-    
+
+    private List<Func<ModalData, Task>> _displayedCallbacks = new();
+
     public async Task ShowAsync(
-        EventCallback<bool> onClose,
+        Action<bool> onClose,
         string title,
         string message,
         string confirmLabel,
@@ -29,10 +29,10 @@ public class ModalService : IModalService
             )
         );
         
-        TryShowNext();
+        await TryShowNext();
     }
 
-    private void TryShowNext()
+    private async Task TryShowNext()
     {
         if (_isDisplayingModal || _modalQueue.Count == 0)
             return;
@@ -40,12 +40,26 @@ public class ModalService : IModalService
         _isDisplayingModal = true;
         
         var modal = _modalQueue.Dequeue();
-        OnDisplayed?.Invoke(modal);
+
+        var tasks = new List<Task>();
+        foreach (var callback in _displayedCallbacks)
+            tasks.Add(callback(modal));
+        
+        await Task.WhenAll(tasks);
     }
 
-    public void Displayed()
+    public async Task DisplayedAsync()
     {
         _isDisplayingModal = false;
-        TryShowNext();
+        await TryShowNext();
     }
+
+    public void RegisterDisplayedCallback(Func<ModalData, Task> callback)
+    {
+        if (!_displayedCallbacks.Contains(callback))
+            _displayedCallbacks.Add(callback);
+    }
+
+    public void UnregisterDisplayedCallback(Func<ModalData, Task> callback)
+        => _displayedCallbacks.Remove(callback);
 }

@@ -33,6 +33,12 @@
     <Compile Update="Infrastructure\ServiceModel\Admin\Editor\AutosaveService.cs">
       <DependentUpon>IAutosaveService.cs</DependentUpon>
     </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Shared\ModalService.cs">
+      <DependentUpon>IModalService.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Shared\IToastService.cs">
+      <DependentUpon>ToastService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

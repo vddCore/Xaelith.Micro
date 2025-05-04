@@ -1,0 +1,83 @@
+﻿@implements IDisposable
+@inject IModalService Modals
+
+<div class="modal-backdrop @(IsOpen ? "open" : "")">
+    <div
+        class="modal-box @(IsOpen ? "open" : "") modal-@(_modalData?.Severity.ToString().ToLower() ?? "information")">
+        <div class="modal-caution-tape"></div>
+        <div class="modal-box-content">
+            <h1 class="modal-title">@((MarkupString)(_modalData?.Title ?? "title is missing"))</h1>
+            <p class="modal-message">@((MarkupString)(_modalData?.Message ?? "message is missing"))</p>
+
+            <div class="modal-actions">
+                <button type="button" @onclick="Confirm">Delete</button>
+                <button type="button" @onclick="Cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ModalData? _modalData;
+
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Modals.RegisterDisplayedCallback(OnDisplayed);
+    }
+
+    private async Task OnDisplayed(ModalData modalData)
+    {
+        try
+        {
+            _modalData = modalData;
+            IsOpen = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(200);
+
+            await InvokeAsync(StateHasChanged);
+            await Modals.DisplayedAsync();
+        }
+        catch
+        {
+            /* Ignore */
+        }
+    }
+
+    private async Task Confirm()
+    {
+        if (_modalData?.OnClosed != null)
+        {
+            _modalData.OnClosed.Invoke(true);
+        }
+
+        IsOpen = false;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(200);
+        
+        _modalData = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Cancel()
+    {
+        if (_modalData?.OnClosed != null)
+        {
+            _modalData?.OnClosed.Invoke(false);
+        }
+
+        IsOpen = false;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(200);
+        
+        _modalData = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Modals.UnregisterDisplayedCallback(OnDisplayed);
+    }
+}
