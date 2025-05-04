@@ -43,7 +43,7 @@
     private string NotFoundMessage
         => $"No post with slug <code>{Slug}</code> exists _";
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         Post = Content.GetPostBySlug(Slug);
     }

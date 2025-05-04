@@ -47,7 +47,7 @@
     private string NotFoundMessage
         => $"The are no posts under the requested category <code>{CategoryName}</code> _";
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         Posts = Content.GetAllPosts(
             p => p is

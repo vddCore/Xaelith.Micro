@@ -47,13 +47,16 @@
     private string NotFoundMessage
         => $"There are no posts tagged <code>{TagName}</code> _";
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         Posts = Content.GetAllPosts(
             p => p is
             {
-                Metadata.Published: true,
-                Metadata.Type: PostType.Normal
+                Metadata:
+                {
+                    Published: true,
+                    Type: PostType.Normal
+                }
             } && p.Metadata.Tags.Contains(TagName)
         );
     }
