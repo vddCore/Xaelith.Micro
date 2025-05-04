@@ -3,14 +3,178 @@
 @page "/admin/manage/tags"
 @inherits XaelithRestrictedPage
 
+@inject IModalService Modals;
+@inject IToastService Toasts;
+
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+    <EditForm Model="Context" OnSubmit="@UpdateTags">
+        <div class="editor-toolbar">
+            <button class="editor-save-button" type="submit">SAVE</button>
+
+            <button class="tag-editor-reset-button"
+                    type="button"
+                    @onclick="ResetState">
+                DISCARD
+            </button>
+
+            <button class="tag-editor-add-button"
+                    type="button"
+                    @onclick="AddEmptyTag">
+                NEW TAG
+            </button>
+        </div>
+
+        <div class="tag-editor">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th class="tag">tag</th>
+                    <th class="actions">actions</th>
+                </tr>
+                </thead>
+                @for (var i = 0; i < Context.Entries.Count; i++)
+                {
+                    <tr>
+                        @{
+                            var index = i;
+
+                            <td class="tag">
+                                <input type="text"
+                                       id="tag-name-@index"
+                                       class="tag-name-edit-field"
+                                       @bind="@Context.Entries[index].FirstValue"
+                                       placeholder="Awaiting tag name..."/>
+
+                                <input type="text"
+                                       id="tag-description-@index"
+                                       class="tag-description-edit-field"
+                                       @bind="@Context.Entries[index].SecondValue"
+                                       placeholder="Awaiting tag description..."/>
+                            </td>
+
+                            <td class="actions">
+                                <a class="danger"
+                                   @onclick="@(() => DeleteTag(index))">
+                                    DELETE
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </EditForm>
 </div>
+
 
 @code {
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
     protected override string Title => "tags";
+    
+    private DualValueEditContext Context { get; } = new();
+    private List<DualValueEditContext.Entry> PreviousState { get; set; } = [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        foreach (var (name, description) in Configuration.Root!.Content.Tags)
+        {
+            Context.Entries.Add(new(name, description));
+        }
+
+        Context.Entries = Context.Entries
+            .OrderBy(x => x.FirstValue)
+            .ToList();
+
+        PreviousState = new(Context.Entries);
+    }
+
+    private void UpdateTags(EditContext editContext)
+    {
+        var context = (DualValueEditContext)editContext.Model;
+
+        foreach (var tag in context.Entries)
+        {
+            if (string.IsNullOrWhiteSpace(tag.FirstValue))
+                continue;
+
+            Configuration.Root!.Content.Tags[tag.FirstValue] = tag.SecondValue;
+        }
+
+        try
+        {
+            var uniqueEntries = context.Entries.Select(x => x.FirstValue).Distinct();
+            
+            if (uniqueEntries.Count() != context.Entries.Count)
+            {
+                Toasts.Show(
+                    "Tag names must be unique",
+                    ToastSeverity.Error,
+                    3500
+                );
+
+                return;
+            }
+
+            if (context.Entries.SequenceEqual(PreviousState))
+            {
+                Toasts.Show(
+                    "No changes detected - nothing to save",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+
+            context.Entries = context.Entries
+                .OrderBy(x => x.FirstValue)
+                .ToList();
+
+            PreviousState = new(context.Entries);
+
+            Configuration.Save();
+            Toasts.Show(
+                "Tags updated",
+                ToastSeverity.Success
+            );
+        }
+        catch (Exception e)
+        {
+            Toasts.Show(
+                $"Failed to update tags: {e.Message}",
+                ToastSeverity.Error
+            );
+        }
+    }
+
+    private void AddEmptyTag()
+        => Context.Entries.Insert(0, new(string.Empty, string.Empty));
+
+    private void DeleteTag(int index)
+        => Context.Entries.RemoveAt(index);
+
+    private async Task ResetState()
+    {
+        await Modals.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding any changes made to tags.<br/>" +
+                "This action is irreversible.",
+                "Discard",
+                "Cancel",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        Context.Entries = [..PreviousState];
+                }
+            )
+        );
+    }
 }

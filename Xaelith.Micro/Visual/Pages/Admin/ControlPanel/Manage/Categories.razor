@@ -1,11 +1,10 @@
 ﻿@layout AdminShell
 
 @page "/admin/manage/categories"
+@inherits XaelithRestrictedPage
 
 @inject IModalService Modals;
 @inject IToastService Toasts;
-
-@inherits XaelithRestrictedPage
 
 <h1 class="admin-view-title">@Title</h1>
 
@@ -35,7 +34,7 @@
                     <th class="actions">actions</th>
                 </tr>
                 </thead>
-                @for (var i = 0; i < Context.Categories.Count; i++)
+                @for (var i = 0; i < Context.Entries.Count; i++)
                 {
                     <tr>
                         @{
@@ -45,13 +44,13 @@
                                 <input type="text"
                                        id="category-name-@index"
                                        class="category-name-edit-field"
-                                       @bind="@Context.Categories[index].Name"
+                                       @bind="@Context.Entries[index].FirstValue"
                                        placeholder="Awaiting category name..."/>
 
                                 <input type="text"
                                        id="category-description-@index"
                                        class="category-description-edit-field"
-                                       @bind="@Context.Categories[index].Description"
+                                       @bind="@Context.Entries[index].SecondValue"
                                        placeholder="Awaiting category description..."/>
                             </td>
 
@@ -75,8 +74,8 @@
 
     protected override string Title => "categories";
 
-    private CategoryEditContext Context { get; } = new();
-    private List<CategoryEditContext.Category> PreviousState { get; set; } = [];
+    private DualValueEditContext Context { get; } = new();
+    private List<DualValueEditContext.Entry> PreviousState { get; set; } = [];
 
     protected override void OnInitialized()
     {
@@ -84,33 +83,33 @@
 
         foreach (var (name, description) in Configuration.Root!.Content.Categories)
         {
-            Context.Categories.Add(new(name, description));
+            Context.Entries.Add(new(name, description));
         }
 
-        Context.Categories = Context.Categories
-            .OrderBy(x => x.Name)
+        Context.Entries = Context.Entries
+            .OrderBy(x => x.FirstValue)
             .ToList();
 
-        PreviousState = new(Context.Categories);
+        PreviousState = new(Context.Entries);
     }
 
     private void UpdateCategories(EditContext editContext)
     {
-        var context = (CategoryEditContext)editContext.Model;
+        var context = (DualValueEditContext)editContext.Model;
 
-        foreach (var category in context.Categories)
+        foreach (var category in context.Entries)
         {
-            if (string.IsNullOrWhiteSpace(category.Name))
+            if (string.IsNullOrWhiteSpace(category.FirstValue))
                 continue;
 
-            Configuration.Root!.Content.Categories[category.Name] = category.Description;
+            Configuration.Root!.Content.Categories[category.FirstValue] = category.SecondValue;
         }
 
         try
         {
-            var uniqueEntries = context.Categories.Select(x => x.Name).Distinct();
+            var uniqueEntries = context.Entries.Select(x => x.FirstValue).Distinct();
             
-            if (uniqueEntries.Count() != context.Categories.Count)
+            if (uniqueEntries.Count() != context.Entries.Count)
             {
                 Toasts.Show(
                     "Category names must be unique",
@@ -121,7 +120,7 @@
                 return;
             }
 
-            if (context.Categories.SequenceEqual(PreviousState))
+            if (context.Entries.SequenceEqual(PreviousState))
             {
                 Toasts.Show(
                     "No changes detected - nothing to save",
@@ -132,11 +131,11 @@
                 return;
             }
 
-            context.Categories = context.Categories
-                .OrderBy(x => x.Name)
+            context.Entries = context.Entries
+                .OrderBy(x => x.FirstValue)
                 .ToList();
 
-            PreviousState = new(context.Categories);
+            PreviousState = new(context.Entries);
 
             Configuration.Save();
             Toasts.Show(
@@ -154,17 +153,17 @@
     }
 
     private void AddEmptyCategory()
-        => Context.Categories.Insert(0, new(string.Empty, string.Empty));
+        => Context.Entries.Insert(0, new(string.Empty, string.Empty));
 
     private void DeleteCategory(int index)
-        => Context.Categories.RemoveAt(index);
+        => Context.Entries.RemoveAt(index);
 
     private async Task ResetState()
     {
         await Modals.ShowAsync(
             new DialogModalData(
                 "Discard changes?",
-                "Confirm discarding any changes made.<br/>" +
+                "Confirm discarding any changes made to categories.<br/>" +
                 "This action is irreversible.",
                 "Discard",
                 "Cancel",
@@ -172,7 +171,7 @@
                 (result) =>
                 {
                     if (result)
-                        Context.Categories = [..PreviousState];
+                        Context.Entries = [..PreviousState];
                 }
             )
         );

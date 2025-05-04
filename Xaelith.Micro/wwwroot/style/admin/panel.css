@@ -305,11 +305,18 @@ main#admin .editor-toolbar .editor-save-button:disabled {
     color: var(--md-editor-toolbar-save-button-disabled-foreground);
 }
 
-main#admin .category-editor {
+main#admin .category-editor,
+main#admin .tag-editor {
     margin-top: 14px;
 }
 
-main#admin .category-editor .admin-table {
+main#admin .category-editor th.category,
+main#admin .tag-editor th.tag {
+    text-align: left;
+}
+
+main#admin .category-editor .admin-table,
+main#admin .tag-editor .admin-table {
     width: 100%;
     
     max-height: 760px;
@@ -318,12 +325,8 @@ main#admin .category-editor .admin-table {
     border: 1px solid var(--admin-table-border);
 }
 
-main#admin .category-editor .admin-table .name,
-main#admin .category-editor .admin-table .description {
-    text-align: left;
-}
-
-main#admin .category-editor input[type="text"] {
+main#admin .category-editor input[type="text"],
+main#admin .tag-editor input[type="text"] {
     display: block;
     
     border: none;
@@ -332,19 +335,29 @@ main#admin .category-editor input[type="text"] {
     padding: 0;
 }
 
-main#admin .category-editor input[type="text"]:focus {
+main#admin .category-editor input[type="text"]:focus,
+main#admin .tag-editor input[type="text"]:focus {
     box-shadow: none;
 }
 
-main#admin .category-editor .category-name-edit-field {
+main#admin .category-editor .category-name-edit-field,
+main#admin .tag-editor .tag-name-edit-field {
     font-size: 1.4rem;
     font-weight: 500;
 }
 
-main#admin .category-editor-add-button {
+main#admin .category-editor .category-description-edit-field,
+main#admin .tag-editor .tag-description-edit-field {
+    font-family: "NK57 Monospace";
+    font-weight: 300;
+}
+
+main#admin .category-editor-add-button,
+main#admin .tag-editor-add-button {
     margin-right: auto;
 }
 
-main#admin .category-editor a {
+main#admin .category-editor a,
+main#admin .tag-editor a {
     user-select: none;
 }
