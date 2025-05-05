@@ -1,0 +1,45 @@
+﻿.dual-value-editor {
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: scroll;
+    max-height: 760px;
+
+    border-radius: 4px;
+
+    border-left: 1px solid var(--dual-value-editor-border);
+    border-right: 1px solid var(--dual-value-editor-border);
+    border-top: 6px solid var(--dual-value-editor-border);
+    border-bottom: 6px solid var(--dual-value-editor-border);
+}
+
+.dual-value-editor .dual-value-list-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: 16px;
+
+    padding: 0.5rem;
+}
+
+.dual-value-editor .dual-value-list-view .dual-value-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.dual-value-tool.add {
+    margin-right: auto;
+}
+
+.dual-value-editor .dual-value-delete {
+    cursor: default;
+
+    align-self: center;
+
+    padding: 5px 0 5px 8px;
+    font-size: 2rem;
+
+    text-transform: uppercase;
+
+    user-select: none;
+}
