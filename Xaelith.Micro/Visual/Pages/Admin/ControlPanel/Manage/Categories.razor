@@ -19,7 +19,6 @@
                         SecondValuePlaceholder="Awaiting category description..."
                         TableContainerClass="category-editor"
                         ValueColumnClass="category"
-                        ValueColumnLabel="Categories"
                         OnDeleteRequested="@DeleteCategory"
                         OnAddRequested="@AddEmptyCategory"
                         OnDiscardRequested="@DiscardChanges"/>
@@ -48,7 +47,7 @@
             .OrderBy(x => x.FirstValue)
             .ToList();
 
-        PreviousState = new(Context.Entries);
+        PreviousState = new(Context.Entries.Select(x => x with {}));
     }
 
     private void SaveCategories(EditContext editContext)
@@ -81,6 +80,7 @@
                 return;
             }
 
+            Configuration.Root!.Content.Categories.Clear();
             foreach (var category in context.Entries)
             {
                 if (string.IsNullOrWhiteSpace(category.FirstValue))
@@ -94,8 +94,8 @@
                 .ToList();
 
             Configuration.Save();
-            PreviousState = new(context.Entries);
-            
+            PreviousState = new(Context.Entries.Select(x => x with {}));
+
             Toasts.Show(
                 "Categories updated",
                 ToastSeverity.Success

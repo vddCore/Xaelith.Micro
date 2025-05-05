@@ -1,16 +1,30 @@
-﻿<input type="text"
-       id="@FirstValueId"
-       class="dual-value-first @FirstValueClass"
-       @bind="@Entry.FirstValue"
-       @oninput="@OnFirstValueChanged"
-       placeholder="@FirstValuePlaceholder"/>
+﻿<div class="dual-value-pair">
+    <div class="dual-value-container dual-value-first">
+        <div class="dual-value-container-label">
+            @FirstValueLabel
+        </div>
 
-<input type="text"
-       id="@SecondValueId"
-       class="dual-value-second @SecondValueClass"
-       @bind="@Entry.SecondValue"
-       @oninput="@OnSecondValueChanged"
-       placeholder="@SecondValuePlaceholder"/>
+        <input type="text"
+               id="@FirstValueId"
+               class="@FirstValueClass"
+               @bind="@Entry.FirstValue"
+               @oninput="@OnFirstValueChanged"
+               placeholder="@FirstValuePlaceholder"/>
+    </div>
+
+    <div class="dual-value-container dual-value-second">
+        <div class="dual-value-container-label">
+            @SecondValueLabel
+        </div>
+        
+        <input type="text"
+               id="@SecondValueId"
+               class="@SecondValueClass"
+               @bind="@Entry.SecondValue"
+               @oninput="@OnSecondValueChanged"
+               placeholder="@SecondValuePlaceholder"/>
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -26,13 +40,19 @@
     public string FirstValuePlaceholder { get; set; } = string.Empty;
 
     [Parameter]
+    public string FirstValueLabel { get; set; } = "Value 1";
+
+    [Parameter]
     public string SecondValueId { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string SecondValueClass { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string SecondValuePlaceholder { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SecondValueLabel { get; set; } = "Value 2";
 
     [Parameter]
     public EventCallback OnFirstValueChanged { get; set; }

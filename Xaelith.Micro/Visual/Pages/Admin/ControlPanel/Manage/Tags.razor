@@ -19,7 +19,6 @@
                          SecondValuePlaceholder="Awaiting tag description..."
                          TableContainerClass="tag-editor"
                          ValueColumnClass="tag"
-                         ValueColumnLabel="tags"
                          OnDeleteRequested="@DeleteTag"
                          OnAddRequested="@AddEmptyTag"
                          OnDiscardRequested="@DiscardChanges"/>
@@ -49,7 +48,7 @@
             .OrderBy(x => x.FirstValue)
             .ToList();
 
-        PreviousState = new(Context.Entries);
+        PreviousState = new(Context.Entries.Select(x => x with {}));
     }
 
     private void SaveChanges(EditContext editContext)
@@ -82,6 +81,7 @@
                 return;
             }
             
+            Configuration.Root!.Content.Tags.Clear();
             foreach (var tag in context.Entries)
             {
                 if (string.IsNullOrWhiteSpace(tag.FirstValue))
@@ -95,7 +95,7 @@
                 .ToList();
 
             Configuration.Save();
-            PreviousState = new(context.Entries);
+            PreviousState = new(Context.Entries.Select(x => x with {}));
             
             Toasts.Show(
                 "Tags updated",

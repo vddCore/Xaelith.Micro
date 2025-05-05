@@ -10,6 +10,14 @@
     --admin-table-border: #ff88ff88;
     --admin-table-header-border: #ff88ff55;
     --admin-table-header-shadow: #ff88ff33;
+    
+    --dual-value-container-label-foreground: #ff88ff99;
+    --dual-value-container-label-focus-foreground: #ff88ff;
+    --dual-value-container-label-background: #0f0213;
+    --dual-value-container-label-border: #ff88ff99;
+    --dual-value-container-label-focus-border: #ff88ff;
+    --dual-value-container-textbox-focus-background: #ff88ff22;
+    --dual-value-editor-border: #ff88ff99;
 }
 
 * {
@@ -305,72 +313,132 @@ main#admin button.save:disabled {
     color: var(--md-editor-toolbar-save-button-disabled-foreground);
 }
 
-main#admin .dual-value-editor {
-    margin-top: 14px;
-}
-
-main#admin .dual-value-editor th {
-    text-align: left;
-}
-
-main#admin .dual-value-editor .admin-table {
+.dual-value-pair {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+}
+
+.dual-value-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.dual-value-container .dual-value-container-label {
+    display: grid;
+    align-items: center;
+    justify-content: center;
     
+    min-width: 90px;
+    padding: 0 9px;
+    
+    border-left: 1px solid var(--dual-value-container-label-border);
+    border-right: 2px solid var(--dual-value-container-label-border);
+    margin-right: 1px;
+    
+    border-radius: 4px 0 0 4px;
+    
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+    
+    background-color: var(--dual-value-container-label-background);
+    color: var(--dual-value-container-label-foreground);
+
+    transition: 0.15s ease-in-out;
+}
+
+.dual-value-container input[type="text"]:hover {
+    border-color: var(--textbox-border);
+}
+
+.dual-value-container input[type="text"]:focus {
+    border-right: 4px solid var(--textbox-focus-border);
+    background-color: var(--dual-value-container-textbox-focus-background);
+    
+    box-shadow: none;
+}
+
+.dual-value-container:has(input[type="text"]:hover) .dual-value-container-label {
+    border-left: 4px solid var(--dual-value-container-label-border);
+}
+
+.dual-value-container:has(input[type="text"]:focus) .dual-value-container-label {
+    border-left: 4px solid var(--dual-value-container-label-focus-border);
+    border-right: 2px solid var(--dual-value-container-label-focus-border);
+    color: var(--dual-value-container-label-focus-foreground);
+}
+
+.dual-value-first .dual-value-container-label {
+    border-radius: 4px 0 0 0;
+}
+
+.dual-value-first input[type="text"] {
+    border-radius: 0 4px 0 0;
+        
+    border-top: none;
+    border-left: none;
+    border-bottom: none;
+}
+
+.dual-value-first input[type="text"] {
+    box-shadow: none;
+}
+
+.dual-value-second .dual-value-container-label {
+    border-radius: 0 0 0 4px;
+}
+
+.dual-value-second input[type="text"] {
+    border-radius: 0 0 4px 0;
+    
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+}
+
+.dual-value-editor {
+    display: flex;
+    flex-direction: column;
+    
+    overflow-y: scroll;
     max-height: 760px;
     
     border-radius: 4px;
-    border: 1px solid var(--admin-table-border);
-}
-
-main#admin .dual-value-editor .value-column {
-    padding: 3px;
-}
-
-main#admin .dual-value-editor input[type="text"] {
-    display: block;
     
-    border-left: 1px solid var(--textbox-border);
-    border-right: 1px solid var(--textbox-border);
+    border-left: 1px solid var(--dual-value-editor-border);
+    border-right: 1px solid var(--dual-value-editor-border);
+    border-top: 6px solid var(--dual-value-editor-border);
+    border-bottom: 6px solid var(--dual-value-editor-border);
 }
 
-main#admin .dual-value-editor input[type="text"]:hover {
-    border-left: 1px solid var(--textbox-hover-border);
-    border-right: 1px solid var(--textbox-hover-border);
-
-    box-shadow: none;
-}
-
-main#admin .dual-value-editor input[type="text"]:focus {
-    border-left: 1px solid var(--textbox-focus-border);
-    border-right: 1px solid var(--textbox-focus-border);
+.dual-value-editor .dual-value-list-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    gap: 16px;
     
-    box-shadow: none;
+    padding: 0.5rem;
 }
 
-main#admin .dual-value-first {
-    border: none;
-    padding-bottom: 2px;
-    
-    border-top: 1px solid var(--textbox-border);
-    border-radius: 6px 6px 0 0;
-    font-size: 1.4rem;
-    font-weight: 500;
+.dual-value-editor .dual-value-list-view .dual-value-row {
+    display: flex;
+    flex-direction: row;
 }
 
-main#admin .dual-value-second {
-    border: none;
-    padding-top: 2px;
-    
-    border-bottom: 1px solid var(--textbox-border);
-    border-radius: 0 0 6px 6px;
-    font-family: "NK57 Monospace";
-    font-weight: 300;
-}
-
-main#admin .dual-value-tool.add {
+.dual-value-tool.add {
     margin-right: auto;
 }
 
-main#admin .dual-value-editor a {
+.dual-value-editor .dual-value-delete {
+    align-self: center;
+    
+    padding: 5px 0 5px 5px;
+    font-size: 2rem;
+
+    text-transform: uppercase;
+    
     user-select: none;
 }
+

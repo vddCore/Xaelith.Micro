@@ -1,6 +1,7 @@
 ﻿<div class="dual-value-editor-toolbar editor-toolbar">
     <button class="save"
-            type="submit">SAVE</button>
+            type="submit">SAVE
+    </button>
 
     <button class="dual-value-tool discard"
             type="button"
@@ -16,41 +17,31 @@
 </div>
 
 <div class="dual-value-editor @TableContainerClass">
-    <table class="admin-table">
-        <thead>
-        <tr>
-            <th class="@ValueColumnClass">@ValueColumnLabel</th>
-            <th class="actions-column">actions</th>
-        </tr>
-        </thead>
+    <div class="dual-value-list-view">
         @for (var i = 0; i < Context.Entries.Count; i++)
         {
-            <tr>
-                @{
-                    var index = i;
+            var index = i;
 
-                    <td class="value-column @ValueColumnClass">
-                        <DualValueControl Entry="Context.Entries[index]"
-                                         FirstValueId="@FirstValueId"
-                                         FirstValueClass="@FirstValueClass"
-                                         FirstValuePlaceholder="@FirstValuePlaceholder"
-                                         SecondValueId="@SecondValueId"
-                                         SecondValueClass="@SecondValueClass"
-                                         SecondValuePlaceholder="@SecondValuePlaceholder"
-                                         OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
-                                         OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))" />
-                    </td>
+            <div class="dual-value-row">
+                <DualValueControl Entry="Context.Entries[index]"
+                                  FirstValueId="@FirstValueId"
+                                  FirstValueClass="@FirstValueClass"
+                                  FirstValuePlaceholder="@FirstValuePlaceholder"
+                                  SecondValueId="@SecondValueId"
+                                  SecondValueClass="@SecondValueClass"
+                                  SecondValuePlaceholder="@SecondValuePlaceholder"
+                                  OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
+                                  OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
+                                  FirstValueLabel="Name"
+                                  SecondValueLabel="Desc."/>
 
-                    <td class="actions-column">
-                        <a class="danger"
-                           @onclick="@(() => RequestDelete(@index))">
-                            @DeleteLabel
-                        </a>
-                    </td>
-                }
-            </tr>
+                <a class="dual-value-delete danger"
+                   @onclick="@(() => RequestDelete(@index))">
+                    <i class="las la-trash"></i>
+                </a>
+            </div>
         }
-    </table>
+    </div>
 </div>
 
 @code {
@@ -61,11 +52,11 @@
     public required string TableContainerClass { get; set; } = string.Empty;
 
     [Parameter]
-    public string ValueColumnLabel { get; set; } = string.Empty;
+    public string ValueColumnClass { get; set; } = string.Empty;
 
     [Parameter]
-    public string ValueColumnClass { get; set; } = string.Empty;
-    
+    public string ActionsColumnClass { get; set; } = string.Empty;
+
     [Parameter]
     public string FirstValueId { get; set; } = string.Empty;
 
@@ -74,13 +65,13 @@
 
     [Parameter]
     public string FirstValuePlaceholder { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string SecondValueId { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string SecondValueClass { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string SecondValuePlaceholder { get; set; } = string.Empty;
 
