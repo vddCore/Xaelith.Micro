@@ -152,6 +152,15 @@
     --modal-dialog-warning-content-foreground: #ffcf88;
     --modal-dialog-warning-border: #ffcf88;
     --modal-dialog-warning-shadow: #ffcf8855;
+    --modal-dialog-warning-button-border: #ffcf88aa;
+    --modal-dialog-warning-button-hover-border: #ffcf88;
+    --modal-dialog-warning-button-active-border: #ffcf8888;
+    --modal-dialog-warning-button-disabled-border: #ffcf8844;
+    --modal-dialog-warning-button-foreground: #ffcf88aa;
+    --modal-dialog-warning-button-hover-foreground: #ffcf88;
+    --modal-dialog-warning-button-active-foreground: #ffcf8888;
+    --modal-dialog-warning-button-disabled-foreground: #ffcf8866;
+    --modal-dialog-warning-button-hover-shadow: #ffcf8855;
     
     --modal-dialog-danger-tape-foreground: #ff889c11;
     --modal-dialog-danger-tape-foreground2: #ff889caa;
@@ -159,4 +168,13 @@
     --modal-dialog-danger-content-foreground: #ff889cdd;
     --modal-dialog-danger-border: #ff889c;
     --modal-dialog-danger-shadow: #ff889c55;
+    --modal-dialog-danger-button-border: #ff889caa;
+    --modal-dialog-danger-button-hover-border: #ff889c;
+    --modal-dialog-danger-button-active-border: #ff889c88;
+    --modal-dialog-danger-button-disabled-border: #ff889c44;
+    --modal-dialog-danger-button-foreground: #ff889caa;
+    --modal-dialog-danger-button-hover-foreground: #ff889c;
+    --modal-dialog-danger-button-active-foreground: #ff889c88;
+    --modal-dialog-danger-button-disabled-foreground: #ff889c66;
+    --modal-dialog-danger-button-hover-shadow: #ff889c55;
 }

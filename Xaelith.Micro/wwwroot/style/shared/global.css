@@ -514,7 +514,7 @@ button:disabled {
     top: 93%;
     left: 0;
     
-    padding: 0.6rem 5rem;
+    padding: 0.6rem 2.6rem;
     
     text-align: right;
     text-transform: uppercase;
@@ -685,6 +685,28 @@ button:disabled {
     color: var(--modal-dialog-danger-content-foreground);
 }
 
+.modal-box.modal-danger button {
+    border-color: var(--modal-dialog-danger-button-border);
+    color: var(--modal-dialog-danger-button-foreground);
+}
+
+.modal-box.modal-danger button:hover {
+    border-color: var(--modal-dialog-danger-button-hover-border);
+    color: var(--modal-dialog-danger-button-hover-foreground);
+
+    text-shadow: 0 0 8px var(--modal-dialog-danger-button-hover-shadow);
+}
+
+.modal-box.modal-danger button:active {
+    border-color: var(--modal-dialog-danger-button-active-border);
+    color: var(--modal-dialog-danger-button-active-foreground);
+}
+
+.modal-box.modal-danger button:disabled {
+    border-color: var(--modal-dialog-danger-button-disabled-border);
+    color: var(--modal-dialog-danger-button-disabled-foreground);
+}
+
 .modal-box.modal-warning .modal-caution-tape {
     background: repeating-linear-gradient(
             45deg,
@@ -708,6 +730,28 @@ button:disabled {
 
 .modal-box.modal-warning .modal-message {
     color: var(--modal-dialog-warning-content-foreground);
+}
+
+.modal-box.modal-warning button {
+    border-color: var(--modal-dialog-warning-button-border);
+    color: var(--modal-dialog-warning-button-foreground);
+}
+
+.modal-box.modal-warning button:hover {
+    border-color: var(--modal-dialog-warning-button-hover-border);
+    color: var(--modal-dialog-warning-button-hover-foreground);
+    
+    text-shadow: 0 0 8px var(--modal-dialog-warning-button-hover-shadow);
+}
+
+.modal-box.modal-warning button:active {
+    border-color: var(--modal-dialog-warning-button-active-border);
+    color: var(--modal-dialog-warning-button-active-foreground);
+}
+
+.modal-box.modal-warning button:disabled {
+    border-color: var(--modal-dialog-warning-button-disabled-border);
+    color: var(--modal-dialog-warning-button-disabled-foreground);
 }
 
 .modal-box.modal-information .modal-caution-tape {
@@ -734,7 +778,6 @@ button:disabled {
 .modal-box.modal-information .modal-message {
     color: var(--modal-dialog-information-content-foreground);
 }
-
 
 @keyframes slide-tape {
     from {

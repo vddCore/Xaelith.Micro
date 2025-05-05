@@ -9,62 +9,20 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="Context" OnSubmit="@UpdateCategories">
-        <div class="editor-toolbar">
-            <button class="editor-save-button" type="submit">SAVE</button>
-
-            <button class="category-editor-reset-button"
-                    type="button"
-                    @onclick="ResetState">
-                DISCARD
-            </button>
-
-            <button class="category-editor-add-button"
-                    type="button"
-                    @onclick="AddEmptyCategory">
-                NEW CATEGORY
-            </button>
-        </div>
-
-        <div class="category-editor">
-            <table class="admin-table">
-                <thead>
-                <tr>
-                    <th class="category">category</th>
-                    <th class="actions">actions</th>
-                </tr>
-                </thead>
-                @for (var i = 0; i < Context.Entries.Count; i++)
-                {
-                    <tr>
-                        @{
-                            var index = i;
-
-                            <td class="category">
-                                <input type="text"
-                                       id="category-name-@index"
-                                       class="category-name-edit-field"
-                                       @bind="@Context.Entries[index].FirstValue"
-                                       placeholder="Awaiting category name..."/>
-
-                                <input type="text"
-                                       id="category-description-@index"
-                                       class="category-description-edit-field"
-                                       @bind="@Context.Entries[index].SecondValue"
-                                       placeholder="Awaiting category description..."/>
-                            </td>
-
-                            <td class="actions">
-                                <a class="danger"
-                                   @onclick="@(() => DeleteCategory(index))">
-                                    DELETE
-                                </a>
-                            </td>
-                        }
-                    </tr>
-                }
-            </table>
-        </div>
+    <EditForm Model="Context" OnSubmit="@SaveCategories">
+        <DualValueEditor Context="Context"
+                        FirstValueClass="category"
+                        FirstValueId="category-name-edit-field"
+                        FirstValuePlaceholder="Awaiting category name..."
+                        SecondValueClass="description"
+                        SecondValueId="catgory-description-edit-field"
+                        SecondValuePlaceholder="Awaiting category description..."
+                        TableContainerClass="category-editor"
+                        ValueColumnClass="category"
+                        ValueColumnLabel="Categories"
+                        OnDeleteRequested="@DeleteCategory"
+                        OnAddRequested="@AddEmptyCategory"
+                        OnDiscardRequested="@DiscardChanges"/>
     </EditForm>
 </div>
 
@@ -93,20 +51,23 @@
         PreviousState = new(Context.Entries);
     }
 
-    private void UpdateCategories(EditContext editContext)
+    private void SaveCategories(EditContext editContext)
     {
         var context = (DualValueEditContext)editContext.Model;
 
-        foreach (var category in context.Entries)
-        {
-            if (string.IsNullOrWhiteSpace(category.FirstValue))
-                continue;
-
-            Configuration.Root!.Content.Categories[category.FirstValue] = category.SecondValue;
-        }
-
         try
         {
+            if (context.Entries.Any(x => string.IsNullOrWhiteSpace(x.FirstValue)))
+            {
+                Toasts.Show(
+                    "Empty category names are not allowed",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+            
             var uniqueEntries = context.Entries.Select(x => x.FirstValue).Distinct();
             
             if (uniqueEntries.Count() != context.Entries.Count)
@@ -120,24 +81,21 @@
                 return;
             }
 
-            if (context.Entries.SequenceEqual(PreviousState))
+            foreach (var category in context.Entries)
             {
-                Toasts.Show(
-                    "No changes detected - nothing to save",
-                    ToastSeverity.Warning,
-                    3500
-                );
+                if (string.IsNullOrWhiteSpace(category.FirstValue))
+                    continue;
 
-                return;
+                Configuration.Root!.Content.Categories[category.FirstValue] = category.SecondValue;
             }
-
+            
             context.Entries = context.Entries
                 .OrderBy(x => x.FirstValue)
                 .ToList();
 
-            PreviousState = new(context.Entries);
-
             Configuration.Save();
+            PreviousState = new(context.Entries);
+            
             Toasts.Show(
                 "Categories updated",
                 ToastSeverity.Success
@@ -147,7 +105,8 @@
         {
             Toasts.Show(
                 $"Failed to update categories: {e.Message}",
-                ToastSeverity.Error
+                ToastSeverity.Error,
+                3500
             );
         }
     }
@@ -158,15 +117,15 @@
     private void DeleteCategory(int index)
         => Context.Entries.RemoveAt(index);
 
-    private async Task ResetState()
+    private async Task DiscardChanges()
     {
         await Modals.ShowAsync(
             new DialogModalData(
                 "Discard changes?",
                 "Confirm discarding any changes made to categories.<br/>" +
                 "This action is irreversible.",
-                "Discard",
-                "Cancel",
+                "Proceed",
+                "Abort",
                 DialogModalSeverity.Warning,
                 (result) =>
                 {

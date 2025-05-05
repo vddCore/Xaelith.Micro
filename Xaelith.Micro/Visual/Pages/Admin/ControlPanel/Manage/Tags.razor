@@ -9,62 +9,20 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="Context" OnSubmit="@UpdateTags">
-        <div class="editor-toolbar">
-            <button class="editor-save-button" type="submit">SAVE</button>
-
-            <button class="tag-editor-reset-button"
-                    type="button"
-                    @onclick="ResetState">
-                DISCARD
-            </button>
-
-            <button class="tag-editor-add-button"
-                    type="button"
-                    @onclick="AddEmptyTag">
-                NEW TAG
-            </button>
-        </div>
-
-        <div class="tag-editor">
-            <table class="admin-table">
-                <thead>
-                <tr>
-                    <th class="tag">tag</th>
-                    <th class="actions">actions</th>
-                </tr>
-                </thead>
-                @for (var i = 0; i < Context.Entries.Count; i++)
-                {
-                    <tr>
-                        @{
-                            var index = i;
-
-                            <td class="tag">
-                                <input type="text"
-                                       id="tag-name-@index"
-                                       class="tag-name-edit-field"
-                                       @bind="@Context.Entries[index].FirstValue"
-                                       placeholder="Awaiting tag name..."/>
-
-                                <input type="text"
-                                       id="tag-description-@index"
-                                       class="tag-description-edit-field"
-                                       @bind="@Context.Entries[index].SecondValue"
-                                       placeholder="Awaiting tag description..."/>
-                            </td>
-
-                            <td class="actions">
-                                <a class="danger"
-                                   @onclick="@(() => DeleteTag(index))">
-                                    DELETE
-                                </a>
-                            </td>
-                        }
-                    </tr>
-                }
-            </table>
-        </div>
+    <EditForm Model="Context" OnSubmit="@SaveChanges">
+        <DualValueEditor Context="Context"
+                         FirstValueClass="tag"
+                         FirstValueId="tag-name-edit-field"
+                         FirstValuePlaceholder="Awaiting tag name..."
+                         SecondValueClass="description"
+                         SecondValueId="tag-description-edit-field"
+                         SecondValuePlaceholder="Awaiting tag description..."
+                         TableContainerClass="tag-editor"
+                         ValueColumnClass="tag"
+                         ValueColumnLabel="tags"
+                         OnDeleteRequested="@DeleteTag"
+                         OnAddRequested="@AddEmptyTag"
+                         OnDiscardRequested="@DiscardChanges"/>
     </EditForm>
 </div>
 
@@ -94,16 +52,19 @@
         PreviousState = new(Context.Entries);
     }
 
-    private void UpdateTags(EditContext editContext)
+    private void SaveChanges(EditContext editContext)
     {
         var context = (DualValueEditContext)editContext.Model;
 
-        foreach (var tag in context.Entries)
+        if (context.Entries.Any(x => string.IsNullOrWhiteSpace(x.FirstValue)))
         {
-            if (string.IsNullOrWhiteSpace(tag.FirstValue))
-                continue;
+            Toasts.Show(
+                "Empty tag names are not allowed",
+                ToastSeverity.Warning,
+                3500
+            );
 
-            Configuration.Root!.Content.Tags[tag.FirstValue] = tag.SecondValue;
+            return;
         }
 
         try
@@ -120,25 +81,22 @@
 
                 return;
             }
-
-            if (context.Entries.SequenceEqual(PreviousState))
+            
+            foreach (var tag in context.Entries)
             {
-                Toasts.Show(
-                    "No changes detected - nothing to save",
-                    ToastSeverity.Warning,
-                    3500
-                );
+                if (string.IsNullOrWhiteSpace(tag.FirstValue))
+                    continue;
 
-                return;
+                Configuration.Root!.Content.Tags[tag.FirstValue] = tag.SecondValue;
             }
 
             context.Entries = context.Entries
                 .OrderBy(x => x.FirstValue)
                 .ToList();
 
-            PreviousState = new(context.Entries);
-
             Configuration.Save();
+            PreviousState = new(context.Entries);
+            
             Toasts.Show(
                 "Tags updated",
                 ToastSeverity.Success
@@ -148,7 +106,8 @@
         {
             Toasts.Show(
                 $"Failed to update tags: {e.Message}",
-                ToastSeverity.Error
+                ToastSeverity.Error,
+                3500
             );
         }
     }
@@ -159,15 +118,15 @@
     private void DeleteTag(int index)
         => Context.Entries.RemoveAt(index);
 
-    private async Task ResetState()
+    private async Task DiscardChanges()
     {
         await Modals.ShowAsync(
             new DialogModalData(
                 "Discard changes?",
                 "Confirm discarding any changes made to tags.<br/>" +
                 "This action is irreversible.",
-                "Discard",
-                "Cancel",
+                "Proceed",
+                "Abort",
                 DialogModalSeverity.Warning,
                 (result) =>
                 {

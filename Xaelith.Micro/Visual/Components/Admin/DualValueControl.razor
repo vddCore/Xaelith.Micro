@@ -1,0 +1,42 @@
+﻿<input type="text"
+       id="@FirstValueId"
+       class="dual-value-first @FirstValueClass"
+       @bind="@Entry.FirstValue"
+       @oninput="@OnFirstValueChanged"
+       placeholder="@FirstValuePlaceholder"/>
+
+<input type="text"
+       id="@SecondValueId"
+       class="dual-value-second @SecondValueClass"
+       @bind="@Entry.SecondValue"
+       @oninput="@OnSecondValueChanged"
+       placeholder="@SecondValuePlaceholder"/>
+
+@code {
+    [Parameter]
+    public required DualValueEditContext.Entry Entry { get; set; }
+
+    [Parameter]
+    public string FirstValueId { get; set; } = string.Empty;
+
+    [Parameter]
+    public string FirstValueClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public string FirstValuePlaceholder { get; set; } = string.Empty;
+
+    [Parameter]
+    public string SecondValueId { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string SecondValueClass { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string SecondValuePlaceholder { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnFirstValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnSecondValueChanged { get; set; }
+}

@@ -1,0 +1,150 @@
+﻿<div class="dual-value-editor-toolbar editor-toolbar">
+    <button class="save"
+            type="submit">SAVE</button>
+
+    <button class="dual-value-tool discard"
+            type="button"
+            @onclick="@(() => RequestDiscard())">
+        @DiscardLabel
+    </button>
+
+    <button class="dual-value-tool add"
+            type="button"
+            @onclick="@(() => RequestAddNew())">
+        @(AddNewLabel)
+    </button>
+</div>
+
+<div class="dual-value-editor @TableContainerClass">
+    <table class="admin-table">
+        <thead>
+        <tr>
+            <th class="@ValueColumnClass">@ValueColumnLabel</th>
+            <th class="actions-column">actions</th>
+        </tr>
+        </thead>
+        @for (var i = 0; i < Context.Entries.Count; i++)
+        {
+            <tr>
+                @{
+                    var index = i;
+
+                    <td class="value-column @ValueColumnClass">
+                        <DualValueControl Entry="Context.Entries[index]"
+                                         FirstValueId="@FirstValueId"
+                                         FirstValueClass="@FirstValueClass"
+                                         FirstValuePlaceholder="@FirstValuePlaceholder"
+                                         SecondValueId="@SecondValueId"
+                                         SecondValueClass="@SecondValueClass"
+                                         SecondValuePlaceholder="@SecondValuePlaceholder"
+                                         OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
+                                         OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))" />
+                    </td>
+
+                    <td class="actions-column">
+                        <a class="danger"
+                           @onclick="@(() => RequestDelete(@index))">
+                            @DeleteLabel
+                        </a>
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public required DualValueEditContext Context { get; set; }
+
+    [Parameter]
+    public required string TableContainerClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public string ValueColumnLabel { get; set; } = string.Empty;
+
+    [Parameter]
+    public string ValueColumnClass { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string FirstValueId { get; set; } = string.Empty;
+
+    [Parameter]
+    public string FirstValueClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public string FirstValuePlaceholder { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string SecondValueId { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string SecondValueClass { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string SecondValuePlaceholder { get; set; } = string.Empty;
+
+    [Parameter]
+    public string DiscardLabel { get; set; } = "Discard";
+
+    [Parameter]
+    public string AddNewLabel { get; set; } = "Add";
+
+    [Parameter]
+    public string DeleteLabel { get; set; } = "Delete";
+
+    [Parameter]
+    public EventCallback<int> OnDeleteRequested { get; set; }
+
+    [Parameter]
+    public EventCallback OnDiscardRequested { get; set; }
+
+    [Parameter]
+    public EventCallback OnAddRequested { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnFirstValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnSecondValueChanged { get; set; }
+
+    private async Task RequestDelete(int index)
+    {
+        if (OnDeleteRequested.HasDelegate)
+        {
+            await OnDeleteRequested.InvokeAsync(index);
+        }
+    }
+
+    private async Task RaiseFirstValueChanged(int index)
+    {
+        if (OnFirstValueChanged.HasDelegate)
+        {
+            await OnFirstValueChanged.InvokeAsync(index);
+        }
+    }
+
+    private async Task RaiseSecondValueChanged(int index)
+    {
+        if (OnSecondValueChanged.HasDelegate)
+        {
+            await OnSecondValueChanged.InvokeAsync(index);
+        }
+    }
+
+    private async Task RequestDiscard()
+    {
+        if (OnDiscardRequested.HasDelegate)
+        {
+            await OnDiscardRequested.InvokeAsync();
+        }
+    }
+
+    private async Task RequestAddNew()
+    {
+        if (OnAddRequested.HasDelegate)
+        {
+            await OnAddRequested.InvokeAsync();
+        }
+    }
+}

@@ -278,14 +278,14 @@ main#admin .editor-toolbar .custom-checkbox {
     margin-top: 4px;
 }
 
-main#admin .editor-toolbar .editor-save-button {
+main#admin button.save {
     height: 30px;
     border-color: var(--md-editor-toolbar-save-button-border);
 
     color: var(--md-editor-toolbar-save-button-foreground);
 }
 
-main#admin .editor-toolbar .editor-save-button:hover {
+main#admin button.save:hover {
     border-color: var(--md-editor-toolbar-save-button-hover-border);
 
     color: var(--md-editor-toolbar-save-button-hover-foreground);
@@ -293,30 +293,27 @@ main#admin .editor-toolbar .editor-save-button:hover {
     text-shadow: 0 0 4px var(--md-editor-toolbar-save-button-hover-shadow);
 }
 
-main#admin .editor-toolbar .editor-save-button:active {
+main#admin button.save:active {
     border-color: var(--md-editor-toolbar-save-button-active-border);
 
     color: var(--md-editor-toolbar-save-button-active-foreground);
 }
 
-main#admin .editor-toolbar .editor-save-button:disabled {
+main#admin button.save:disabled {
     border-color: var(--md-editor-toolbar-save-button-disabled-border);
 
     color: var(--md-editor-toolbar-save-button-disabled-foreground);
 }
 
-main#admin .category-editor,
-main#admin .tag-editor {
+main#admin .dual-value-editor {
     margin-top: 14px;
 }
 
-main#admin .category-editor th.category,
-main#admin .tag-editor th.tag {
+main#admin .dual-value-editor th {
     text-align: left;
 }
 
-main#admin .category-editor .admin-table,
-main#admin .tag-editor .admin-table {
+main#admin .dual-value-editor .admin-table {
     width: 100%;
     
     max-height: 760px;
@@ -325,39 +322,55 @@ main#admin .tag-editor .admin-table {
     border: 1px solid var(--admin-table-border);
 }
 
-main#admin .category-editor input[type="text"],
-main#admin .tag-editor input[type="text"] {
-    display: block;
-    
-    border: none;
-    background: none;
-    
-    padding: 0;
+main#admin .dual-value-editor .value-column {
+    padding: 3px;
 }
 
-main#admin .category-editor input[type="text"]:focus,
-main#admin .tag-editor input[type="text"]:focus {
+main#admin .dual-value-editor input[type="text"] {
+    display: block;
+    
+    border-left: 1px solid var(--textbox-border);
+    border-right: 1px solid var(--textbox-border);
+}
+
+main#admin .dual-value-editor input[type="text"]:hover {
+    border-left: 1px solid var(--textbox-hover-border);
+    border-right: 1px solid var(--textbox-hover-border);
+
     box-shadow: none;
 }
 
-main#admin .category-editor .category-name-edit-field,
-main#admin .tag-editor .tag-name-edit-field {
+main#admin .dual-value-editor input[type="text"]:focus {
+    border-left: 1px solid var(--textbox-focus-border);
+    border-right: 1px solid var(--textbox-focus-border);
+    
+    box-shadow: none;
+}
+
+main#admin .dual-value-first {
+    border: none;
+    padding-bottom: 2px;
+    
+    border-top: 1px solid var(--textbox-border);
+    border-radius: 6px 6px 0 0;
     font-size: 1.4rem;
     font-weight: 500;
 }
 
-main#admin .category-editor .category-description-edit-field,
-main#admin .tag-editor .tag-description-edit-field {
+main#admin .dual-value-second {
+    border: none;
+    padding-top: 2px;
+    
+    border-bottom: 1px solid var(--textbox-border);
+    border-radius: 0 0 6px 6px;
     font-family: "NK57 Monospace";
     font-weight: 300;
 }
 
-main#admin .category-editor-add-button,
-main#admin .tag-editor-add-button {
+main#admin .dual-value-tool.add {
     margin-right: auto;
 }
 
-main#admin .category-editor a,
-main#admin .tag-editor a {
+main#admin .dual-value-editor a {
     user-select: none;
 }
