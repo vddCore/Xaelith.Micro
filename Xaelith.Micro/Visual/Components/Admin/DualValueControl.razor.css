@@ -1,4 +1,9 @@
-﻿.dual-value-pair {
+﻿.dual-value-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.dual-value-pair {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -81,4 +86,17 @@ input[type="text"]:focus {
     border-left: none;
     border-top: none;
     border-bottom: none;
+}
+
+.dual-value-delete {
+    cursor: default;
+
+    align-self: center;
+
+    padding: 5px 0 5px 8px;
+    font-size: 2rem;
+
+    text-transform: uppercase;
+
+    user-select: none;
 }

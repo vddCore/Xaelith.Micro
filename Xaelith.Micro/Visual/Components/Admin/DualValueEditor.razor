@@ -5,41 +5,35 @@
 
     <button class="dual-value-tool discard"
             type="button"
-            @onclick="@(() => RequestDiscard())">
+            @onclick="@(RequestDiscard)">
         @DiscardLabel
     </button>
 
     <button class="dual-value-tool add"
             type="button"
-            @onclick="@(() => RequestAddNew())">
+            @onclick="@(RequestAddNew)">
         @(AddNewLabel)
     </button>
 </div>
 
-<div class="dual-value-editor @TableContainerClass">
+<div class="dual-value-editor @ListContainerClass">
     <div class="dual-value-list-view">
         @for (var i = 0; i < Context.Entries.Count; i++)
         {
             var index = i;
 
-            <div class="dual-value-row">
-                <DualValueControl Entry="Context.Entries[index]"
-                                  FirstValueId="@FirstValueId"
-                                  FirstValueClass="@FirstValueClass"
-                                  FirstValuePlaceholder="@FirstValuePlaceholder"
-                                  SecondValueId="@SecondValueId"
-                                  SecondValueClass="@SecondValueClass"
-                                  SecondValuePlaceholder="@SecondValuePlaceholder"
-                                  OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
-                                  OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
-                                  FirstValueLabel="Name"
-                                  SecondValueLabel="Desc."/>
-
-                <a class="dual-value-delete danger"
-                   @onclick="@(() => RequestDelete(@index))">
-                    <i class="las la-trash"></i>
-                </a>
-            </div>
+            <DualValueControl Entry="Context.Entries[index]"
+                              FirstValueId="@FirstValueId"
+                              FirstValueClass="@FirstValueClass"
+                              FirstValuePlaceholder="@FirstValuePlaceholder"
+                              SecondValueId="@SecondValueId"
+                              SecondValueClass="@SecondValueClass"
+                              SecondValuePlaceholder="@SecondValuePlaceholder"
+                              OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
+                              OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
+                              FirstValueLabel="Name"
+                              SecondValueLabel="Desc."
+                              OnDeleteRequested="@RequestEntryDeletion"/>
         }
     </div>
 </div>
@@ -49,11 +43,8 @@
     public required DualValueEditContext Context { get; set; }
 
     [Parameter]
-    public required string TableContainerClass { get; set; } = string.Empty;
-
-    [Parameter]
-    public string ValueColumnClass { get; set; } = string.Empty;
-
+    public required string ListContainerClass { get; set; } = string.Empty;
+    
     [Parameter]
     public string ActionsColumnClass { get; set; } = string.Empty;
 
@@ -99,7 +90,7 @@
     [Parameter]
     public EventCallback<int> OnSecondValueChanged { get; set; }
 
-    private async Task RequestDelete(int index)
+    private async Task RequestDeleteByIndex(int index)
     {
         if (OnDeleteRequested.HasDelegate)
         {
@@ -137,5 +128,10 @@
         {
             await OnAddRequested.InvokeAsync();
         }
+    }
+
+    private async Task RequestEntryDeletion(DualValueEditContext.Entry entry)
+    {
+        await RequestDeleteByIndex(Context.Entries.IndexOf(entry));
     }
 }

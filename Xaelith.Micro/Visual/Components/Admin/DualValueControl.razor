@@ -1,29 +1,36 @@
-﻿<div class="dual-value-pair">
-    <div class="dual-value-container dual-value-first">
-        <div class="dual-value-container-label">
-            @FirstValueLabel
+﻿<div class="dual-value-row">
+    <div class="dual-value-pair">
+        <div class="dual-value-container dual-value-first">
+            <div class="dual-value-container-label">
+                @FirstValueLabel
+            </div>
+
+            <input type="text"
+                   id="@FirstValueId"
+                   class="@FirstValueClass"
+                   @bind="@Entry.FirstValue"
+                   @oninput="@OnFirstValueChanged"
+                   placeholder="@FirstValuePlaceholder"/>
         </div>
 
-        <input type="text"
-               id="@FirstValueId"
-               class="@FirstValueClass"
-               @bind="@Entry.FirstValue"
-               @oninput="@OnFirstValueChanged"
-               placeholder="@FirstValuePlaceholder"/>
+        <div class="dual-value-container dual-value-second">
+            <div class="dual-value-container-label">
+                @SecondValueLabel
+            </div>
+
+            <input type="text"
+                   id="@SecondValueId"
+                   class="@SecondValueClass"
+                   @bind="@Entry.SecondValue"
+                   @oninput="@OnSecondValueChanged"
+                   placeholder="@SecondValuePlaceholder"/>
+        </div>
     </div>
 
-    <div class="dual-value-container dual-value-second">
-        <div class="dual-value-container-label">
-            @SecondValueLabel
-        </div>
-        
-        <input type="text"
-               id="@SecondValueId"
-               class="@SecondValueClass"
-               @bind="@Entry.SecondValue"
-               @oninput="@OnSecondValueChanged"
-               placeholder="@SecondValuePlaceholder"/>
-    </div>
+    <a class="dual-value-delete danger"
+       @onclick="@RequestDelete">
+        <i class="las la-trash"></i>
+    </a>
 </div>
 
 @code {
@@ -59,4 +66,15 @@
 
     [Parameter]
     public EventCallback OnSecondValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<DualValueEditContext.Entry> OnDeleteRequested { get; set; }
+
+    private async Task RequestDelete()
+    {
+        if (OnDeleteRequested.HasDelegate)
+        {
+            await OnDeleteRequested.InvokeAsync(Entry);
+        }
+    }
 }

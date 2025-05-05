@@ -9,7 +9,56 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+    <div class="nav-group-toolbar editor-toolbar">
+        <button class="save"
+                type="submit">SAVE
+        </button>
 
+        <button class="nav-group-tool discard"
+                type="button">
+            DISCARD
+        </button>
+
+        <button class="nav-group-tool add"
+                type="button">
+            NEW NAV GROUP
+        </button>
+    </div>
+    
+    <div class="link-manager">
+        @foreach (var navgroup in NavGroupEditContexts)
+        {
+            <EditForm Model="@navgroup"
+                      OnSubmit="@SaveNavGroup">
+                <div class="nav-group">
+                    <div class="nav-group-name">
+                        <input type="text"
+                               id="nav-group-@navgroup.Name-edit-field"
+                               @bind="@navgroup.Name"
+                               placeholder="Awaiting nav group name..."/>
+                        
+                        <a class="add-new-link">
+                            <i class="las la-plus-circle"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-group-editor">
+                        @foreach (var entry in navgroup.Links.Entries)
+                        {
+                            <DualValueControl Entry="@entry"
+                                              FirstValueLabel="Label"
+                                              FirstValueClass="nav-link-label"
+                                              FirstValuePlaceholder="Awaiting label..."
+                                              SecondValueLabel="Target"
+                                              SecondValueClass="nav-link-target"
+                                              SecondValuePlaceholder="Awaiting target..."
+                                              OnDeleteRequested="@((e) => DeleteEntry(navgroup, e))"/>
+                        }
+                    </div>
+                </div>
+            </EditForm>
+        }
+    </div>
 </div>
 
 @code {
@@ -17,4 +66,60 @@
     public UserContext UserContext { get; set; } = null!;
 
     protected override string Title => "links";
+
+    public List<NavGroupEditContext> NavGroupEditContexts { get; set; } = [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        foreach (var navgroup in Configuration.Root!.Navigation.NavigationLists)
+        {
+            var context = new DualValueEditContext();
+
+            foreach (var link in navgroup.Links)
+            {
+                context.Entries.Add(new DualValueEditContext.Entry(
+                    link.Label,
+                    link.Target
+                ));
+            }
+
+            context.Entries = context.Entries
+                .OrderBy(x => x.FirstValue)
+                .ToList();
+
+            NavGroupEditContexts.Add(new NavGroupEditContext
+            {
+                Name = navgroup.Name,
+                Links = context
+            });
+        }
+
+        NavGroupEditContexts = NavGroupEditContexts
+            .OrderBy(x => x.Name)
+            .ToList();
+    }
+
+    private void DeleteEntry(NavGroupEditContext context, DualValueEditContext.Entry entry)
+        => context.Links.Entries.Remove(entry);
+
+    private void RequestDiscard(NavGroupEditContext context)
+    {
+    }
+
+    private void RequestAddNew(NavGroupEditContext context)
+    {
+        context.Links.Entries.Add(
+            new DualValueEditContext.Entry(
+                string.Empty,
+                string.Empty
+            )
+        );
+    }
+
+    private void SaveNavGroup(EditContext context)
+    {
+        
+    }
 }

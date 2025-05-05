@@ -22,24 +22,6 @@
     padding: 0.5rem;
 }
 
-.dual-value-editor .dual-value-list-view .dual-value-row {
-    display: flex;
-    flex-direction: row;
-}
-
 .dual-value-tool.add {
     margin-right: auto;
-}
-
-.dual-value-editor .dual-value-delete {
-    cursor: default;
-
-    align-self: center;
-
-    padding: 5px 0 5px 8px;
-    font-size: 2rem;
-
-    text-transform: uppercase;
-
-    user-select: none;
 }
