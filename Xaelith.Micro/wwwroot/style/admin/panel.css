@@ -321,7 +321,25 @@ main#admin button.save:disabled {
     gap: 20px;
 }
 
-.link-manager .nav-group-name {
+.link-manager .nav-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nav-group-move-buttons {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    margin-right: -40px;
+    padding-left: 10px;
+    padding-right: 11px;
+    
+    background-color: #ff88ff22;
+    border-radius: 0 4px 4px 0;
+}
+
+.nav-group-name {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -331,7 +349,7 @@ main#admin button.save:disabled {
     margin-bottom: -12px;
 }
 
-.link-manager .nav-group-name input[type="text"] {
+.nav-group-name input[type="text"] {
     border: none;
     background: none;
     box-shadow: none;
@@ -344,18 +362,18 @@ main#admin button.save:disabled {
     border-right: 1px solid #ff88ff99;
 }
 
-.link-manager .nav-group-name input[type="text"]:focus {
+.nav-group-name input[type="text"]:focus {
     box-shadow: none;
     background-color: #ff88ff11;
     border-left: 4px solid #ff88ff;
     border-right: 4px solid #ff88ff;
 }
 
-.link-manager .nav-group-name input[type="text"]:hover {
+.nav-group-name input[type="text"]:hover {
     border-left: 4px solid #ff88ff99;
 }
 
-.link-manager .nav-group-name a.add-new-link {
+.nav-group-name a.add-new-link {
     cursor: default;
 
     align-self: center;
@@ -370,7 +388,7 @@ main#admin button.save:disabled {
     user-select: none;
 }
 
-.link-manager .nav-group-name a.nav-group-delete {
+.nav-group-name a.nav-group-delete {
     cursor: default;
 
     align-self: center;
@@ -384,10 +402,12 @@ main#admin button.save:disabled {
     user-select: none;
 }
 
-.link-manager .nav-group-editor {
+.nav-group-editor {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    
+    width: 100%;
     
     overflow-y: scroll;
     max-height: 360px;
@@ -404,4 +424,29 @@ main#admin button.save:disabled {
 
 .nav-editor-toolbar .add {
     margin-right: auto;
+}
+
+.nav-group-move {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    
+    text-align: center;
+    transition: 0.15s ease-in-out;
+}
+
+.nav-group-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-group-row .entry-move-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.nav-group-row .dual-value-row {
+    width: 100%;
 }

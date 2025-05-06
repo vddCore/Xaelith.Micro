@@ -15,4 +15,12 @@ public class DualValueEditContext
     }
 
     public List<Entry> Entries { get; set; } = [];
+
+    public DualValueEditContext Copy()
+    {
+        return new DualValueEditContext
+        {
+            Entries = Entries.Select(x => x with { }).ToList(),
+        };
+    }
 }

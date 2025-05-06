@@ -1,4 +1,5 @@
-﻿<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
+﻿@using System.Diagnostics
+<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
     @if (ComponentType != null)
     {
         <DynamicComponent Type="@ComponentType" Parameters="ModalParameters"/>
@@ -21,26 +22,28 @@
     
     private async Task OnDisplayed(ModalData modalData, Type componentType)
     {
-        try
-        {
-            ModalData = modalData;
-            ModalParameters[nameof(ModalData)] = modalData;
-            
-            ComponentType = componentType;
-            ModalData.IsOpen = true;
-            
-            await InvokeAsync(StateHasChanged);
-            await Task.Delay(200);
+        ModalData = modalData;
+        ModalParameters[nameof(ModalData)] = modalData;
+        
+        ComponentType = componentType;
+        ModalData.IsOpen = true;
+        
+        /**
+         * to future aura:
+         *  what the fuck? sometimes causes the
+         *  modal not to appear at all?
+         * 
+         *  increasing delay has helped but
+         *  investigate further if it ever messes
+         *  up again during use. 
+         */
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(500);
 
-            while (ModalData.IsOpen)
-                await Task.Delay(1);
-            
-            await Modal.DisplayedAsync();            
-            await InvokeAsync(StateHasChanged);
-        }
-        catch
-        {
-            /* Ignore */
-        }
+        while (ModalData.IsOpen)
+            await Task.Delay(1);
+        
+        await Modal.DisplayedAsync();            
+        await InvokeAsync(StateHasChanged);
     }
 }

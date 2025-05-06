@@ -30,8 +30,8 @@
 
     protected override string Title => "categories";
 
-    private DualValueEditContext Context { get; } = new();
-    private List<DualValueEditContext.Entry> PreviousState { get; set; } = [];
+    private DualValueEditContext Context { get; set; } = new();
+    private DualValueEditContext PreviousState { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -46,7 +46,7 @@
             .OrderBy(x => x.FirstValue)
             .ToList();
 
-        PreviousState = new(Context.Entries.Select(x => x with {}));
+        PreviousState = Context.Copy();
     }
 
     private void SaveCategories(EditContext editContext)
@@ -93,7 +93,7 @@
                 .ToList();
 
             Configuration.Save();
-            PreviousState = new(Context.Entries.Select(x => x with {}));
+            PreviousState = Context.Copy();
 
             Toasts.Show(
                 "Categories updated",
@@ -129,7 +129,7 @@
                 (result) =>
                 {
                     if (result)
-                        Context.Entries = [..PreviousState];
+                        Context = PreviousState.Copy();
                 }
             )
         );

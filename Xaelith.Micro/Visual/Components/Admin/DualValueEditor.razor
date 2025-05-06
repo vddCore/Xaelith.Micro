@@ -33,7 +33,7 @@
                               OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
                               FirstValueLabel="Name"
                               SecondValueLabel="Desc."
-                              OnDeleteRequested="@RequestEntryDeletion"/>
+                              OnDeleteRequested="@(() => RequestEntryDeletion(Context.Entries[index]))"/>
         }
     </div>
 </div>

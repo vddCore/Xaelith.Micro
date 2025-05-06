@@ -139,7 +139,7 @@
     --action-danger-hover-border: #ff889c;
     --action-danger-active-border: #ff889c88;
     --action-danger-disabled-border: #ff889c44;
-    --action-danger-hovershadow: #ff889c55;
+    --action-danger-hover-shadow: #ff889c55;
 
     --action-safe-foreground: #73e4afaa;
     --action-safe-hover-foreground: #73e4af;

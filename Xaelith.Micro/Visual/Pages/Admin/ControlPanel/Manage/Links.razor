@@ -1,6 +1,7 @@
 ﻿@layout AdminShell
 
 @page "/admin/manage/links"
+@using NavLink = Xaelith.Micro.Infrastructure.DataModel.FrontEnd.NavLink
 @inherits XaelithRestrictedPage
 
 @inject IModalService Modals;
@@ -9,60 +10,91 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <div class="nav-editor-toolbar editor-toolbar">
-        <button class="save"
-                type="submit">SAVE
-        </button>
+    <EditForm Model="@NavGroupEditContexts"
+              OnSubmit="@SaveNavGroups">
+        <div class="nav-editor-toolbar editor-toolbar">
+            <button class="save safe"
+                    type="submit">
+                SAVE
+            </button>
 
-        <button class="nav-group-tool discard"
-                type="button">
-            DISCARD
-        </button>
+            <button class="nav-group-tool discard"
+                    type="button"
+                    @onclick="@DiscardChanges">
+                DISCARD
+            </button>
 
-        <button class="nav-group-tool add"
-                type="button">
-            NEW NAV GROUP
-        </button>
-    </div>
-    
-    <div class="link-manager">
-        @foreach (var navgroup in NavGroupEditContexts)
-        {
-            <EditForm Model="@navgroup"
-                      OnSubmit="@SaveNavGroup">
+            <button class="nav-group-tool add"
+                    type="button"
+                    @onclick="@AddNewNavGroup">
+                NEW NAV GROUP
+            </button>
+        </div>
+
+        <div class="link-manager">
+            @foreach (var navgroup in NavGroupEditContexts)
+            {
                 <div class="nav-group">
                     <div class="nav-group-editor">
                         <div class="nav-group-name">
-                            <a class="add-new-link safe">
+                            <a class="add-new-link safe"
+                               @onclick="@(() => AddNewNavLink(navgroup))">
                                 <i class="las la-plus-circle"></i>
                             </a>
-                            
+
                             <input type="text"
                                    id="nav-group-@navgroup.Name-edit-field"
                                    @bind="@navgroup.Name"
                                    placeholder="Awaiting nav group name..."/>
-                        
-                            <a class="nav-group-delete danger">
+
+                            <a class="nav-group-delete danger"
+                               @onclick="@(() => DeleteNavGroup(@navgroup))">
                                 <i class="las la-trash"></i>
                             </a>
                         </div>
-                        
+
                         @foreach (var entry in navgroup.Links.Entries)
                         {
-                            <DualValueControl Entry="@entry"
-                                              FirstValueLabel="Label"
-                                              FirstValueClass="nav-link-label"
-                                              FirstValuePlaceholder="Awaiting label..."
-                                              SecondValueLabel="Target"
-                                              SecondValueClass="nav-link-target"
-                                              SecondValuePlaceholder="Awaiting target..."
-                                              OnDeleteRequested="@((e) => DeleteEntry(navgroup, e))"/>
+                            <div class="nav-group-row">
+                                <div class="entry-move-buttons">
+                                    <a class="nav-link-moveup"
+                                       @onclick="@(() => MoveNavLinkUp(navgroup, entry))">
+                                        <i class="las la-arrow-up"></i>
+                                    </a>
+
+                                    <a class="nav-link-movedown"
+                                       @onclick="@(() => MoveNavLinkDown(navgroup, entry))">
+                                        <i class="las la-arrow-down"></i>
+                                    </a>
+                                </div>
+
+                                <DualValueControl Entry="@entry"
+                                                  FirstValueLabel="Label"
+                                                  FirstValueClass="nav-link-label"
+                                                  FirstValuePlaceholder="Awaiting label..."
+                                                  SecondValueLabel="Target"
+                                                  SecondValueClass="nav-link-target"
+                                                  SecondValuePlaceholder="Awaiting target..."
+                                                  OnDeleteRequested="@((e) => DeleteEntry(navgroup, e))"/>
+                            </div>
                         }
                     </div>
+
+                    <div class="nav-group-move-buttons">
+                        <a class="nav-group-move nav-group-moveup"
+                           @onclick="@(() => MoveNavGroupUp(navgroup))">
+                            <span>🢁</span>
+                        </a>
+
+                        <a class="nav-group-move nav-group-movedown"
+                           @onclick="@(() => MoveNavGroupDown(navgroup))">
+                            <span>🢃</span>
+                        </a>
+                    </div>
                 </div>
-            </EditForm>
-        }
-    </div>
+            }
+        </div>
+    </EditForm>
 </div>
 
 @code {
@@ -72,6 +104,7 @@
     protected override string Title => "links";
 
     public List<NavGroupEditContext> NavGroupEditContexts { get; set; } = [];
+    private List<NavGroupEditContext> PreviousState { get; set; } = [];
 
     protected override void OnInitialized()
     {
@@ -89,10 +122,6 @@
                 ));
             }
 
-            context.Entries = context.Entries
-                .OrderBy(x => x.FirstValue)
-                .ToList();
-
             NavGroupEditContexts.Add(new NavGroupEditContext
             {
                 Name = navgroup.Name,
@@ -100,21 +129,37 @@
             });
         }
 
-        NavGroupEditContexts = NavGroupEditContexts
-            .OrderBy(x => x.Name)
+        PreviousState = NavGroupEditContexts
+            .Select(x => x.Copy())
             .ToList();
     }
 
     private void DeleteEntry(NavGroupEditContext context, DualValueEditContext.Entry entry)
         => context.Links.Entries.Remove(entry);
 
-    private void RequestDiscard(NavGroupEditContext context)
+    private async Task DiscardChanges()
     {
+        await Modals.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding changes made to nav links.<br/>" +
+                "This action is irreversible",
+                "Proceed",
+                "Abort",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        NavGroupEditContexts = new List<NavGroupEditContext>(PreviousState);
+                }
+            )
+        );
     }
 
-    private void RequestAddNew(NavGroupEditContext context)
+    private void AddNewNavLink(NavGroupEditContext context)
     {
-        context.Links.Entries.Add(
+        context.Links.Entries.Insert(
+            0,
             new DualValueEditContext.Entry(
                 string.Empty,
                 string.Empty
@@ -122,8 +167,146 @@
         );
     }
 
-    private void SaveNavGroup(EditContext context)
+    private void RemoveNavLink(DualValueEditContext navGroup, DualValueEditContext.Entry entry)
+        => navGroup.Entries.Remove(entry);
+
+    private void AddNewNavGroup()
+        => NavGroupEditContexts.Insert(0, new());
+
+    private void DeleteNavGroup(NavGroupEditContext navgroup)
+        => NavGroupEditContexts.Remove(navgroup);
+
+    private void SaveNavGroups(EditContext context)
     {
-        
+        var navgroups = (List<NavGroupEditContext>)context.Model;
+
+        foreach (var navgroup in navgroups)
+        {
+            if (string.IsNullOrWhiteSpace(navgroup.Name))
+            {
+                Toasts.Show(
+                    "Empty nav group names are not allowed",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+
+            if (navgroup.Links.Entries.Count <= 0)
+            {
+                Toasts.Show(
+                    "Empty nav groups are not allowed",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+
+            if (navgroup.Links.Entries.Any(x => string.IsNullOrWhiteSpace(x.FirstValue)))
+            {
+                Toasts.Show(
+                    "Empty link names are not allowed",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+
+            if (navgroup.Links.Entries.Any(x => string.IsNullOrWhiteSpace(x.SecondValue)))
+            {
+                Toasts.Show(
+                    "Empty link names are not allowed",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+        }
+
+        try
+        {
+            Configuration.Root!.Navigation.NavigationLists.Clear();
+            foreach (var navgroup in navgroups)
+            {
+                var navList = new NavList { Name = navgroup.Name };
+                foreach (var link in navgroup.Links.Entries)
+                {
+                    navList.Links.Add(
+                        new NavLink
+                        {
+                            Label = link.FirstValue,
+                            Target = link.SecondValue
+                        }
+                    );
+                }
+
+                Configuration.Root.Navigation.NavigationLists.Add(navList);
+                Configuration.Save();
+
+                Toasts.Show(
+                    "Navigation lists saved",
+                    ToastSeverity.Success
+                );
+            }
+        }
+        catch (Exception e)
+        {
+            Toasts.Show(
+                $"Failed to save navigation lists: {e.Message}",
+                ToastSeverity.Error
+            );
+        }
+    }
+
+    private void MoveNavLinkUp(NavGroupEditContext navgroup, DualValueEditContext.Entry entry)
+    {
+        var index = navgroup.Links.Entries.IndexOf(entry);
+
+        if (index <= 0)
+            return;
+
+        var tmp = navgroup.Links.Entries[index - 1];
+        navgroup.Links.Entries[index - 1] = entry;
+        navgroup.Links.Entries[index] = tmp;
+    }
+
+    private void MoveNavLinkDown(NavGroupEditContext navgroup, DualValueEditContext.Entry entry)
+    {
+        var index = navgroup.Links.Entries.IndexOf(entry);
+
+        if (index >= navgroup.Links.Entries.Count - 1)
+            return;
+
+        var tmp = navgroup.Links.Entries[index + 1];
+        navgroup.Links.Entries[index + 1] = entry;
+        navgroup.Links.Entries[index] = tmp;
+    }
+
+    private void MoveNavGroupDown(NavGroupEditContext navgroup)
+    {
+        var index = NavGroupEditContexts.IndexOf(navgroup);
+
+        if (index >= NavGroupEditContexts.Count - 1)
+            return;
+
+        var tmp = NavGroupEditContexts[index + 1];
+        NavGroupEditContexts[index + 1] = navgroup;
+        NavGroupEditContexts[index] = tmp;
+    }
+
+    private void MoveNavGroupUp(NavGroupEditContext navgroup)
+    {
+        var index = NavGroupEditContexts.IndexOf(navgroup);
+
+        if (index <= 0)
+            return;
+
+        var tmp = NavGroupEditContexts[index - 1];
+        NavGroupEditContexts[index - 1] = navgroup;
+        NavGroupEditContexts[index] = tmp;
     }
 }

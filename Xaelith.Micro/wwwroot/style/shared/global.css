@@ -564,7 +564,7 @@ button:disabled {
 
 .danger:hover {
     color: var(--action-danger-hover-foreground);
-    text-shadow: 0 0 5px var(--action-danger-shadow);
+    text-shadow: 0 0 5px var(--action-danger-hover-shadow);
 }
 
 .danger:active {
