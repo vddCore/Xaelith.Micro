@@ -20,9 +20,6 @@ public class Configuration
 
     [JsonProperty("content")]
     public ContentSettings Content { get; } = new();
-
-    [JsonProperty("stats")]
-    public StatisticsSettings Statistics { get; } = new();
 }
 
 public record CoreSettings
@@ -85,22 +82,4 @@ public record ContentSettings
     
     [JsonProperty("max_pages_in_paginator")]
     public int MaximumPagesInPaginator { get; set; } = 7;
-}
-
-public record StatisticsSettings
-{
-    [JsonProperty("dashboard_view_count")]
-    public int DashboardViewCount { get; set; }
-    
-    [JsonProperty("total_visits")]
-    public int TotalVisits { get; set; }
-    
-    [JsonProperty("total_unique_visits")]
-    public int TotalUniqueVisits { get; set; }
-    
-    [JsonProperty("today_visits")]
-    public int TodayVisits { get; set; }
-    
-    [JsonProperty("today_unique_visits")]
-    public int TodayUniqueVisits { get; set; }
 }

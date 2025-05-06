@@ -49,9 +49,9 @@
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
-    private List<Post> BlogPosts { get; set; } = new();
-    private List<Post> StaticPages { get; set; } = new();
-    private List<Post> Drafts { get; set; } = new();
+    private List<Post> BlogPosts { get; set; } = [];
+    private List<Post> StaticPages { get; set; } = [];
+    private List<Post> Drafts { get; set; } = [];
 
     protected override string Title => "content";
 

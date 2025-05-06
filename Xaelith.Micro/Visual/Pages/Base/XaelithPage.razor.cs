@@ -13,6 +13,7 @@ public partial class XaelithPage : ComponentBase
     [Inject] protected IContentService Content { get; private set; } = null!;
     [Inject] protected IMarkdownService Markdown { get; private set; } = null!;
     [Inject] protected IFlatFileUserStore UserStore { get; private set; } = null!;
+    [Inject] protected IStatisticsService Statistics { get; private set; } = null!;
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
     
     protected virtual string Title => string.Empty;

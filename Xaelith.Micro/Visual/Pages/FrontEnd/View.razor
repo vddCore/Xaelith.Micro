@@ -4,7 +4,7 @@
 <NavBar/>
 
 <main>
-    @if (Post == null)
+    @if (Post == null || (!Post.Metadata.Published && !UserContext.IsAuthenticated))
     {
         <NotFound Message="@NotFoundMessage"/>
     }
@@ -30,6 +30,9 @@
 <Footer/>
 
 @code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+
     [Parameter]
     public required string Slug { get; set; }
 
@@ -46,5 +49,16 @@
     protected override void OnParametersSet()
     {
         Post = Content.GetPostBySlug(Slug);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            if (Post != null)
+                Statistics.PostHit(Post.Id);
+        }
     }
 }

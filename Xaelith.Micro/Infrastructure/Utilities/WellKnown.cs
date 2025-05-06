@@ -13,6 +13,7 @@ public static class WellKnown
     public static string UserStore { get; } = Path.Combine(Config, "users");
 
     public static string ConfigurationFileName { get; } = "xaelith.json";
+    public static string StatisticsFileName { get; } = "stats.json";
 
     public static string PostMediaDirectoryName { get; } = "media";
     public static string PostMetadataFileName { get; } = "meta.json";

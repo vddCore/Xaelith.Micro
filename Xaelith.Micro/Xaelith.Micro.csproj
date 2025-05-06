@@ -39,6 +39,9 @@
     <Compile Update="Infrastructure\ServiceModel\Shared\IToastService.cs">
       <DependentUpon>ToastService.cs</DependentUpon>
     </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Core\StatisticsService.cs">
+      <DependentUpon>IStatisticsService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

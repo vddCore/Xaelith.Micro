@@ -95,6 +95,8 @@
         try
         {
             await Content.SavePostAsync(editorContext);
+            Statistics.RecalculateContentStatistics();
+            
             Toast.Show("Saved!", ToastSeverity.Success);
         }
         catch (Exception e)

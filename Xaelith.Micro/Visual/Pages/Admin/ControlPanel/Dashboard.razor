@@ -19,9 +19,9 @@
     </div>
 
     <div class="dashboard-stats">
-        @for (var i = 0; i < StatisticsEntries.Count; i++)
+        @for (var i = 0; i < Widgets.Count; i++)
         {
-            var statEntry = StatisticsEntries[i];
+            var statEntry = Widgets[i];
 
             if (statEntry != null)
             {
@@ -49,10 +49,12 @@
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
+    private List<StatisticsEntry?> Widgets { get; set; } = null!;
+    
+    protected override string Title => "dashboard";
+    
     public bool ShowWelcomeMessage { get; set; }
     public int StatShowCounter { get; set; }
-
-    private List<StatisticsEntry?> StatisticsEntries { get; set; } = null!;
 
     public string WelcomeMessage
     {
@@ -60,85 +62,54 @@
         {
             var time = DateTime.Now;
 
-            if (time.Hour >= 0 && time.Hour <= 4)
+            return time.Hour switch
             {
-                return $"Still not sleeping, {UserContext.User?.DisplayName ?? "user"}?<br />" +
-                       $"Please take care of yourself. ";
-            }
-            else if (time.Hour >= 5 && time.Hour <= 11)
-            {
-                return $"Good morning, {UserContext.User?.DisplayName ?? "user"}! ";
-            }
-            else if (time.Hour >= 12 && time.Hour <= 17)
-            {
-                return $"Good afternoon, {UserContext.User?.DisplayName ?? "user"}! ";
-            }
-            else if (time.Hour >= 18 && time.Hour <= 22)
-            {
-                return $"Good evening, {UserContext.User?.DisplayName ?? "user"}! ";
-            }
-            else
-            {
-                return $"You should go to sleep, {UserContext.User?.DisplayName ?? "user"}.<br />" +
-                       $"Really. Like, now. ";
-            }
+                >= 0 and <= 4 => $"Still not sleeping, {UserContext.User?.DisplayName ?? "user"}?<br />" + $"Please take care of yourself. ",
+                >= 5 and <= 11 => $"Good morning, {UserContext.User?.DisplayName ?? "user"}! ",
+                >= 12 and <= 17 => $"Good afternoon, {UserContext.User?.DisplayName ?? "user"}! ",
+                >= 18 and <= 22 => $"Good evening, {UserContext.User?.DisplayName ?? "user"}! ",
+                _ => $"You should go to sleep, {UserContext.User?.DisplayName ?? "user"}.<br />" + $"Really. Like, now. "
+            };
         }
     }
-
-    protected override string Title => "dashboard";
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        Configuration.Root!.Statistics.DashboardViewCount++;
-        Configuration.Save();
+        Widgets =
+        [
+            new("Blog posts", () => Statistics.Data.BlogPosts),
+            new("Static pages", () => Statistics.Data.StaticPages),
+            new("Drafts", () => Statistics.Data.Drafts),
+            null,
+            new("Content disk usage", () => FileSystemUtility.FormatSize(Statistics.Data.DiskUsage)),
+            new("Operating memory usage", () => FileSystemUtility.FormatSize(
+                Process.GetCurrentProcess().WorkingSet64
+            )),
 
-        StatisticsEntries = new List<StatisticsEntry?>
-        {
-            new("Today's total visitors", () => "2137"),
-            new("Today's unique visitors", () => "2137"),
-            new("Lifetime total visitors", () => "2137"),
-            new("Lifetime unique visitors", () => "2137"),
             null,
-            new("Blog posts", () => Content.GetAllPosts().Count(x => x.Metadata.Published && x.Metadata.Type == PostType.Normal)),
-            new("Static pages", () => Content.GetAllPosts().Count(x => x.Metadata.Type == PostType.Static)),
-            new("Drafts", () => Content.GetAllPosts().Count(x => !x.Metadata.Published)),
-            null,
-            new("Content disk usage", () =>
-            {
-                var bytes = (double)(new DirectoryInfo(WellKnown.Content)
-                    .EnumerateFiles("*", SearchOption.AllDirectories)
-                    .Sum(file => file.Length));
-
-                return FileSystemUtility.FormatSize(bytes);
-            }),
-            new("Operating memory usage", () =>
-            {
-                return FileSystemUtility.FormatSize(
-                    Process.GetCurrentProcess().WorkingSet64
-                );
-            }),
-            null,
-            new("Times this page was viewed", () => { return Configuration.Root!.Statistics.DashboardViewCount; })
-        };
+            new("Times this page was viewed", () => Statistics.Data.DashboardViewCount),
+        ];
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        base.OnAfterRender(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
 
         if (firstRender)
         {
+            Statistics.DashboardHit();
+            
             ShowWelcomeMessage = true;
             await InvokeAsync(StateHasChanged);
             await Task.Delay(1200);
 
-            for (var i = 0; i < StatisticsEntries.Count; i++)
+            foreach (var entry in Widgets)
             {
                 StatShowCounter++;
 
-                if (StatisticsEntries[i] == null)
+                if (entry == null)
                     continue;
 
                 await InvokeAsync(StateHasChanged);

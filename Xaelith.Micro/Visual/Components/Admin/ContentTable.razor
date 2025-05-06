@@ -1,10 +1,12 @@
 ﻿@inject IModalService Modals;
 @inject IContentService Content;
+@inject IStatisticsService Statistics;
 
 <table class="admin-table">
     <thead>
     <tr>
         <th class="title">title</th>
+        <th class="view-count">views</th>
         <th class="category">category</th>
         <th class="author">author</th>
         <th class="date-published">date published</th>
@@ -28,6 +30,17 @@
                     }
                     @post.Metadata.Title
                 </a>
+            </td>
+            
+            <td class="view-count">
+                @if (Statistics.Data.PostViews.TryGetValue(post.Id, out var count))
+                {
+                    @(count)
+                }
+                else
+                {
+                    @(0)
+                }
             </td>
 
             @if (!string.IsNullOrWhiteSpace(post.Metadata.Category))
@@ -76,16 +89,24 @@
                 DialogModalSeverity.Danger,
                 async void (confirm) =>
                 {
-                    if (confirm)
+                    try
                     {
-                        Content.DeletePost(post.Id);
-
-                        if (ReloadRequested.HasDelegate)
+                        if (confirm)
                         {
-                            await ReloadRequested.InvokeAsync();
-                        }
+                            Content.DeletePost(post.Id);
+                            Statistics.RecalculateContentStatistics();
+                        
+                            if (ReloadRequested.HasDelegate)
+                            {
+                                await ReloadRequested.InvokeAsync();
+                            }
 
-                        StateHasChanged();
+                            StateHasChanged();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        /* Ignore. */
                     }
                 }
             )
