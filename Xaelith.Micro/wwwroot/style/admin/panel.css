@@ -19,6 +19,7 @@
     --dual-value-container-textbox-focus-background: #ff88ff22;
     --dual-value-editor-border: #ff88ff99;
 
+    --link-manager-group-reorder-background: #ff88ff22;
     --link-manager-nav-group-border: #ff88ff99;
 }
 
@@ -335,7 +336,7 @@ main#admin button.save:disabled {
     padding-left: 10px;
     padding-right: 11px;
     
-    background-color: #ff88ff22;
+    background-color: var(--link-manager-group-reorder-background);
     border-radius: 0 4px 4px 0;
 }
 
@@ -358,19 +359,19 @@ main#admin button.save:disabled {
     padding-left: 6px;
     
     font-size: 1.6rem;
-    border-left: 1px solid #ff88ff99;
-    border-right: 1px solid #ff88ff99;
+    border-left: 1px solid var(--textbox-border);
+    border-right: 1px solid var(--textbox-border);
 }
 
 .nav-group-name input[type="text"]:focus {
     box-shadow: none;
-    background-color: #ff88ff11;
-    border-left: 4px solid #ff88ff;
-    border-right: 4px solid #ff88ff;
+    background-color: var(--dual-value-container-textbox-focus-background);
+    border-left: 4px solid var(--textbox-focus-border);
+    border-right: 4px solid var(--textbox-focus-border);
 }
 
 .nav-group-name input[type="text"]:hover {
-    border-left: 4px solid #ff88ff99;
+    border-left: 4px solid var(--textbox-border);
 }
 
 .nav-group-name a.add-new-link {

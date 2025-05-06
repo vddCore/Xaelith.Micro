@@ -141,6 +141,16 @@
     --action-danger-disabled-border: #ff889c44;
     --action-danger-hover-shadow: #ff889c55;
 
+    --action-unsafe-foreground: #ffcf88aa;
+    --action-unsafe-hover-foreground: #ffcf88;
+    --action-unsafe-active-foreground: #ffcf8888;
+    --action-unsafe-disabled-foreground: #ffcf8866;
+    --action-unsafe-border: #ffcf88aa;
+    --action-unsafe-hover-border: #ffcf88;
+    --action-unsafe-active-border: #ffcf8888;
+    --action-unsafe-disabled-border: #ffcf8844;
+    --action-unsafe-hover-shadow: #ffcf8855;
+    
     --action-safe-foreground: #73e4afaa;
     --action-safe-hover-foreground: #73e4af;
     --action-safe-active-foreground: #73e4af88;

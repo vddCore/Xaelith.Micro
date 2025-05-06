@@ -18,7 +18,7 @@
                 SAVE
             </button>
 
-            <button class="nav-group-tool discard"
+            <button class="nav-group-tool discard unsafe"
                     type="button"
                     @onclick="@DiscardChanges">
                 DISCARD
@@ -218,7 +218,7 @@
             if (navgroup.Links.Entries.Any(x => string.IsNullOrWhiteSpace(x.SecondValue)))
             {
                 Toasts.Show(
-                    "Empty link names are not allowed",
+                    "Empty link targets are not allowed",
                     ToastSeverity.Warning,
                     3500
                 );

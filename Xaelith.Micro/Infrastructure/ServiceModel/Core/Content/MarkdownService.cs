@@ -1,5 +1,6 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
 
+using System.Text.RegularExpressions;
 using Markdig;
 using Markdig.Extensions.Emoji;
 
@@ -24,6 +25,12 @@ public class MarkdownService : IMarkdownService
 
         if (!string.IsNullOrWhiteSpace(pbToken))
             markdown = markdown.Replace(pbToken, string.Empty);
+
+        markdown = Regex.Replace(
+            markdown,
+            @"\[c=\#(?<color>(([0-9A-Fa-f]{3})|([0-9A-Fa-f]{6})|[0-9A-Fa-f]{8}))](?<content>.*)\[/c\]",
+            "<span style=\"color: #${color};\">${content}</span>"
+        );
         
         return Markdown.ToHtml(
             markdown,

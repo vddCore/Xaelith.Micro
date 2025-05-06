@@ -588,6 +588,47 @@ button:disabled {
     color: var(--action-safe-disabled-foreground);
 }
 
+button.safe {
+    border-left-color: var(--action-safe-border);
+}
+
+button.safe:hover {
+    border-left-color: var(--action-safe-hover-border);
+}
+
+button.safe:active {
+    border-left-color: var(--action-safe-hover-border);
+}
+
+.unsafe {
+    color: var(--action-unsafe-foreground);
+}
+
+.unsafe:hover {
+    color: var(--action-unsafe-hover-foreground);
+    text-shadow: 0 0 4px var(--action-unsafe-hover-shadow);
+}
+
+.unsafe:active {
+    color: var(--action-unsafe-active-foreground);
+}
+
+.unsafe:disabled {
+    color: var(--action-unsafe-disabled-foreground);
+}
+
+button.unsafe {
+    border-left-color: var(--action-unsafe-border);
+}
+
+button.unsafe:hover {
+    border-left-color: var(--action-unsafe-hover-border);
+}
+
+button.unsafe:active {
+    border-left-color: var(--action-unsafe-hover-border);
+}
+
 .modal-backdrop {
     display: flex;
     justify-content: center;
