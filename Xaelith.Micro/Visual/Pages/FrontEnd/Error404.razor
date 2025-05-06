@@ -1,0 +1,50 @@
+﻿@page "/{*route:nonfile}"
+
+<PageTitle>404 - Not Found</PageTitle>
+
+<div class="error-container">
+    <div class="error-content">
+        <div class="icon @(ShowIcon ? "visible" : "")">
+            <i class="las la-skull"></i>
+        </div>
+
+        <div class="message">
+            <div class="message-title @(ShowTitle ? "visible" : "")">
+                404
+            </div>
+            <div class="message-subtitle @(ShowSubtitle ? "visible" : "")">
+                The requested page could not be found
+            </div>
+        </div>
+        
+        <a class="@(ShowLink ? "visible" : "")" href="/">Return to Home Page</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Route { get; set; }
+
+    public bool ShowIcon { get; set; }
+    public bool ShowTitle { get; set; }
+    public bool ShowSubtitle { get; set; }
+    public bool ShowLink { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        ShowIcon = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(600);
+
+        ShowTitle = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(200);
+        
+        ShowSubtitle = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(200);
+
+        ShowLink = true;
+        await InvokeAsync(StateHasChanged);
+    }
+}
