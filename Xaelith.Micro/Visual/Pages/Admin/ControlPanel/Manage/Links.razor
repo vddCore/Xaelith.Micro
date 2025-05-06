@@ -9,7 +9,7 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <div class="nav-group-toolbar editor-toolbar">
+    <div class="nav-editor-toolbar editor-toolbar">
         <button class="save"
                 type="submit">SAVE
         </button>
@@ -31,18 +31,22 @@
             <EditForm Model="@navgroup"
                       OnSubmit="@SaveNavGroup">
                 <div class="nav-group">
-                    <div class="nav-group-name">
-                        <input type="text"
-                               id="nav-group-@navgroup.Name-edit-field"
-                               @bind="@navgroup.Name"
-                               placeholder="Awaiting nav group name..."/>
-                        
-                        <a class="add-new-link">
-                            <i class="las la-plus-circle"></i>
-                        </a>
-                    </div>
-                    
                     <div class="nav-group-editor">
+                        <div class="nav-group-name">
+                            <a class="add-new-link safe">
+                                <i class="las la-plus-circle"></i>
+                            </a>
+                            
+                            <input type="text"
+                                   id="nav-group-@navgroup.Name-edit-field"
+                                   @bind="@navgroup.Name"
+                                   placeholder="Awaiting nav group name..."/>
+                        
+                            <a class="nav-group-delete danger">
+                                <i class="las la-trash"></i>
+                            </a>
+                        </div>
+                        
                         @foreach (var entry in navgroup.Links.Entries)
                         {
                             <DualValueControl Entry="@entry"

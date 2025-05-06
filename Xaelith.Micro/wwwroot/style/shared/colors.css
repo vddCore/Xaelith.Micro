@@ -134,7 +134,22 @@
     --action-danger-foreground: #ff889cdd;
     --action-danger-hover-foreground: #ff889c;
     --action-danger-active-foreground: #ff889c88;
-    --action-danger-shadow: #ff889c55;
+    --action-danger-disabled-foreground: #ff889c66;
+    --action-danger-border: #ff889caa;
+    --action-danger-hover-border: #ff889c;
+    --action-danger-active-border: #ff889c88;
+    --action-danger-disabled-border: #ff889c44;
+    --action-danger-hovershadow: #ff889c55;
+
+    --action-safe-foreground: #73e4afaa;
+    --action-safe-hover-foreground: #73e4af;
+    --action-safe-active-foreground: #73e4af88;
+    --action-safe-disabled-foreground: #73e4af66;
+    --action-safe-border: #73e4afaa;
+    --action-safe-hover-border: #73e4af;
+    --action-safe-active-border: #73e4af88;
+    --action-safe-disabled-border: #73e4af44;
+    --action-safe-hover-shadow: #73e4af55;
     
     --modal-backdrop-background: #1a042122;
     --modal-dialog-background: #0f0213;

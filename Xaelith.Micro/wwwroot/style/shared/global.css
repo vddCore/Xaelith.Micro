@@ -571,6 +571,23 @@ button:disabled {
     color: var(--action-danger-active-foreground);
 }
 
+.safe {
+    color: var(--action-safe-foreground);
+}
+
+.safe:hover {
+    color: var(--action-safe-hover-foreground);
+    text-shadow: 0 0 4px var(--action-safe-hover-shadow);
+}
+
+.safe:active {
+    color: var(--action-safe-active-foreground);
+}
+
+.safe:disabled {
+    color: var(--action-safe-disabled-foreground);
+}
+
 .modal-backdrop {
     display: flex;
     justify-content: center;
