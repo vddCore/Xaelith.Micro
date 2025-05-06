@@ -451,3 +451,100 @@ main#admin button.save:disabled {
 .nav-group-row .dual-value-row {
     width: 100%;
 }
+
+.dashboard-header {
+    display: flex;
+    justify-content: flex-start;
+    
+    flex-direction: row;
+    margin-right: auto;
+    
+    margin-top: -22px;
+}
+
+.dashboard-logo {
+    align-self: center;
+    
+    opacity: 0;
+    transition: 0.6s ease-in-out;
+}
+
+.dashboard-logo.visible {
+    opacity: 0.8;
+}
+
+.dashboard-logo.visible:hover {
+    opacity: 1;
+}
+
+.welcome-message {
+    text-align: center;
+    align-self: center;
+
+    padding-top: 16px;
+    padding-bottom: 16px;
+    
+    padding-left: 12px;
+    border-right: 6px solid #cfaee9;
+    
+    margin-left: 24px;
+        
+    width: 0;
+    overflow: hidden;
+    text-wrap: nowrap;
+    
+    opacity: 0;
+    
+    font-family: "Vermin Vibes V";
+    font-size: 1.4rem;
+    
+    color: #ff88ff;
+    
+    transition: 2s ease-in-out,
+                border 0.3s ease-in-out,
+                width 2s cubic-bezier(0.9, 0, 0.1, 1);
+    
+    user-select: none;
+}
+
+.welcome-message.visible {
+    opacity: 0.8;
+    width: 100%;
+}
+
+.stat-entry {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    font-size: 1.5rem;
+    border-left: 4px solid #ff88ff;
+    border-right: 1px solid #ff88ff;
+    background: #ff88ff11;
+    
+    padding-left: 12px;
+    padding-right: 12px;
+    
+    transition: 0.3s ease-in-out;
+    opacity: 0;
+    
+    margin-top: 1px;
+}
+
+.stat-name {
+    width: 100%;
+    
+    color: #ff88ff;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    color: #73e4af;
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+.stat-entry.visible {
+    opacity: 1;
+}

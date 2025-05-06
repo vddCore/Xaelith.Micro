@@ -191,6 +191,7 @@ public class ContentService : IContentService
         postMeta ??= new PostMetadata();
         
         postMeta.Title = context.Title;
+        postMeta.Slug = context.Slug;
         postMeta.Description = context.Description;
         postMeta.Author = context.EditingUser;
         postMeta.Category = context.Category;
@@ -208,17 +209,7 @@ public class ContentService : IContentService
 
         if (string.IsNullOrWhiteSpace(postMeta.Slug))
         {
-            var slugBase = _slugHelper.GenerateSlug(context.Title);
-            var slug = slugBase;
-
-            var posts = GetAllPosts(p => p.Metadata.Slug.StartsWith(slugBase));
-
-            if (posts.Count > 0)
-            {
-                slug = $"{slugBase}-{posts.Count}";
-            }
-
-            postMeta.Slug = slug;
+            postMeta.Slug = GenerateSlug(context.Title);
         }
 
         postMeta.Type = context.PostType;
@@ -264,5 +255,26 @@ public class ContentService : IContentService
                 JsonConvert.SerializeObject(postMeta)
             );
         }
+    }
+
+    public string GenerateSlug(string title)
+    {
+        var slugBase = _slugHelper.GenerateSlug(title);
+        
+        if (string.IsNullOrWhiteSpace(slugBase))
+            return string.Empty;
+
+        var slug = slugBase;
+        var existingSlugs = GetAllPosts(p => p.Metadata.Slug.StartsWith(slugBase))
+            .Select(p => p.Metadata.Slug)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        int i = 1;
+        while (existingSlugs.Contains(slug))
+        {
+            slug = $"{slugBase}-{i++}";
+        }
+
+        return slug;
     }
 }

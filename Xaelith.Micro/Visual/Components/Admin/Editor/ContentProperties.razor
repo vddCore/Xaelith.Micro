@@ -1,14 +1,28 @@
-﻿@inject IConfigService Configuration
+﻿@inject IContentService Content
+@inject IConfigService Configuration
 @inject IJSRuntime JS;
 
-<div class="input-group">
-    <label for="md-editor-title">Title</label>
-    <input id="md-editor-title"
-           type="text"
-           spellcheck="false"
-           placeholder="Enter a title..."
-           @bind="@Context.Title"/>
+<div class="input-row">
+    <div class="input-group">
+        <label for="md-editor-title">Title</label>
+        <input id="md-editor-title"
+               type="text"
+               spellcheck="false"
+               placeholder="Enter a title..."
+               @bind="@Context.Title"
+               @oninput="TitleChanged"/>
+    </div>
+    
+    <div class="input-group">
+        <label for="md-editor-slug">Slug</label>
+        <input id="md-editor-slug"
+               type="text"
+               spellcheck="false"
+               placeholder="Enter a slug..."
+               @bind="@Context.Slug"/>
+    </div>
 </div>
+
 
 <div class="input-group">
     <label for="md-editor-description">Description</label>
@@ -94,5 +108,10 @@
             "Select a type...",
             "#md-editor-post-type-placeholder"
         );
+    }
+
+    private void TitleChanged(ChangeEventArgs e)
+    {
+        Context.Slug = Content.GenerateSlug(e.Value?.ToString() ?? string.Empty);
     }
 }

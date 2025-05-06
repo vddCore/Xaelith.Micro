@@ -17,4 +17,6 @@ public interface IContentService : IXaelithService
     void DeletePost(Guid postId);
     Task SavePostAsync(EditorContext context);
     Task SetPublishedStateAsync(Guid postId, bool isPublished);
+
+    string GenerateSlug(string title);
 }

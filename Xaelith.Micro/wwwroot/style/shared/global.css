@@ -467,6 +467,7 @@ button:disabled {
 }
 
 .selectr-placeholder {
+    text-transform: uppercase;
     color: var(--dropdown-placeholder-foreground);
 }
 
