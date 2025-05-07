@@ -1,5 +1,4 @@
-﻿@using System.Diagnostics
-<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
+﻿<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
     @if (ComponentType != null)
     {
         <DynamicComponent Type="@ComponentType" Parameters="ModalParameters"/>

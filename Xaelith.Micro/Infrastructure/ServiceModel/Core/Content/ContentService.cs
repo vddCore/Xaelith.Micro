@@ -2,7 +2,6 @@
 
 using Newtonsoft.Json;
 using Slugify;
-using Xaelith.Micro.Infrastructure.DataModel.Admin;
 using Xaelith.Micro.Infrastructure.DataModel.Admin.Editor;
 using Xaelith.Micro.Infrastructure.DataModel.Core;
 using Xaelith.Micro.Infrastructure.DataModel.Core.Content;

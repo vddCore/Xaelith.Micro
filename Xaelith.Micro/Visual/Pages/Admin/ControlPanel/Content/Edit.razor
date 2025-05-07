@@ -10,31 +10,34 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="@EditorContext"
-              OnSubmit="@SavePost">
-        <div class="editor-toolbar">
-            <button type="submit"
-                    class="save">SAVE</button>
-            
-            <CustomInputCheckbox Label="publish"
-                                 Value="@EditorContext.IsPublished" 
-                                 ValueChanged="PublishedStateChanged"
-                                 ValueExpression="ProvidePublishedState"/>
-        </div>
+    <div class="content-editor-container">
+        <EditForm Model="@EditorContext"
+                  OnSubmit="@SavePost">
+            <div class="editor-toolbar">
+                <button type="submit"
+                        class="safe">SAVE
+                </button>
 
-        <TabView Classes="md-editor-tabview"
-                 TabChanged="OnTabChanged">
-            <Tab Header="Edit">
-                <ContentEditor Context="@EditorContext"
-                               OnMarkdownEdited="@OnMarkdownEdited"/>
-                <ContentProperties Context="@EditorContext"/>
-            </Tab>
+                <CustomInputCheckbox Label="publish"
+                                     Value="@EditorContext.IsPublished"
+                                     ValueChanged="PublishedStateChanged"
+                                     ValueExpression="ProvidePublishedState"/>
+            </div>
 
-            <Tab Header="Preview">
-                <ContentPreview Context="@EditorContext"/>
-            </Tab>
-        </TabView>
-    </EditForm>
+            <TabView Classes="md-editor-tabview"
+                     TabChanged="OnTabChanged">
+                <Tab Header="Edit">
+                    <ContentEditor Context="@EditorContext"
+                                   OnMarkdownEdited="@OnMarkdownEdited"/>
+                    <ContentProperties Context="@EditorContext"/>
+                </Tab>
+
+                <Tab Header="Preview">
+                    <ContentPreview Context="@EditorContext"/>
+                </Tab>
+            </TabView>
+        </EditForm>
+    </div>
 </div>
 
 @code {
@@ -94,6 +97,7 @@
         EditorContext.Category = post.Metadata.Category;
         EditorContext.TagList = string.Join(",", post.Metadata.Tags);
         EditorContext.PostType = post.Metadata.Type;
+        EditorContext.Slug = post.Metadata.Slug;
 
         EditorContext.Markdown = post.Body;
     }
@@ -105,7 +109,7 @@
             Navigation.NavigateTo("/admin/content/new");
             return;
         }
-        
+
         await base.OnAfterRenderAsync(firstRender);
 
         if (_shouldRehighlightCodeInPreview)
@@ -126,14 +130,14 @@
     private async Task SavePost(EditContext context)
     {
         Autosave.Stop();
-        
+
         var editorContext = (EditorContext)context.Model;
 
         try
         {
             await Content.SavePostAsync(editorContext);
             Statistics.RecalculateContentStatistics();
-            
+
             Toast.Show("Saved!", ToastSeverity.Success);
         }
         catch (Exception e)
@@ -141,7 +145,7 @@
             Toast.Show(e.Message, ToastSeverity.Error);
         }
     }
-    
+
     private void PublishedStateChanged(bool value)
         => EditorContext.IsPublished = value;
 

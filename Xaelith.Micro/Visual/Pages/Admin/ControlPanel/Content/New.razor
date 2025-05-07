@@ -10,30 +10,32 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="@EditorContext"
-              OnSubmit="@SavePost">
-        <div class="editor-toolbar">
-            <button type="submit"
-                    class="save">SAVE</button>
-            
-            <CustomInputCheckbox Label="publish"
-                                 Value="@EditorContext.IsPublished" 
-                                 ValueChanged="PublishedStateChanged"
-                                 ValueExpression="ProvidePublishedState"/>
-        </div>
+    <div class="content-editor-container">
+        <EditForm Model="@EditorContext"
+                  OnSubmit="@SavePost">
+            <div class="editor-toolbar">
+                <button type="submit"
+                        class="safe">SAVE</button>
 
-        <TabView Classes="md-editor-tabview" TabChanged="OnTabChanged">
-            <Tab Header="Edit">
-                <ContentEditor Context="@EditorContext"
-                               OnMarkdownEdited="@OnMarkdownEdited"/>
-                <ContentProperties Context="@EditorContext"/>
-            </Tab>
+                <CustomInputCheckbox Label="publish"
+                                     Value="@EditorContext.IsPublished"
+                                     ValueChanged="PublishedStateChanged"
+                                     ValueExpression="ProvidePublishedState"/>
+            </div>
 
-            <Tab Header="Preview">
-                <ContentPreview Context="@EditorContext"/>
-            </Tab>
-        </TabView>
-    </EditForm>
+            <TabView Classes="md-editor-tabview" TabChanged="OnTabChanged">
+                <Tab Header="Edit">
+                    <ContentEditor Context="@EditorContext"
+                                   OnMarkdownEdited="@OnMarkdownEdited"/>
+                    <ContentProperties Context="@EditorContext"/>
+                </Tab>
+
+                <Tab Header="Preview">
+                    <ContentPreview Context="@EditorContext"/>
+                </Tab>
+            </TabView>
+        </EditForm>
+    </div>
 </div>
 
 @code {

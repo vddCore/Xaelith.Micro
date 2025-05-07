@@ -3,12 +3,16 @@
 @page "/admin/core/settings"
 @inherits XaelithRestrictedPage
 
+@inject IModalService Modal;
+@inject IToastService Toast;
+
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="@ConfigurationCopy">
+    <EditForm Model="@ConfigurationCopy"
+              OnSubmit="@SaveChanges">
         <div class="editor-toolbar">
-            <button class="save safe"
+            <button class="safe"
                     type="submit">
                 SAVE
             </button>
@@ -20,27 +24,7 @@
             </button>
         </div>
 
-        <TabView Classes="settings-editor-tabview">
-            <Tab Header="Core">
-                Stolen. Destroyed. Overheated.  
-            </Tab>
-            
-            <Tab Header="General">
-                Generally speaking...
-            </Tab>
-            
-            <Tab Header="Rendering">
-                ...it rendered me unable to function...
-            </Tab>
-
-            <Tab Header="Content">
-                ...I was not content with that state of matters...
-            </Tab>
-            
-            <Tab Header="About">
-                ...so I decided to do something about it.
-            </Tab>
-        </TabView>
+        <SettingsEditor Configuration="ConfigurationCopy"/>
     </EditForm>
 </div>
 
@@ -51,13 +35,92 @@
     private Configuration ConfigurationCopy { get; set; } = null!;
 
     protected override void OnInitialized()
-    {
-        ConfigurationCopy = Configuration.Root!.Copy();
-    }
+        => Reload();
 
     protected override string Title => "settings";
 
+
+    private void Reload()
+        => ConfigurationCopy = Configuration.Root!.Copy();
+
     private void RequestDiscard()
     {
+        Modal.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding changes to system settings. <br />" +
+                "This operation is irreversible.",
+                "Proceed",
+                "Abort",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        Reload();
+                }
+            )
+        );
     }
+    
+    private void SaveChanges(EditContext context)
+    {
+        var config = (Configuration)context.Model;
+
+        if (config.Core.AutosaveIntervalSeconds < 30)
+        {
+            Fail("Autosave interval must be >= 30");
+            return;
+        }
+
+        try
+        {
+            _ = DateTime.Now.ToString(config.General.DateFormat);
+        }
+        catch
+        {
+            Fail("Invalid date format provided");
+            return;
+        }
+
+        if (!config.Rendering.PageBreakToken.StartsWith("[[")
+         && !config.Rendering.PageBreakToken.EndsWith("]]"))
+        {
+            Fail("Page break tokens must be enclosed in [[ ]]");
+            return;
+        }
+
+        if (config.Content.MaximumPostsPerPage < 3)
+        {
+            Fail("Posts per page must be >= 3");
+            return;
+        }
+        
+        if (config.Content.MaximumPagesInPaginator < 3)
+        {
+            Fail("Paginator limit must be >= 3");
+            return;
+        }
+
+        try
+        {
+            Configuration.Root!.Replace(config);
+            Configuration.Save();
+            
+            Toast.Show(
+                "Settings saved",
+                ToastSeverity.Success
+            );
+        }
+        catch (Exception e)
+        {
+            Toast.Show(
+                $"Failed to save settings: {e.Message}.",
+                ToastSeverity.Error,
+                4000
+            );
+        }
+    }
+
+    private void Fail(string why)
+        => Toast.Show(why, ToastSeverity.Warning, 3500);
 }

@@ -29,6 +29,17 @@ public record Configuration
         Navigation = Navigation with { },
         Content = Content with { }
     };
+
+    public void Replace(Configuration with)
+    {
+        var copy = with.Copy();
+
+        Core = copy.Core with { };
+        General = copy.General with { };
+        Rendering = copy.Rendering with { };
+        Navigation = copy.Navigation with { };
+        Content = copy.Content with { };
+    }
 }
 
 public record CoreSettings
@@ -52,21 +63,18 @@ public record GeneralSettings
     public string SiteUrl { get; set; } = "https://localhost:5271";
 
     [JsonProperty("footer_text")]
-    public string FooterText { get; set; } =
-        "Copyright (c) 2025 Xaelith Project";
+    public string FooterText { get; set; } = "Copyright (c) 2025 Xaelith Project";
 
     [JsonProperty("date_format")]
     public string DateFormat { get; set; } = "dd MMMM yyyy - HH:mm";
 
     [JsonProperty("post_order_criteria")]
     [JsonConverter(typeof(StringEnumConverter))]
-    public PostOrderCriteria PostOrderCriteria { get; set; } =
-        PostOrderCriteria.Date;
+    public PostOrderCriteria PostOrderCriteria { get; set; } = PostOrderCriteria.Date;
 
     [JsonProperty("post_order_direction")]
     [JsonConverter(typeof(StringEnumConverter))]
-    public PostOrderDirection PostOrderDirection { get; set; } =
-        PostOrderDirection.Descending;
+    public PostOrderDirection PostOrderDirection { get; set; } = PostOrderDirection.Descending;
 }
 
 public record RenderingSettings

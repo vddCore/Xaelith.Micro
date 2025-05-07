@@ -1,0 +1,181 @@
+﻿@inject IJSRuntime JS;
+
+<TabView Classes="settings-editor-tabview"
+         TabChanged="OnTabChanged">
+    <Tab Header="Core">
+        <div class="input-group">
+            <label for="settings-core-autosave-interval">
+                Autosave interval (seconds)
+            </label>
+            <input id="settings-core-autosave-interval"
+                   type="text"
+                   @bind="@Configuration.Core.AutosaveIntervalSeconds"/>
+        </div>
+    </Tab>
+
+    <Tab Header="General">
+        <div class="input-group">
+            <label for="settings-general-site-title">
+                Site title
+            </label>
+            <input id="settings-general-site-title"
+                   type="text"
+                   @bind="@Configuration.General.SiteTitle"/>
+        </div>
+
+        <div class="input-group">
+            <label for="settings-general-site-description">
+                Site description
+            </label>
+            <input id="settings-general-site-description"
+                   type="text"
+                   @bind="@Configuration.General.SiteDescription"/>
+        </div>
+
+        <div class="input-group">
+            <label for="settings-general-site-url">
+                Site URL
+            </label>
+            <input id="settings-general-site-url"
+                   type="text"
+                   @bind="@Configuration.General.SiteUrl"/>
+        </div>
+
+        <div class="input-group">
+            <label for="settings-general-footer-text">
+                Footer text
+            </label>
+            <input id="settings-general-footer-text"
+                   type="text"
+                   @bind="@Configuration.General.FooterText"/>
+        </div>
+
+        <div class="input-group">
+            <label for="settings-general-date-format">
+                Date format
+            </label>
+            <input id="settings-general-date-format"
+                   type="text"
+                   @bind="@Configuration.General.DateFormat"/>
+        </div>
+
+        <div class="input-row">
+            <div class="input-group">
+                <label for="settings-general-post-order-criteria">
+                    Post order criteria
+                </label>
+
+                <span id="settings-general-post-order-criteria-placeholder"
+                      class="combobox-placeholder">
+                            Initializing...    
+                        </span>
+
+                <select id="settings-general-post-order-criteria"
+                        style="display: none;"
+                        @bind="@Configuration.General.PostOrderCriteria">
+                    @foreach (var value in Enum.GetValues<PostOrderCriteria>())
+                    {
+                        <option value="@value">@EnumUtility.GetDisplayName(value)</option>
+                    }
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="settings-general-post-order-direction">
+                    Post order direction
+                </label>
+
+                <span id="settings-general-post-order-direction-placeholder"
+                      class="combobox-placeholder">
+                            Initializing...    
+                        </span>
+
+                <select id="settings-general-post-order-direction"
+                        style="display: none;"
+                        @bind="@Configuration.General.PostOrderDirection">
+                    @foreach (var value in Enum.GetValues<PostOrderDirection>())
+                    {
+                        <option value="@value">@EnumUtility.GetDisplayName(value)</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </Tab>
+
+    <Tab Header="Rendering">
+        <div class="input-group">
+            <label for="settings-rendering-pagebreak-token">
+                Page break token
+            </label>
+            <input id="settings-rendering-pagebreak-token"
+                   type="text"
+                   @bind="@Configuration.Rendering.PageBreakToken"/>
+        </div>
+    </Tab>
+
+    <Tab Header="Content">
+        <div class="input-row">
+            <div class="input-group">
+                <label for="settings-content-max-posts-per-page">
+                    Posts per page
+                </label>
+                <input id="settings-content-max-posts-per-page"
+                       type="text"
+                       @bind="@Configuration.Content.MaximumPostsPerPage"/>
+            </div>
+
+            <div class="input-group">
+                <label for="settings-content-max-pages-in-paginator">
+                    Pages in paginator
+                </label>
+                <input id="settings-content-max-pages-in-paginator"
+                       type="text"
+                       @bind="@Configuration.Content.MaximumPagesInPaginator"/>
+            </div>
+        </div>
+    </Tab>
+</TabView>
+
+@code {
+    private bool _shouldInitializeComboboxes;
+
+    [Parameter]
+    public required Configuration Configuration { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (_shouldInitializeComboboxes)
+        {
+            await JS.InvokeVoidAsync(
+                "window.xaelith.admin.initSelect",
+                "#settings-general-post-order-criteria",
+                false,
+                false,
+                "Select a criterion",
+                "#settings-general-post-order-criteria-placeholder"
+            );
+
+            await JS.InvokeVoidAsync(
+                "window.xaelith.admin.initSelect",
+                "#settings-general-post-order-direction",
+                false,
+                false,
+                "Select a direction",
+                "#settings-general-post-order-direction-placeholder"
+            );
+
+            _shouldInitializeComboboxes = false;
+        }
+    }
+    
+    private void OnTabChanged(TabView.Tab tab)
+    {
+        if (tab.Header == "General")
+        {
+            _shouldInitializeComboboxes = true;
+            StateHasChanged();
+        }
+    }
+}

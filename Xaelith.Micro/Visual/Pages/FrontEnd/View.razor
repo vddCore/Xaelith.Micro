@@ -57,8 +57,11 @@
 
         if (firstRender)
         {
-            if (Post != null)
-                Statistics.PostHit(Post.Id);
+            if (!UserContext.IsAuthenticated)
+            {
+                if (Post != null)
+                    Statistics.PostHit(Post.Id);
+            }
         }
     }
 }

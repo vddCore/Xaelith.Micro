@@ -289,31 +289,8 @@ main#admin .editor-toolbar .custom-checkbox {
     margin-top: 4px;
 }
 
-main#admin button.save {
+.content-editor-container .safe  {
     height: 30px;
-    border-color: var(--md-editor-toolbar-save-button-border);
-
-    color: var(--md-editor-toolbar-save-button-foreground);
-}
-
-main#admin button.save:hover {
-    border-color: var(--md-editor-toolbar-save-button-hover-border);
-
-    color: var(--md-editor-toolbar-save-button-hover-foreground);
-
-    text-shadow: 0 0 4px var(--md-editor-toolbar-save-button-hover-shadow);
-}
-
-main#admin button.save:active {
-    border-color: var(--md-editor-toolbar-save-button-active-border);
-
-    color: var(--md-editor-toolbar-save-button-active-foreground);
-}
-
-main#admin button.save:disabled {
-    border-color: var(--md-editor-toolbar-save-button-disabled-border);
-
-    color: var(--md-editor-toolbar-save-button-disabled-foreground);
 }
 
 .link-manager {
