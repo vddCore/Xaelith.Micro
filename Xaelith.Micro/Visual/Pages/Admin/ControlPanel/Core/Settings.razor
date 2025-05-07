@@ -6,11 +6,58 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+    <EditForm Model="@ConfigurationCopy">
+        <div class="editor-toolbar">
+            <button class="save safe"
+                    type="submit">
+                SAVE
+            </button>
+
+            <button class="discard unsafe"
+                    type="button"
+                    @onclick="@(RequestDiscard)">
+                DISCARD
+            </button>
+        </div>
+
+        <TabView Classes="settings-editor-tabview">
+            <Tab Header="Core">
+                Stolen. Destroyed. Overheated.  
+            </Tab>
+            
+            <Tab Header="General">
+                Generally speaking...
+            </Tab>
+            
+            <Tab Header="Rendering">
+                ...it rendered me unable to function...
+            </Tab>
+
+            <Tab Header="Content">
+                ...I was not content with that state of matters...
+            </Tab>
+            
+            <Tab Header="About">
+                ...so I decided to do something about it.
+            </Tab>
+        </TabView>
+    </EditForm>
 </div>
 
 @code {
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
+    private Configuration ConfigurationCopy { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        ConfigurationCopy = Configuration.Root!.Copy();
+    }
+
     protected override string Title => "settings";
+
+    private void RequestDiscard()
+    {
+    }
 }

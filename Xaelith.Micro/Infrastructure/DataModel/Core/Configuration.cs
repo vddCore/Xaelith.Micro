@@ -4,22 +4,31 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
 
-public class Configuration
+public record Configuration
 {
     [JsonProperty("core")]
-    public CoreSettings Core { get; set; } = new();
-    
+    public CoreSettings Core { get; private set; } = new();
+
     [JsonProperty("general")]
-    public GeneralSettings General { get; } = new();
-    
+    public GeneralSettings General { get; private set; } = new();
+
     [JsonProperty("rendering")]
-    public RenderingSettings Rendering { get; } = new();
-    
+    public RenderingSettings Rendering { get; private set; } = new();
+
     [JsonProperty("navigation")]
-    public NavigationSettings Navigation { get; } = new();
+    public NavigationSettings Navigation { get; private set; } = new();
 
     [JsonProperty("content")]
-    public ContentSettings Content { get; } = new();
+    public ContentSettings Content { get; private set; } = new();
+
+    public Configuration Copy() => this with
+    {
+        Core = Core with { },
+        General = General with { },
+        Rendering = Rendering with { },
+        Navigation = Navigation with { },
+        Content = Content with { }
+    };
 }
 
 public record CoreSettings
@@ -35,26 +44,29 @@ public record GeneralSettings
 {
     [JsonProperty("site_title")]
     public string SiteTitle { get; set; } = "Xaelith Blog";
-    
+
     [JsonProperty("site_description")]
     public string SiteDescription { get; set; } = "A blog powered by Xaelith";
-    
+
     [JsonProperty("site_url")]
     public string SiteUrl { get; set; } = "https://localhost:5271";
-    
+
     [JsonProperty("footer_text")]
-    public string FooterText { get; set; } = "Copyright (c) 2025 Xaelith Project";
-    
+    public string FooterText { get; set; } =
+        "Copyright (c) 2025 Xaelith Project";
+
     [JsonProperty("date_format")]
     public string DateFormat { get; set; } = "dd MMMM yyyy - HH:mm";
-    
+
     [JsonProperty("post_order_criteria")]
     [JsonConverter(typeof(StringEnumConverter))]
-    public PostOrderCriteria PostOrderCriteria { get; set; } = PostOrderCriteria.Date;
-    
+    public PostOrderCriteria PostOrderCriteria { get; set; } =
+        PostOrderCriteria.Date;
+
     [JsonProperty("post_order_direction")]
     [JsonConverter(typeof(StringEnumConverter))]
-    public PostOrderDirection PostOrderDirection { get; set; } = PostOrderDirection.Descending;
+    public PostOrderDirection PostOrderDirection { get; set; } =
+        PostOrderDirection.Descending;
 }
 
 public record RenderingSettings
@@ -79,7 +91,7 @@ public record ContentSettings
 
     [JsonProperty("max_posts_per_page")]
     public int MaximumPostsPerPage { get; set; } = 7;
-    
+
     [JsonProperty("max_pages_in_paginator")]
     public int MaximumPagesInPaginator { get; set; } = 7;
 }
