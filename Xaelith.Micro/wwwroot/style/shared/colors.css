@@ -202,4 +202,8 @@
     --modal-dialog-danger-button-active-foreground: #ff889c88;
     --modal-dialog-danger-button-disabled-foreground: #ff889c66;
     --modal-dialog-danger-button-hover-shadow: #ff889c55;
+    
+    --404-icon-foreground: #cf4949;
+    --404-title-foreground: #cf4949;
+    --404-subtitle-foreground: #cf4949;
 }

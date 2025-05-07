@@ -859,6 +859,7 @@ button.unsafe:active {
 }
 
 .error-content {
+    margin-top: -20px;
     align-self: center;
 }
 
@@ -869,50 +870,79 @@ button.unsafe:active {
     font-size: 20rem;
 
     opacity: 0;
-    color: #cf4949;
+    color: var(--404-icon-foreground);
     
     transition: 2s ease-in-out;
 }
 
 .error-container .message {
-    margin-top: -5rem;
+    margin-top: -6.2rem;
 
     text-align: center;
-    
-    color: #cf4949;
-    
-    transition: 0.3s ease-in-out;
 }
 
 .error-container .message-title {
-    opacity: 0;
-    font-size: 4rem;
+    margin-bottom: 1rem;
     
-    transition: 0.3s ease-in-out;
+    height: 0;
+    
+    font-size: 6rem;
+    
+    opacity: 0;
+    
+    transition: opacity 0.2s ease-in-out,
+                height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
+    
+    color: var(--404-title-foreground);
 }
 
 .error-container .message-subtitle {
-    margin-top: -12px;
+    margin-top: -20px;
     
     opacity: 0;
+    height: 0;
     font-size: 2rem;
     
     text-transform: uppercase;
     
-    transition: 0.3s ease-in-out;
+    transition: opacity 0.2s ease-in-out,
+                height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
+    
+    color: var(--404-subtitle-foreground);
 }
 
 .error-container a {
     display: block;
 
+    height: 0;
+    
+    margin-top: 2rem;
+    
     text-align: center;
     
     font-size: 1.8rem;
-    opacity: 0;
 
     text-transform: uppercase;
+    
+    opacity: 0;
+    
+    transition: 0.15s ease-in-out,
+                opacity 0.2s ease-in-out,
+                height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
 }
 
 .error-container .visible {
     opacity: 1;
+}
+
+.error-container .message-title.visible {
+    height: 6rem;
+}
+
+.error-container .message-subtitle.visible {
+    height: 2rem;
+}
+
+.error-container a.visible {
+    height: 1.8rem;
 }
