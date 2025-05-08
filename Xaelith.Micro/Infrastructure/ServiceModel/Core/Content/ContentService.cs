@@ -303,7 +303,7 @@ public class ContentService : IContentService
         }
     }
 
-    public List<string> GetPostMedia(Guid postId)
+    public List<(string FullPath, string MappedPath)> GetPostMedia(Guid postId)
     {
         var mediaDirectory = Path.Combine(
             WellKnown.Content,
@@ -312,10 +312,18 @@ public class ContentService : IContentService
         );
         
         Directory.CreateDirectory(mediaDirectory);
+        
+        var list = new List<(string FullPath, string MappedPath)>();
 
-        return Directory.GetFiles(mediaDirectory)
-            .Select(x => x.Replace(WellKnown.Content, "").Replace("\\", "/"))
-            .ToList();
+        foreach (var fullPath in Directory.GetFiles(mediaDirectory))
+        {
+            list.Add((
+                fullPath, 
+                fullPath.Replace(WellKnown.Content, "").Replace("\\", "/")
+            ));
+        }
+
+        return list;
     }
 
     public bool DeletePostMedia(Guid postId, string fileName)

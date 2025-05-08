@@ -1027,7 +1027,29 @@ button.danger:active {
 
 .modal-media .media-list .media-thumbnail {
     display: block;
+    
+    overflow: clip;
+    
     width: 15%;
+    min-width: 15%;
+    max-width: 15%;
+    
+    background: var(--thumbnail-background);
+}
+
+.modal-media .media-file-not-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    padding: 0.25rem;
+    padding-top: 0.35rem;
+    
+    text-align: center;
+    font-size: 1.8rem;
+    
+    border-radius: 4px;
+    border: 1px solid var(--image-border);
 }
 
 .modal-media .media-list .media-actions {

@@ -21,6 +21,6 @@ public interface IContentService : IXaelithService
     string GenerateSlug(string title);
     
     Task<bool> UploadPostMediaAsync(Guid postId, Stream stream, string fileExtension);
-    List<string> GetPostMedia(Guid postId);
+    List<(string FullPath, string MappedPath)> GetPostMedia(Guid postId);
     bool DeletePostMedia(Guid postId, string fileName);
 }

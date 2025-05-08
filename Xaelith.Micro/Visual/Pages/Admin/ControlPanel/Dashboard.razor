@@ -83,8 +83,8 @@
             new("Static pages", () => Statistics.Data.StaticPages),
             new("Drafts", () => Statistics.Data.Drafts),
             null,
-            new("Content disk usage", () => FileSystemUtility.FormatSize(Statistics.Data.DiskUsage)),
-            new("Operating memory usage", () => FileSystemUtility.FormatSize(
+            new("Content disk usage", () => FileUtility.FormatSize(Statistics.Data.DiskUsage)),
+            new("Operating memory usage", () => FileUtility.FormatSize(
                 Process.GetCurrentProcess().WorkingSet64
             )),
 

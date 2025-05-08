@@ -31,19 +31,28 @@
             <div class="media-list">
                 @foreach (var file in MediaLinks)
                 {
-                    var fileName = @Path.GetFileName(@file);
+                    var fileName = Path.GetFileName(@file.FullPath);
 
                     <div class="media-entry">
-                        <img class="media-thumbnail"
-                             alt="@file"
-                             src="@file"/>
+                        @if (FileUtility.GetImageType(@file.FullPath) != null)
+                        {
+                            <img class="media-thumbnail"
+                                 alt="@file.MappedPath"
+                                 src="@file.MappedPath"/>
+                        }
+                        else
+                        {
+                            <div class="media-thumbnail media-file-not-image">
+                                <i class="las la-file"></i>
+                            </div>
+                        }
 
                         <div class="media-filename">
-                            <a href="@file" target="_blank">@fileName</a>
+                            <a href="@file.MappedPath" target="_blank">@fileName</a>
                         </div>
 
                         <div class="media-actions">
-                            <a @onclick="@(() => CopyMediaLinkToClipboard(@file))">
+                            <a @onclick="@(() => CopyMediaLinkToClipboard(@file.MappedPath))">
                                 <i class="las la-images"></i>
                                 COPY LINK
                             </a>
@@ -71,7 +80,7 @@
 
 
 @code {
-    public List<string> MediaLinks { get; set; } = [];
+    public List<(string FullPath, string MappedPath)> MediaLinks { get; set; } = [];
 
     protected override void OnAfterRender(bool firstRender)
     {
