@@ -90,16 +90,7 @@
 
         EditorContext.Id = post.Id;
         EditorContext.IsPublished = post.Metadata.Published;
-
-        if (string.IsNullOrWhiteSpace(post.Metadata.Author))
-        {
-            EditorContext.EditingUser = UserContext.User?.DisplayName ?? "nobody";
-        }
-        else
-        {
-            EditorContext.EditingUser = post.Metadata.Author;
-        }
-
+        EditorContext.EditingUser = post.Metadata.Author;
         EditorContext.Title = post.Metadata.Title;
         EditorContext.Description = post.Metadata.Description;
         EditorContext.Category = post.Metadata.Category;

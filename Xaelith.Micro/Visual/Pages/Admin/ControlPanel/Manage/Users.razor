@@ -3,15 +3,232 @@
 @page "/admin/manage/users"
 @inherits XaelithRestrictedPage
 
+@inject IBCryptPasswordHasher Hasher;
+@inject IModalService Modal;
+@inject IToastService Toast;
+
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+    <EditForm Model="UserEditContexts"
+              OnSubmit="@Save">
+        <div class="editor-toolbar">
+            <button class="safe"
+                    type="submit">
+                SAVE
+            </button>
 
+            <button class="discard unsafe"
+                    type="button"
+                    @onclick="Discard">
+                DISCARD
+            </button>
+
+            <button class="add"
+                    type="button"
+                    @onclick="AddNewUser">
+                NEW USER
+            </button>
+        </div>
+
+        <div class="user-edit-list">
+            @foreach (var user in UserEditContexts)
+            {
+                <UserEditor Context="@user"
+                            DeleteRequested="UserDeleteRequested"/>
+            }
+        </div>
+    </EditForm>
 </div>
 
 @code {
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
+    private List<UserEditContext> PreviousState { get; set; } = [];
+    public List<UserEditContext> UserEditContexts { get; set; } = [];
+
     protected override string Title => "users";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        Reload();
+        OverwritePreviousState();
+    }
+
+    private void Reload()
+    {
+        UserEditContexts = UserStore.GetAllUsers()
+            .Select(x => new UserEditContext(x))
+            .ToList();
+    }
+
+    private void OverwritePreviousState()
+    {
+        PreviousState = UserEditContexts
+            .Select(x => x with { })
+            .ToList();
+    }
+
+    private void Reset()
+    {
+        UserEditContexts = PreviousState
+            .Select(x => x with { })
+            .ToList();
+    }
+
+    private async Task Save(EditContext context)
+    {
+        var userEditContexts = (List<UserEditContext>)context.Model;
+
+        foreach (var user in userEditContexts)
+        {
+            if (string.IsNullOrWhiteSpace(user.LoginName))
+            {
+                Fail("Empty login names are not allowed");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(user.DisplayName))
+            {
+                Fail("Empty display names are not allowed");
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(user.Password))
+            {
+                if (!string.Equals(user.Password, user.ConfirmPassword))
+                {
+                    Fail($"Passwords for user '{user.LoginName}' do not match");
+                    return;
+                }
+            }
+
+            if (!user.IsEnabled && user.Id == UserContext.User!.Id)
+            {
+                Fail("Refusing to disable the currently logged-in user");
+                return;
+            }
+        }
+
+        try
+        {
+            foreach (var user in userEditContexts)
+            {
+                var storedUser = await UserStore.FindByIdAsync(user.Id);
+
+                if (storedUser != null)
+                {
+                    await UserStore.ModifyAsync(
+                        storedUser,
+                        (u) =>
+                        {
+                            u.LoginName = user.LoginName;
+                            u.DisplayName = user.DisplayName;
+                            u.PasswordHash = Hasher.Hash(user.Password);
+                            u.IsEnabled = user.IsEnabled;
+                        }
+                    );
+
+                    user.Password = string.Empty;
+                    user.ConfirmPassword = string.Empty;
+                }
+                else
+                {
+                    await UserStore.CreateAsync(
+                        new User
+                        {
+                            Id = user.Id,
+                            LoginName = user.LoginName,
+                            DisplayName = user.DisplayName,
+                            CreatedAt = DateTime.Now,
+                            IsEnabled = user.IsEnabled,
+                            PasswordHash = Hasher.Hash(user.Password)
+                        }
+                    );
+                }
+            }
+
+            OverwritePreviousState();
+
+            Toast.Show(
+                "Users saved",
+                ToastSeverity.Success
+            );
+        }
+        catch (Exception ex)
+        {
+            Toast.Show(
+                $"Failed to save users: {ex.Message}",
+                ToastSeverity.Error,
+                4500
+            );
+        }
+    }
+
+    private async Task Discard()
+    {
+        await Modal.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding changes to users.<br />" +
+                "This action is irreversible.",
+                "Proceed",
+                "Abort",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        Reset();
+                }
+            )
+        );
+    }
+
+    private void AddNewUser()
+        => UserEditContexts.Add(new());
+
+    private void Fail(string why)
+        => Toast.Show(why, ToastSeverity.Warning, 3500);
+
+    private async Task UserDeleteRequested(UserEditContext context)
+    {
+        if (UserEditContexts.Count - 1 <= 0)
+        {
+            Fail("Refusing to delete the last remaining user");
+            return;
+        }
+        
+        await Modal.ShowAsync(
+            new DialogModalData(
+                "Delete user?",
+                $"Confirm deletion of user '{context.LoginName} ({context.DisplayName}).'<br />" +
+                $"This action is irreversible.",
+                "Proceed",
+                "Abort",
+                DialogModalSeverity.Danger,
+                async (result) =>
+                {
+                    if (result)
+                    {
+                        var user = await UserStore.FindByIdAsync(context.Id);
+
+                        if (user == null)
+                        {
+                            UserEditContexts.Remove(context);
+                        }
+                        else
+                        {
+                            await UserStore.DeleteAsync(user);
+                        
+                            Reload();
+                            OverwritePreviousState();
+                        }
+                    }
+                }
+            )
+        );
+    }
 }

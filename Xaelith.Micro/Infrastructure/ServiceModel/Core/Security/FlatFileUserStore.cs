@@ -44,6 +44,9 @@ public class FlatFileUserStore : IFlatFileUserStore
         var userPath = Path.Combine(WellKnown.UserStore, $"{user.Id:D}.json");
         File.WriteAllText(userPath, JsonConvert.SerializeObject(user));
     }
+    
+    public List<User> GetAllUsers()
+        => LoadUsers();
 
     public Task<string> GetUserIdAsync(User user)
         => Task.FromResult(user.Id.ToString("D"));
@@ -86,7 +89,7 @@ public class FlatFileUserStore : IFlatFileUserStore
                     IdentityResult.Failed(
                         new IdentityError
                         {
-                            Code = "UserLogniNameAlreadyExists",
+                            Code = "UserLoginNameAlreadyExists",
                             Description = "User with this login name already exists."
                         }
                     )
@@ -102,7 +105,7 @@ public class FlatFileUserStore : IFlatFileUserStore
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<IdentityResult> UpdateAsync(User user)
+    public Task<IdentityResult> ModifyAsync(User user, Action<User> modify)
     {
         var userPath = Path.Combine(WellKnown.UserStore, $"{user.Id:D}.json");
 
@@ -117,6 +120,26 @@ public class FlatFileUserStore : IFlatFileUserStore
                     }
                 )
             );
+        }
+        
+        modify(user);
+        
+        var users = LoadUsers();
+
+        foreach (var existingUser in users)
+        {
+            if (existingUser.LoginName == user.LoginName)
+            {
+                return Task.FromResult(
+                    IdentityResult.Failed(
+                        new IdentityError
+                        {
+                            Code = "UserLoginNameAlreadyExists",
+                            Description = "User with this login name already exists."
+                        }
+                    )
+                );
+            }
         }
         
         File.WriteAllText(
@@ -166,6 +189,9 @@ public class FlatFileUserStore : IFlatFileUserStore
             )
         );
     }
+
+    public Task<User?> FindByIdAsync(Guid userId)
+        => FindByIdAsync(userId.ToString("D"));
 
     public Task<User?> FindByNameAsync(string? userName)
     {

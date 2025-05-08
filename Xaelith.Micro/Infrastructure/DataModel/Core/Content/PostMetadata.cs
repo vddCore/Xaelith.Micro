@@ -18,7 +18,7 @@ public record PostMetadata
     public DateTime? EditDate { get; set; }
 
     [JsonProperty("author")]
-    public string Author { get; set; } = string.Empty;
+    public Guid Author { get; set; } = Guid.Empty;
 
     [JsonProperty("title")]
     public string Title { get; set; } = string.Empty;

@@ -75,7 +75,7 @@
     {
         base.OnInitialized();
 
-        EditorContext.EditingUser = UserContext.User?.DisplayName ?? "nobody";
+        EditorContext.EditingUser = UserContext.User?.Id ?? Guid.Empty;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

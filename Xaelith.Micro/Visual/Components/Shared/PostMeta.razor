@@ -1,9 +1,23 @@
-﻿@inject IConfigService Configuration;
+﻿@inject IFlatFileUserStore UserStore;
+@inject IConfigService Configuration;
 
 <div class="post-meta">
     <div class="post-meta-items">
         <span class="post-meta-item post-meta-author">
-            @Post.Metadata.Author
+            @{
+                var author = UserStore.FindByIdAsync(@Post.Metadata.Author.ToString("D"))
+                    .GetAwaiter()
+                    .GetResult();
+
+                if (author != null)
+                {
+                    @author.DisplayName;
+                }
+                else
+                {
+                    @("unknown user");
+                }
+            }
         </span>
 
         <span class="post-meta-item post-meta-date">

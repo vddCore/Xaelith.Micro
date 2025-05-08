@@ -43,7 +43,7 @@ public class EditorContext
         }
     }
 
-    public string EditingUser { get; set; } = "nobody";
+    public Guid EditingUser { get; set; } = Guid.Empty;
     public bool IsPublished { get; set; }
 
     public string PreviewMarkup { get; set; } = string.Empty;

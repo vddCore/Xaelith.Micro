@@ -1,7 +1,6 @@
 ﻿namespace Xaelith.Micro.Infrastructure.DataModel.Core.Security;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 public record User
 {
@@ -22,8 +21,4 @@ public record User
     
     [JsonProperty("is_enabled")]
     public bool IsEnabled { get; set; }
-    
-    [JsonProperty("user_role")]
-    [JsonConverter(typeof(StringEnumConverter))]
-    public UserRole UserRole { get; set; }
 }
