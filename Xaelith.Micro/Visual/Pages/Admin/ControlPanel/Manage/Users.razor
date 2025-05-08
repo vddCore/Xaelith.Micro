@@ -200,6 +200,12 @@
             Fail("Refusing to delete the last remaining user");
             return;
         }
+
+        if (context.Id == UserContext.User!.Id)
+        {
+            Fail("Refusing to delete the currently logged-in user");
+            return;
+        }
         
         await Modal.ShowAsync(
             new DialogModalData(

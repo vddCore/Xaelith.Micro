@@ -2,6 +2,7 @@ namespace Xaelith.Micro;
 
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Xaelith.Micro.Infrastructure.Utilities;
 
@@ -38,7 +39,8 @@ public partial class App
 
         builder.Services.AddAuthorization();
         builder.Services.AddCascadingAuthenticationState();
-
+        builder.WebHost.UseStaticWebAssets();
+        
         var app = builder.Build();
 
         if (!app.Environment.IsDevelopment())
@@ -48,7 +50,11 @@ public partial class App
         }
 
         app.UseHttpsRedirection();
-
+        app.UseForwardedHeaders(new ForwardedHeadersOptions {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor 
+                               | ForwardedHeaders.XForwardedProto
+        });
+        
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseAntiforgery();

@@ -27,22 +27,27 @@ section.post h1 {
 }
 
 section.post h2 {
+    font-size: 2rem;
     padding-top: 8px;
 }
 
 section.post h3 {
+    font-size: 1.75rem;
     padding-top: 6px;
 }
 
 section.post h4 {
+    font-size: 1.5rem;
     padding-top: 6px;
 }
 
 section.post h5 {
+    font-size: 1.25rem;
     padding-top: 6px;
 }
 
 section.post h6 {
+    font-size: 1rem;
     padding-top: 5px;
 }
 
@@ -142,6 +147,7 @@ section.post h1.post-title {
     padding: 0 0 0 8px;
     margin-bottom: 0;
 
+    font-size: 1.6rem;
     font-weight: 500;
 
     text-align: left;

@@ -45,6 +45,7 @@ public class EditorContext
 
     public Guid EditingUser { get; set; } = Guid.Empty;
     public bool IsPublished { get; set; }
+    public string PublishDateString { get; set; } = string.Empty;
 
     public string PreviewMarkup { get; set; } = string.Empty;
     

@@ -1,4 +1,5 @@
 ﻿:root {
+    --md-editor-foreground: #cfaee9;
     --md-editor-statusbar-foreground: #120217;
     --md-editor-statusbar-background: #ff88ff;
     
@@ -32,6 +33,10 @@ main#admin #md-editor-area {
     resize: none;
 }
 
+main#admin #md-editor-area:focus {
+    color: var(--md-editor-foreground);
+}
+
 main#admin .md-editor-statusbar {
     display: flex;
     flex-direction: row-reverse;
@@ -57,4 +62,8 @@ main#admin .md-editor-statusbar {
 main#admin .content-preview {
     margin-left: 3px;
     height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
 }

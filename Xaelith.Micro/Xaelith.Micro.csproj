@@ -3,7 +3,13 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <StaticWebAssetsEnabled>true</StaticWebAssetsEnabled>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <TrimmerRootAssembly Include="Xaelith.Micro" />
+  </ItemGroup>
+  
   <ItemGroup>
     <Folder Include="data\logs\" />
   </ItemGroup>

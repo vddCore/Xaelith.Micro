@@ -1,5 +1,6 @@
 ﻿namespace Xaelith.Micro.Infrastructure.ServiceModel.Core.Content;
 
+using System.Globalization;
 using Newtonsoft.Json;
 using Slugify;
 using Xaelith.Micro.Infrastructure.DataModel.Admin.Editor;
@@ -203,8 +204,28 @@ public class ContentService : IContentService
         ).ToList();
         postMeta.EditDate = DateTime.Now;
 
-        if (!postMeta.PublishDate.HasValue && context.IsPublished)
-            postMeta.PublishDate = DateTime.Now;
+        if (string.IsNullOrWhiteSpace(context.PublishDateString))
+        {
+            if (!postMeta.PublishDate.HasValue && context.IsPublished)
+                postMeta.PublishDate = DateTime.Now;
+        }
+        else
+        {
+            if(DateTime.TryParseExact(
+                context.PublishDateString,
+                _configService.Root!.General.DateFormat,
+                null,
+                DateTimeStyles.None,
+                out var publishDate
+            ))
+            {
+                postMeta.PublishDate = publishDate;
+            }
+            else
+            {
+                postMeta.PublishDate = DateTime.Now;
+            }
+        }
 
         postMeta.Published = context.IsPublished;
 
@@ -275,7 +296,7 @@ public class ContentService : IContentService
         return slug;
     }
 
-    public async Task<bool> UploadPostMediaAsync(Guid postId, Stream stream, string fileExtension)
+    public async Task<bool> UploadPostMediaAsync(Guid postId, Stream stream, string fileName)
     {
         try
         {
@@ -289,8 +310,11 @@ public class ContentService : IContentService
 
             var mediaFilePath = Path.Combine(
                 mediaDirectory,
-                Guid.NewGuid().ToString("N") + fileExtension
+                fileName
             );
+            
+            if (File.Exists(mediaFilePath))
+                File.Delete(mediaFilePath);
 
             using (var fs = File.OpenWrite(mediaFilePath))
                 await stream.CopyToAsync(fs);

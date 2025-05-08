@@ -1,6 +1,8 @@
-﻿@inject IModalService Modals;
+﻿@inject IToastService Toast;
+@inject IModalService Modal;
 @inject IContentService Content;
 @inject IStatisticsService Statistics;
+@inject IFlatFileUserStore UserStore;
 
 <table class="admin-table">
     <thead>
@@ -53,7 +55,22 @@
                 <td class="category missing">no category</td>
             }
 
-            <td class="author">@post.Metadata.Author</td>
+            <td class="author">
+                @{
+                    var user = UserStore.FindByIdAsync(post.Metadata.Author)
+                        .GetAwaiter()
+                        .GetResult();
+
+                    if (user != null)
+                    {
+                        @(user.DisplayName)
+                    }
+                    else
+                    {
+                        @("unknown user")
+                    }
+                }
+            </td>
             <td class="date-published">@post.Metadata.PublishDate</td>
             <td class="actions">
                 <ul class="content-tools-list">
@@ -80,7 +97,7 @@
 
     private async Task DeleteClicked(Post post)
     {
-        await Modals.ShowAsync(
+        await Modal.ShowAsync(
             new DialogModalData(
                 "Delete entry?",
                 $"Confirm deletion of '{post.Metadata.Title}.'" +
@@ -107,7 +124,11 @@
                     }
                     catch (Exception e)
                     {
-                        /* Ignore. */
+                        Toast.Show(
+                            $"Failed to delete the post: {e.Message}",
+                            ToastSeverity.Error,
+                            4500
+                        );
                     }
                 }
             )

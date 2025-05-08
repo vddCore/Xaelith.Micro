@@ -86,10 +86,7 @@
     {
         base.OnAfterRender(firstRender);
 
-        if (firstRender)
-        {
-            ReloadPostMedia();
-        }
+        ReloadPostMedia();
     }
 
     private void DeleteMedia(string fileName)
@@ -153,7 +150,7 @@
                 await Content.UploadPostMediaAsync(
                     ModalData.PostId,
                     stream,
-                    Path.GetExtension(e.File.Name)
+                    Path.GetFileName(e.File.Name)
                 );
                 
                 ReloadPostMedia();

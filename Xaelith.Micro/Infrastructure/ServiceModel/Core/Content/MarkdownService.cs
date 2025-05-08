@@ -28,8 +28,9 @@ public class MarkdownService : IMarkdownService
 
         markdown = Regex.Replace(
             markdown,
-            @"\[c=\#(?<color>(([0-9A-Fa-f]{3})|([0-9A-Fa-f]{6})|[0-9A-Fa-f]{8}))](?<content>.*)\[/c\]",
-            "<span style=\"color: #${color};\">${content}</span>"
+            @"\[c=#(?<color>[0-9A-Fa-f]{3,8})](?<content>.*?)\[/c]",
+            "<span style=\"color: #${color};\">${content}</span>",
+            RegexOptions.Singleline
         );
         
         return Markdown.ToHtml(

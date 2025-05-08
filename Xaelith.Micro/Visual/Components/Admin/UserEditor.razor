@@ -51,7 +51,7 @@
                              ValueChanged="OnIsEnabledChanged"/>
         
         <a class="danger"
-           @onclick="@(async () => RequestDelete(Context))">
+           @onclick="@(async () => await RequestDelete(Context))">
             <i class="las la-trash"></i>
             DELETE
         </a>

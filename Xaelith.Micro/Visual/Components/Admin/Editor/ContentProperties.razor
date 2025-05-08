@@ -23,14 +23,24 @@
     </div>
 </div>
 
+<div class="input-row">
+    <div class="input-group">
+        <label for="md-editor-description">Description</label>
+        <input id="md-editor-description"
+               type="text"
+               spellcheck="false"
+               placeholder="Enter a description..."
+               @bind="@Context.Description"/>
+    </div>
 
-<div class="input-group">
-    <label for="md-editor-description">Description</label>
-    <input id="md-editor-description"
-           type="text"
-           spellcheck="false"
-           placeholder="Enter a description..."
-           @bind="@Context.Description"/>
+    <div class="input-group">
+        <label for="md-editor-publish-date">Publish Date</label>
+        <input id="md-editor-publish-date"
+               type="text"
+               spellcheck="false"
+               placeholder="Enter a description..."
+               @bind="@Context.PublishDateString"/>
+    </div>
 </div>
 
 <div class="input-row">

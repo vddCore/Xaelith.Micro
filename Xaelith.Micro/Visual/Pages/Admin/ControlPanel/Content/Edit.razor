@@ -60,7 +60,7 @@
     [Parameter]
     public string PostId { get; set; } = string.Empty;
 
-    public EditorContext EditorContext { get; set; } = new();
+    public EditorContext EditorContext { get; set; } = null!;
 
     private void OnTabChanged(TabView.Tab tab)
     {
@@ -76,10 +76,8 @@
         }
     }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        base.OnInitialized();
-
         var post = Content.GetPostById(PostId);
 
         if (post == null)
@@ -88,6 +86,7 @@
             return;
         }
 
+        EditorContext = new();
         EditorContext.Id = post.Id;
         EditorContext.IsPublished = post.Metadata.Published;
         EditorContext.EditingUser = post.Metadata.Author;
@@ -97,6 +96,19 @@
         EditorContext.TagList = string.Join(",", post.Metadata.Tags);
         EditorContext.PostType = post.Metadata.Type;
         EditorContext.Slug = post.Metadata.Slug;
+
+        if (post.Metadata.PublishDate != null)
+        {
+            EditorContext.PublishDateString = post.Metadata.PublishDate.Value.ToString(
+                Configuration.Root!.General.DateFormat
+            );
+        }
+        else
+        {
+            EditorContext.PublishDateString = DateTime.Now.ToString(
+                Configuration.Root!.General.DateFormat
+            );
+        }
 
         EditorContext.Markdown = post.Body;
     }

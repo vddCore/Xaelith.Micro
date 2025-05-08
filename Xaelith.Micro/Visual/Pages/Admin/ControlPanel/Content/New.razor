@@ -55,7 +55,7 @@
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
-    public EditorContext EditorContext { get; set; } = new();
+    public EditorContext EditorContext { get; set; } = null!;
 
     private void OnTabChanged(TabView.Tab tab)
     {
@@ -75,6 +75,7 @@
     {
         base.OnInitialized();
 
+        EditorContext = new();
         EditorContext.EditingUser = UserContext.User?.Id ?? Guid.Empty;
     }
 
@@ -103,12 +104,21 @@
         
         var editorContext = (EditorContext)context.Model;
 
+        if (editorContext.IsPublished)
+        {
+            editorContext.PublishDateString = DateTime.Now.ToString(
+                Configuration.Root!.General.DateFormat
+            );
+        }
+        
         try
         {
             await Content.SavePostAsync(editorContext);
             Statistics.RecalculateContentStatistics();
             
             Toast.Show("Saved!", ToastSeverity.Success);
+            
+            Navigation.NavigateTo($"/admin/content/edit/{editorContext.Id.ToString("D")}");
         }
         catch (Exception e)
         {

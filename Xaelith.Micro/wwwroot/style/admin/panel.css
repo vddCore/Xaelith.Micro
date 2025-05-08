@@ -452,6 +452,7 @@ main#admin .editor-toolbar .custom-checkbox {
 }
 
 .dashboard-logo.visible:hover {
+    border: none;
     opacity: 1;
 }
 
@@ -954,8 +955,8 @@ main#admin .editor-toolbar .custom-checkbox {
     gap: 1rem;
 }
 
-label.file-input::before {
-    content: none;
+.modal-media label.file-input::before {
+    content: none !important;
 }
 
 .modal-media-uploader label.file-input {
