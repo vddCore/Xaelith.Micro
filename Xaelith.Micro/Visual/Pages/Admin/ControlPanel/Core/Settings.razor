@@ -19,7 +19,7 @@
 
             <button class="discard unsafe"
                     type="button"
-                    @onclick="@(RequestDiscard)">
+                    @onclick="@(Discard)">
                 DISCARD
             </button>
         </div>
@@ -39,11 +39,10 @@
 
     protected override string Title => "settings";
 
-
     private void Reload()
         => ConfigurationCopy = Configuration.Root!.Copy();
 
-    private void RequestDiscard()
+    private void Discard()
     {
         Modal.ShowAsync(
             new DialogModalData(

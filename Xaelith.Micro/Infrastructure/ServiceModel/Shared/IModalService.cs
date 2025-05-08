@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Components;
 using Xaelith.Micro.Infrastructure.DataModel.Shared;
 
-public interface IModalService : IXaelithService
+public interface IModalService : IXaelithScopedService
 {
     Task ShowAsync<T>(T modalData)
         where T : ModalData;

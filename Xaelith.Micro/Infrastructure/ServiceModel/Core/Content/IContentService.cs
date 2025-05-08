@@ -9,6 +9,7 @@ public interface IContentService : IXaelithService
     
     Post? GetPostBySlug(string slug);
     Post? GetPostById(string id);
+    Post? GetPostById(Guid id);
     
     string GetCategoryDescription(string category);
     string GetTagDescription(string tag);
@@ -18,4 +19,5 @@ public interface IContentService : IXaelithService
     Task SetPublishedStateAsync(Guid postId, bool isPublished);
 
     string GenerateSlug(string title);
+    List<string> GetPostMedia(Guid postId);
 }

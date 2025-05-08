@@ -2,7 +2,7 @@
 
 using Xaelith.Micro.Infrastructure.DataModel.Shared;
 
-public interface IToastService : IXaelithService
+public interface IToastService : IXaelithScopedService
 {
     event Action<ToastData> OnDisplayed;
     

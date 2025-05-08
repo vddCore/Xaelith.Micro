@@ -22,6 +22,10 @@ body, html {
     scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
 }
 
+body.no-scroll {
+    overflow: hidden;
+}
+
 main {
     width: 90%;
     margin: 66px auto 0;
@@ -945,4 +949,8 @@ button.unsafe:active {
 
 .error-container a.visible {
     height: 1.8rem;
+}
+
+.modal-box.modal-media {
+    border: 1px solid #ff88ff;
 }

@@ -29,6 +29,13 @@ public static class WebApplicationBuilderExtensions
                         type
                     );
                 }
+                else if (iface.IsAssignableTo(typeof(IXaelithScopedService)))
+                {
+                    services.AddScoped(
+                        iface,
+                        type
+                    );
+                }
                 else
                 {
                     services.AddSingleton(

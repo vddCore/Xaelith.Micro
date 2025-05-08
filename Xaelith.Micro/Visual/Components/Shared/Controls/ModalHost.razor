@@ -1,4 +1,6 @@
-﻿<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
+﻿@inject IJSRuntime JS
+
+<div class="modal-backdrop @((ModalData?.IsOpen ?? false) ? "open" : "")">
     @if (ComponentType != null)
     {
         <DynamicComponent Type="@ComponentType" Parameters="ModalParameters"/>
@@ -38,10 +40,20 @@
          */
         await InvokeAsync(StateHasChanged);
         await Task.Delay(500);
-
-        while (ModalData.IsOpen)
-            await Task.Delay(1);
         
+        await JS.InvokeVoidAsync(
+            "document.body.classList.add",
+            "no-scroll"
+        );
+        
+        while (ModalData.IsOpen)
+            await Task.Delay(100);
+        
+        await JS.InvokeVoidAsync(
+            "document.body.classList.remove",
+            "no-scroll"
+        );
+
         await Modal.DisplayedAsync();            
         await InvokeAsync(StateHasChanged);
     }

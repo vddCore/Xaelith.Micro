@@ -1,0 +1,30 @@
+﻿@inherits ModalBase<MediaModalData>
+
+@inject IContentService Content
+
+<div class="modal-box modal-media @(ModalData?.IsOpen ?? false ? "open" : "")">
+    <h1>media</h1>
+    
+    @if (ModalData != null)
+    {
+        var postMedia = Content.GetPostMedia(ModalData.PostId).ToArray();
+
+        if (postMedia.Any())
+        {
+            foreach (var file in postMedia)
+            {
+                <div class="media-entry">
+                    @file
+                </div>
+            }
+        }
+        else
+        {
+            
+        }
+    }
+    else
+    {
+        @("ModalData is null.")
+    }
+</div>

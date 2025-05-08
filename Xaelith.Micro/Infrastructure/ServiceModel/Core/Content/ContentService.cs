@@ -101,23 +101,25 @@ public class ContentService : IContentService
     {
         var collection = GetAllPosts(p => p.Metadata.Slug == slug);
 
-        if (collection.Count == 0)
-            return null;
+        return collection.Count != 0 
+            ? collection.Single() 
+            : null;
+    }
+
+    public Post? GetPostById(Guid id)
+    {
+        var collection = GetAllPosts(p => p.Id == id);
         
-        return collection.Single();
+        return collection.Count != 0 
+            ? collection.Single() 
+            : null;
     }
 
     public Post? GetPostById(string id)
     {
-        if (!Guid.TryParse(id, out var postId))
-            return null;
-
-        var collection = GetAllPosts(p => p.Id == postId);
-        
-        if (collection.Count == 0)
-            return null;
-        
-        return collection.Single();
+        return Guid.TryParse(id, out var postId) 
+            ? GetPostById(postId)
+            : null;
     }
 
     public string GetCategoryDescription(string category)
@@ -219,16 +221,12 @@ public class ContentService : IContentService
 
     public async Task SetPublishedStateAsync(Guid postId, bool isPublished)
     {
-        var postDirectory = Path.Combine(
-            WellKnown.Content,
-            postId.ToString("D")
-        );
-
         var postMetaPath = Path.Combine(
-            postDirectory,
+            WellKnown.Content,
+            postId.ToString("D"),
             WellKnown.PostMetadataFileName
         );
-        
+
         PostMetadata? postMeta;
 
         using (var sr = new StreamReader(postMetaPath))
@@ -275,5 +273,20 @@ public class ContentService : IContentService
         }
 
         return slug;
+    }
+
+    public List<string> GetPostMedia(Guid postId)
+    {
+        var mediaDirectory = Path.Combine(
+            WellKnown.Content,
+            postId.ToString("D"),
+            WellKnown.PostMediaDirectoryName
+        );
+        
+        Directory.CreateDirectory(mediaDirectory);
+
+        return Directory.GetFiles(mediaDirectory)
+            .Select(x => x.Replace(WellKnown.Content, "").Replace("\\", "/"))
+            .ToList();
     }
 }

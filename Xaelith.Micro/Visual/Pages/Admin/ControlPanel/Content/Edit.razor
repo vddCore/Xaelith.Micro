@@ -4,6 +4,7 @@
 @inherits XaelithRestrictedPage
 @implements IDisposable
 
+@inject IModalService Modal;
 @inject IToastService Toast;
 @inject IAutosaveService Autosave;
 
@@ -15,7 +16,14 @@
                   OnSubmit="@SavePost">
             <div class="editor-toolbar">
                 <button type="submit"
-                        class="safe">SAVE
+                        class="safe">
+                    SAVE
+                </button>
+                
+                <button type="button"
+                        class="media"
+                        @onclick="@ShowMediaDialog">
+                    MEDIA
                 </button>
 
                 <CustomInputCheckbox Label="publish"
@@ -146,6 +154,18 @@
         }
     }
 
+    private async Task ShowMediaDialog()
+    {
+        await Content.SavePostAsync(EditorContext);
+
+        await Modal.ShowAsync(
+            new MediaModalData(
+                EditorContext.Id,
+                (_) => {}
+            )
+        );
+    }
+    
     private void PublishedStateChanged(bool value)
         => EditorContext.IsPublished = value;
 

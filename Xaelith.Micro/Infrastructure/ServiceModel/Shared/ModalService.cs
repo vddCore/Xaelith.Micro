@@ -16,6 +16,7 @@ public class ModalService : IModalService
     public ModalService()
     {
         MapComponent<DialogModalData, DialogModal>();
+        MapComponent<MediaModalData, MediaModal>();
     }
     
     public async Task ShowAsync<T>(T modalData)
