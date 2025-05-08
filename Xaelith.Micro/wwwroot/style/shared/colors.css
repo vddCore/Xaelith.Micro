@@ -16,6 +16,8 @@
     --footer-border: #dc49f0;
     --footer-shadow: #f049d488;
     --footer-separator: #73e4af;
+    --image-border: #ff88ff99;
+    --image-hover-border: #ff88ffdd;
     --post-title-foreground: #c96cff;
     --post-subtitle-foreground: #c96cffaa;
     --post-empty-notification-foreground: #804e9c;
@@ -202,6 +204,9 @@
     --modal-dialog-danger-button-active-foreground: #ff889c88;
     --modal-dialog-danger-button-disabled-foreground: #ff889c66;
     --modal-dialog-danger-button-hover-shadow: #ff889c55;
+    
+    --modal-media-border: #ff88ff;
+    --modal-media-entry-border: #cfaee988;
     
     --404-icon-foreground: #cf4949;
     --404-title-foreground: #cf4949;

@@ -275,6 +275,34 @@ public class ContentService : IContentService
         return slug;
     }
 
+    public async Task<bool> UploadPostMediaAsync(Guid postId, Stream stream, string fileExtension)
+    {
+        try
+        {
+            var mediaDirectory = Path.Combine(
+                WellKnown.Content,
+                postId.ToString("D"),
+                WellKnown.PostMediaDirectoryName
+            );
+
+            Directory.CreateDirectory(mediaDirectory);
+
+            var mediaFilePath = Path.Combine(
+                mediaDirectory,
+                Guid.NewGuid().ToString("N") + fileExtension
+            );
+
+            using (var fs = File.OpenWrite(mediaFilePath))
+                await stream.CopyToAsync(fs);
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public List<string> GetPostMedia(Guid postId)
     {
         var mediaDirectory = Path.Combine(
@@ -288,5 +316,21 @@ public class ContentService : IContentService
         return Directory.GetFiles(mediaDirectory)
             .Select(x => x.Replace(WellKnown.Content, "").Replace("\\", "/"))
             .ToList();
+    }
+
+    public bool DeletePostMedia(Guid postId, string fileName)
+    {
+        var mediumPath = Path.Combine(
+            WellKnown.Content,
+            postId.ToString("D"),
+            WellKnown.PostMediaDirectoryName,
+            fileName
+        );
+
+        if (!File.Exists(mediumPath))
+            return false;
+        
+        File.Delete(mediumPath);
+        return true;
     }
 }

@@ -71,6 +71,12 @@
             return;
         }
 
+        if (config.Core.MaxFileUploadSizeKilobytes < 2048)
+        {
+            Fail("Maximum file upload size must be >= 2MB");
+            return;
+        }
+
         try
         {
             _ = DateTime.Now.ToString(config.General.DateFormat);

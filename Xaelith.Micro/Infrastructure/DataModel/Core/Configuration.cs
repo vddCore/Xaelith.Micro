@@ -47,6 +47,9 @@ public record CoreSettings
     [JsonProperty("is_installed")]
     public bool IsInstalled { get; set; }
 
+    [JsonProperty("max_file_upload_size_kb")]
+    public int MaxFileUploadSizeKilobytes { get; set; } = 8192;
+
     [JsonProperty("autosave_interval_seconds")]
     public int AutosaveIntervalSeconds { get; set; } = 30;
 }

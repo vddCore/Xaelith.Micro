@@ -1,26 +1,66 @@
 ﻿@inherits ModalBase<MediaModalData>
 
+@inject IConfigService Configuration
 @inject IContentService Content
+@inject IToastService Toast
+@inject IJSRuntime JS
 
 <div class="modal-box modal-media @(ModalData?.IsOpen ?? false ? "open" : "")">
-    <h1>media</h1>
-    
+    <div class="modal-media-titlebar">
+        <h1>media</h1>
+        
+        <div class="modal-media-uploader">
+            <button type="button"
+                    @onclick="Close">
+                CLOSE
+            </button>
+            
+            <InputFile id="media-file-input"
+                       OnChange="OnFileInput"
+                       hidden/>
+            <label class="file-input" for="media-file-input">
+                upload
+            </label>
+        </div>
+    </div>
+
     @if (ModalData != null)
     {
-        var postMedia = Content.GetPostMedia(ModalData.PostId).ToArray();
-
-        if (postMedia.Any())
+        if (MediaLinks.Any())
         {
-            foreach (var file in postMedia)
-            {
-                <div class="media-entry">
-                    @file
-                </div>
-            }
+            <div class="media-list">
+                @foreach (var file in MediaLinks)
+                {
+                    var fileName = @Path.GetFileName(@file);
+
+                    <div class="media-entry">
+                        <img class="media-thumbnail"
+                             alt="@file"
+                             src="@file"/>
+
+                        <div class="media-filename">
+                            <a href="@file" target="_blank">@fileName</a>
+                        </div>
+
+                        <div class="media-actions">
+                            <a @onclick="@(() => CopyMediaLinkToClipboard(@file))">
+                                <i class="las la-images"></i>
+                                COPY LINK
+                            </a>
+
+                            <a class="danger"
+                               @onclick="@(() => DeleteMedia(fileName))">
+                                <i class="las la-trash"></i>
+                                DELETE
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
         }
         else
         {
-            
+            @("There are no media files to list yet. Upload something?")
         }
     }
     else
@@ -28,3 +68,98 @@
         @("ModalData is null.")
     }
 </div>
+
+
+@code {
+    public List<string> MediaLinks { get; set; } = [];
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            ReloadPostMedia();
+        }
+    }
+
+    private void DeleteMedia(string fileName)
+    {
+        if (ModalData != null)
+        {
+            if (Content.DeletePostMedia(ModalData.PostId, fileName))
+            {
+                ReloadPostMedia();
+            }
+        }
+    }
+
+    private void ReloadPostMedia()
+    {
+        if (ModalData != null)
+        {
+            MediaLinks = Content.GetPostMedia(ModalData.PostId).ToList();
+            StateHasChanged();
+        }
+    }
+
+    private async Task CopyMediaLinkToClipboard(string fileName)
+    {
+        if (ModalData != null)
+        {
+            try
+            {
+                await JS.InvokeVoidAsync("navigator.clipboard.writeText", fileName);
+                
+                Toast.Show(
+                    "Media link copied to clipboard",
+                    ToastSeverity.Success
+                );
+            }
+            catch (Exception ex)
+            {
+                Toast.Show(
+                    $"Failed to copy media link to clipboard: {ex.Message}",
+                    ToastSeverity.Error
+                );
+            }
+            
+            ModalData.Close(true);
+        }
+    }
+
+    private async Task OnFileInput(InputFileChangeEventArgs e)
+    {
+        if (ModalData == null)
+            return;
+
+        try
+        {
+            if (e.FileCount > 0)
+            {
+                using var stream = e.File.OpenReadStream(
+                    Configuration.Root!.Core.MaxFileUploadSizeKilobytes * 1024
+                );
+
+                await Content.UploadPostMediaAsync(
+                    ModalData.PostId,
+                    stream,
+                    Path.GetExtension(e.File.Name)
+                );
+                
+                ReloadPostMedia();
+            }
+        }
+        catch (Exception ex)
+        {
+            ModalData.IsOpen = false;
+            Toast.Show(
+                $"File upload failed: {ex.Message}",
+                ToastSeverity.Error
+            );
+        }
+    }
+
+    private void Close()
+        => ModalData?.Close(false);
+}

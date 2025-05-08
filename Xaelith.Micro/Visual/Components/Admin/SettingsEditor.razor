@@ -3,13 +3,25 @@
 <TabView Classes="settings-editor-tabview"
          TabChanged="OnTabChanged">
     <Tab Header="Core">
-        <div class="input-group">
-            <label for="settings-core-autosave-interval">
-                Autosave interval (seconds)
-            </label>
-            <input id="settings-core-autosave-interval"
-                   type="text"
-                   @bind="@Configuration.Core.AutosaveIntervalSeconds"/>
+        <div class="input-row">
+
+            <div class="input-group">
+                <label for="settings-core-autosave-interval">
+                    Autosave interval (seconds)
+                </label>
+                <input id="settings-core-autosave-interval"
+                       type="text"
+                       @bind="@Configuration.Core.AutosaveIntervalSeconds"/>
+            </div>
+
+            <div class="input-group">
+                <label for="settings-core-max-file-upload-size">
+                    Max file upload size (KB)
+                </label>
+                <input id="settings-core-max-file-upload-size"
+                       type="text"
+                       @bind="@Configuration.Core.MaxFileUploadSizeKilobytes"/>
+            </div>
         </div>
     </Tab>
 
@@ -169,7 +181,7 @@
             _shouldInitializeComboboxes = false;
         }
     }
-    
+
     private void OnTabChanged(TabView.Tab tab)
     {
         if (tab.Header == "General")

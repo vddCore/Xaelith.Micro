@@ -19,5 +19,8 @@ public interface IContentService : IXaelithService
     Task SetPublishedStateAsync(Guid postId, bool isPublished);
 
     string GenerateSlug(string title);
+    
+    Task<bool> UploadPostMediaAsync(Guid postId, Stream stream, string fileExtension);
     List<string> GetPostMedia(Guid postId);
+    bool DeletePostMedia(Guid postId, string fileName);
 }
