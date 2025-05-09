@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     
-    width: 90%;
+    width: 95%;
     padding: 8px 12px 10px 12px;
     margin: 0 auto;
     
@@ -122,11 +122,11 @@ ul li:last-child {
 
 @media screen and (min-width: 1550px) {
     nav {
-        width: 50%;
+        width: 55%;
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 885px) {
     nav {
         width: 100%;
 
@@ -152,7 +152,7 @@ ul li:last-child {
     }
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 836px) {
     nav {
         flex-direction: column;
     }

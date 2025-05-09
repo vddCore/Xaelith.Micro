@@ -90,14 +90,24 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
+        
         PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
         PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
         PageCount = (Posts.Count / PostsPerPage) + 1;
         UpdatePageFromQuery();
 
         Navigation.LocationChanged += OnLocationChanged;
+    }
 
-        base.OnInitialized();
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        
+        PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
+        PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
+        PageCount = (Posts.Count / PostsPerPage) + 1;
+        UpdatePageFromQuery();
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

@@ -1,4 +1,6 @@
-﻿<div class="post-titlebar">
+﻿@inject IMarkdownService Markdown;
+
+<div class="post-titlebar">
     <div class="post-titlebar-left">
         <h1 class="post-title">
             <a href="/view/@Post.Metadata.Slug">
@@ -16,7 +18,7 @@
         @if (!string.IsNullOrWhiteSpace(Post.Metadata.Description))
         {
             <h2 class="post-subtitle">
-                @Post.Metadata.Description
+                @((MarkupString)Markdown.Render(Post.Metadata.Description))
             </h2>
         }
     </div>

@@ -41,7 +41,7 @@ main {
     }
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 836px) {
     main {
         margin: 90px auto 0;
     }
