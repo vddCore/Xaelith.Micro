@@ -139,8 +139,17 @@ section.post ol > li > ol > li > ol > li > ol > li > ol {
 section.post .post-titlebar {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-start;
+    width: 100%;
+}
+
+section.post .post-titlebar-left {
+    align-self: flex-start;
+}
+
+section.post .post-titlebar-right {
+    margin-left: auto;
+    align-self: center;
 }
 
 section.post h1.post-title {
@@ -162,7 +171,6 @@ section.post h1.post-title a {
 
 section.post h2.post-subtitle {
     display: block;
-    align-self: flex-end;
 
     padding-top: 4px;
     padding-left: 8px;
@@ -193,6 +201,7 @@ section.post .post-toolbar-link {
     text-transform: uppercase;
     font-size: 1.2rem;
     font-weight: 500;
+    text-wrap: nowrap;
 }
 
 section.post .post-content {

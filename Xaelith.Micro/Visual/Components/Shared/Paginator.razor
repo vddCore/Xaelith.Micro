@@ -1,6 +1,6 @@
 ﻿@implements IDisposable
 
-@inject NavigationManager NavigationManager;
+@inject NavigationManager Navigation
 @inject IConfigService Configuration;
 @inject IContentService Content;
 
@@ -17,7 +17,7 @@
         @if (CurrentPage > 1)
         {
             <span class="pagination-button">
-                <a href="?page=@(CurrentPage - 1)">⇐ PREV </a>
+                <a href="@Navigation.GetUriWithQueryParameter("page", CurrentPage - 1)">⇐ PREV </a>
             </span>
         }
         else
@@ -40,7 +40,7 @@
                     else
                     {
                         <a class="pagination-link"
-                           href="?page=@i">
+                           href="@Navigation.GetUriWithQueryParameter("page", i)">
                             @(i)
                         </a>
                     }
@@ -51,7 +51,7 @@
         @if (CurrentPage < PageCount)
         {
             <span class="pagination-button">
-                <a href="?page=@(CurrentPage + 1)">NEXT ⇒</a>
+                <a href="@Navigation.GetUriWithQueryParameter("page", CurrentPage + 1)">NEXT ⇒</a>
             </span>
         }
         else
@@ -95,7 +95,7 @@
         PageCount = (Posts.Count / PostsPerPage) + 1;
         UpdatePageFromQuery();
 
-        NavigationManager.LocationChanged += OnLocationChanged;
+        Navigation.LocationChanged += OnLocationChanged;
 
         base.OnInitialized();
     }
@@ -110,7 +110,7 @@
     {
         int page;
 
-        var pageString = NavigationManager.QueryString("page");
+        var pageString = Navigation.QueryString("page");
         if (!int.TryParse(pageString, out page))
             page = 1;
 
@@ -127,6 +127,6 @@
 
     public void Dispose()
     {
-        NavigationManager.LocationChanged -= OnLocationChanged;
+        Navigation.LocationChanged -= OnLocationChanged;
     }
 }

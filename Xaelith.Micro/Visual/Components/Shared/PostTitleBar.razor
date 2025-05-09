@@ -1,26 +1,30 @@
 ﻿<div class="post-titlebar">
-    <h1 class="post-title">
-        <a href="/view/@Post.Metadata.Slug">
-            @if (string.IsNullOrEmpty(Post.Metadata.Title))
-            {
-                @(Post.Id.ToString("D"))
-            }
-            else
-            {
-                @Post.Metadata.Title
-            }
-        </a>
-    </h1>
+    <div class="post-titlebar-left">
+        <h1 class="post-title">
+            <a href="/view/@Post.Metadata.Slug">
+                @if (string.IsNullOrEmpty(Post.Metadata.Title))
+                {
+                    @(Post.Id.ToString("D"))
+                }
+                else
+                {
+                    @Post.Metadata.Title
+                }
+            </a>
+        </h1>
 
-    <PostToolbar Post="@Post" />
+        @if (!string.IsNullOrWhiteSpace(Post.Metadata.Description))
+        {
+            <h2 class="post-subtitle">
+                @Post.Metadata.Description
+            </h2>
+        }
+    </div>
+
+    <div class="post-titlebar-right">
+        <PostToolbar Post="@Post"/>
+    </div>
 </div>
-
-@if (!string.IsNullOrWhiteSpace(Post.Metadata.Description))
-{
-    <h2 class="post-subtitle">
-        @Post.Metadata.Description
-    </h2>
-}
 
 @code {
     [Parameter]
