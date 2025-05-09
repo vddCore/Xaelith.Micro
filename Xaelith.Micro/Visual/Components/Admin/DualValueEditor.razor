@@ -16,27 +16,34 @@
     </button>
 </div>
 
-<div class="dual-value-editor @ListContainerClass">
-    <div class="dual-value-list-view">
-        @for (var i = 0; i < Context.Entries.Count; i++)
-        {
-            var index = i;
+@if (Context.Entries.Any())
+{
+    <div class="dual-value-editor @ListContainerClass">
+        <div class="dual-value-list-view">
+            @for (var i = 0; i < Context.Entries.Count; i++)
+            {
+                var index = i;
 
-            <DualValueControl Entry="Context.Entries[index]"
-                              FirstValueId="@FirstValueId"
-                              FirstValueClass="@FirstValueClass"
-                              FirstValuePlaceholder="@FirstValuePlaceholder"
-                              SecondValueId="@SecondValueId"
-                              SecondValueClass="@SecondValueClass"
-                              SecondValuePlaceholder="@SecondValuePlaceholder"
-                              OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
-                              OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
-                              FirstValueLabel="Name"
-                              SecondValueLabel="Desc."
-                              OnDeleteRequested="@(() => RequestEntryDeletion(Context.Entries[index]))"/>
-        }
+                <DualValueControl Entry="Context.Entries[index]"
+                                  FirstValueId="@FirstValueId"
+                                  FirstValueClass="@FirstValueClass"
+                                  FirstValuePlaceholder="@FirstValuePlaceholder"
+                                  SecondValueId="@SecondValueId"
+                                  SecondValueClass="@SecondValueClass"
+                                  SecondValuePlaceholder="@SecondValuePlaceholder"
+                                  OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
+                                  OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
+                                  FirstValueLabel="Name"
+                                  SecondValueLabel="Desc."
+                                  OnDeleteRequested="@(() => RequestEntryDeletion(Context.Entries[index]))"/>
+            }
+        </div>
     </div>
-</div>
+}
+else
+{
+    @("There are no entries to display. Add some?")
+}
 
 @code {
     [Parameter]
@@ -44,7 +51,7 @@
 
     [Parameter]
     public required string ListContainerClass { get; set; } = string.Empty;
-    
+
     [Parameter]
     public string ActionsColumnClass { get; set; } = string.Empty;
 

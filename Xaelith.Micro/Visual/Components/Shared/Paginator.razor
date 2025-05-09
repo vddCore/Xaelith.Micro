@@ -4,64 +4,68 @@
 @inject IConfigService Configuration;
 @inject IContentService Content;
 
-@{
-    foreach (var post in PostsToRender)
-    {
-        <PostBrief Post="@post"/>
-    }
-}
-
-@if (PageCount > 1)
-{
-    <div class="pagination">
-        @if (CurrentPage > 1)
-        {
-            <span class="pagination-button">
-                <a href="@Navigation.GetUriWithQueryParameter("page", CurrentPage - 1)">⇐ PREV </a>
-            </span>
-        }
-        else
-        {
-            <span class="pagination-button inactive">
-                ⇐ PREV
-            </span>
-        }
-
-        <ul>
-            @for (var i = PaginationStart; i <= PaginationEnd; i++)
+<div class="paginator-container">
+    <div class="paginator-post-list">
+        @{
+            foreach (var post in PostsToRender)
             {
-                <li>
-                    @if (i == CurrentPage)
-                    {
-                        <span class="pagination-link current-page">
-                            @(i)
-                        </span>
-                    }
-                    else
-                    {
-                        <a class="pagination-link"
-                           href="@Navigation.GetUriWithQueryParameter("page", i)">
-                            @(i)
-                        </a>
-                    }
-                </li>
+                <PostBrief Post="@post"/>
             }
-        </ul>
-
-        @if (CurrentPage < PageCount)
-        {
-            <span class="pagination-button">
-                <a href="@Navigation.GetUriWithQueryParameter("page", CurrentPage + 1)">NEXT ⇒</a>
-            </span>
-        }
-        else
-        {
-            <span class="pagination-button inactive">
-                NEXT ⇒
-            </span>
         }
     </div>
-}
+
+    @if (PageCount > 1)
+    {
+        <div class="pagination">
+            @if (CurrentPage > 1)
+            {
+                <span class="pagination-button">
+                <a href="@Navigation.GetUriWithQueryParameter("page", CurrentPage - 1)">⇐ PREV </a>
+            </span>
+            }
+            else
+            {
+                <span class="pagination-button inactive">
+                ⇐ PREV
+            </span>
+            }
+
+            <ul>
+                @for (var i = PaginationStart; i <= PaginationEnd; i++)
+                {
+                    <li>
+                        @if (i == CurrentPage)
+                        {
+                            <span class="pagination-link current-page">
+                            @(i)
+                        </span>
+                        }
+                        else
+                        {
+                            <a class="pagination-link"
+                               href="@Navigation.GetUriWithQueryParameter("page", i)">
+                                @(i)
+                            </a>
+                        }
+                    </li>
+                }
+            </ul>
+
+            @if (CurrentPage < PageCount)
+            {
+                <span class="pagination-button">
+                <a href="@Navigation.GetUriWithQueryParameter("page", CurrentPage + 1)">NEXT ⇒</a>
+            </span>
+            }
+            else
+            {
+                <span class="pagination-button inactive">
+                NEXT ⇒
+            </span>
+            }
+        </div>
+    }
+</div>
 
 @code {
     [Parameter]
@@ -91,7 +95,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        
+
         PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
         PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
         PageCount = (Posts.Count / PostsPerPage) + 1;
@@ -103,7 +107,7 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        
+
         PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
         PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
         PageCount = (Posts.Count / PostsPerPage) + 1;

@@ -10,6 +10,7 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
+
     <EditForm Model="@NavGroupEditContexts"
               OnSubmit="@SaveNavGroups">
         <div class="nav-editor-toolbar editor-toolbar">
@@ -30,70 +31,76 @@
                 NEW NAV GROUP
             </button>
         </div>
+        @if (NavGroupEditContexts.Any())
+        {
+            <div class="link-manager">
+                @foreach (var navgroup in NavGroupEditContexts)
+                {
+                    <div class="nav-group">
+                        <div class="nav-group-editor">
+                            <div class="nav-group-name">
+                                <a class="add-new-link safe"
+                                   @onclick="@(() => AddNewNavLink(navgroup))">
+                                    <i class="las la-plus-circle"></i>
+                                </a>
 
-        <div class="link-manager">
-            @foreach (var navgroup in NavGroupEditContexts)
-            {
-                <div class="nav-group">
-                    <div class="nav-group-editor">
-                        <div class="nav-group-name">
-                            <a class="add-new-link safe"
-                               @onclick="@(() => AddNewNavLink(navgroup))">
-                                <i class="las la-plus-circle"></i>
-                            </a>
+                                <input type="text"
+                                       id="nav-group-@navgroup.Name-edit-field"
+                                       @bind="@navgroup.Name"
+                                       placeholder="Awaiting nav group name..."/>
 
-                            <input type="text"
-                                   id="nav-group-@navgroup.Name-edit-field"
-                                   @bind="@navgroup.Name"
-                                   placeholder="Awaiting nav group name..."/>
+                                <a class="nav-group-delete danger"
+                                   @onclick="@(() => DeleteNavGroup(@navgroup))">
+                                    <i class="las la-trash"></i>
+                                </a>
+                            </div>
 
-                            <a class="nav-group-delete danger"
-                               @onclick="@(() => DeleteNavGroup(@navgroup))">
-                                <i class="las la-trash"></i>
-                            </a>
+                            @foreach (var entry in navgroup.Links.Entries)
+                            {
+                                <div class="nav-group-row">
+                                    <div class="entry-move-buttons">
+                                        <a class="nav-link-moveup"
+                                           @onclick="@(() => MoveNavLinkUp(navgroup, entry))">
+                                            <i class="las la-arrow-up"></i>
+                                        </a>
+
+                                        <a class="nav-link-movedown"
+                                           @onclick="@(() => MoveNavLinkDown(navgroup, entry))">
+                                            <i class="las la-arrow-down"></i>
+                                        </a>
+                                    </div>
+
+                                    <DualValueControl Entry="@entry"
+                                                      FirstValueLabel="Label"
+                                                      FirstValueClass="nav-link-label"
+                                                      FirstValuePlaceholder="Awaiting label..."
+                                                      SecondValueLabel="Target"
+                                                      SecondValueClass="nav-link-target"
+                                                      SecondValuePlaceholder="Awaiting target..."
+                                                      OnDeleteRequested="@((e) => DeleteEntry(navgroup, e))"/>
+                                </div>
+                            }
                         </div>
 
-                        @foreach (var entry in navgroup.Links.Entries)
-                        {
-                            <div class="nav-group-row">
-                                <div class="entry-move-buttons">
-                                    <a class="nav-link-moveup"
-                                       @onclick="@(() => MoveNavLinkUp(navgroup, entry))">
-                                        <i class="las la-arrow-up"></i>
-                                    </a>
+                        <div class="nav-group-move-buttons">
+                            <a class="nav-group-move nav-group-moveup"
+                               @onclick="@(() => MoveNavGroupUp(navgroup))">
+                                <span>🢁</span>
+                            </a>
 
-                                    <a class="nav-link-movedown"
-                                       @onclick="@(() => MoveNavLinkDown(navgroup, entry))">
-                                        <i class="las la-arrow-down"></i>
-                                    </a>
-                                </div>
-
-                                <DualValueControl Entry="@entry"
-                                                  FirstValueLabel="Label"
-                                                  FirstValueClass="nav-link-label"
-                                                  FirstValuePlaceholder="Awaiting label..."
-                                                  SecondValueLabel="Target"
-                                                  SecondValueClass="nav-link-target"
-                                                  SecondValuePlaceholder="Awaiting target..."
-                                                  OnDeleteRequested="@((e) => DeleteEntry(navgroup, e))"/>
-                            </div>
-                        }
+                            <a class="nav-group-move nav-group-movedown"
+                               @onclick="@(() => MoveNavGroupDown(navgroup))">
+                                <span>🢃</span>
+                            </a>
+                        </div>
                     </div>
-
-                    <div class="nav-group-move-buttons">
-                        <a class="nav-group-move nav-group-moveup"
-                           @onclick="@(() => MoveNavGroupUp(navgroup))">
-                            <span>🢁</span>
-                        </a>
-
-                        <a class="nav-group-move nav-group-movedown"
-                           @onclick="@(() => MoveNavGroupDown(navgroup))">
-                            <span>🢃</span>
-                        </a>
-                    </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
+        else
+        {
+            @("There are no navigation groups to display. Add some?")
+        }
     </EditForm>
 </div>
 

@@ -11,16 +11,16 @@
 <div class="admin-inner-content">
     <EditForm Model="Context" OnSubmit="@SaveCategories">
         <DualValueEditor Context="Context"
-                        FirstValueClass="category"
-                        FirstValueId="category-name-edit-field"
-                        FirstValuePlaceholder="Awaiting category name..."
-                        SecondValueClass="description"
-                        SecondValueId="catgory-description-edit-field"
-                        SecondValuePlaceholder="Awaiting category description..."
-                        ListContainerClass="category-editor"
-                        OnDeleteRequested="@DeleteCategory"
-                        OnAddRequested="@AddEmptyCategory"
-                        OnDiscardRequested="@DiscardChanges"/>
+                         FirstValueClass="category"
+                         FirstValueId="category-name-edit-field"
+                         FirstValuePlaceholder="Awaiting category name..."
+                         SecondValueClass="description"
+                         SecondValueId="catgory-description-edit-field"
+                         SecondValuePlaceholder="Awaiting category description..."
+                         ListContainerClass="category-editor"
+                         OnDeleteRequested="@DeleteCategory"
+                         OnAddRequested="@AddEmptyCategory"
+                         OnDiscardRequested="@DiscardChanges"/>
     </EditForm>
 </div>
 
@@ -65,9 +65,9 @@
 
                 return;
             }
-            
+
             var uniqueEntries = context.Entries.Select(x => x.FirstValue).Distinct();
-            
+
             if (uniqueEntries.Count() != context.Entries.Count)
             {
                 Toasts.Show(
@@ -87,7 +87,7 @@
 
                 Configuration.Root!.Content.Categories[category.FirstValue] = category.SecondValue;
             }
-            
+
             context.Entries = context.Entries
                 .OrderBy(x => x.FirstValue)
                 .ToList();
