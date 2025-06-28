@@ -5,29 +5,29 @@
     <section class="post">
         <div class="post-titlebar">
             <h1 class="post-title">
-                @if (string.IsNullOrWhiteSpace(Context.Title))
+                @if (string.IsNullOrWhiteSpace(EditorContext.Title))
                 {
                     @("Untitled")
                 }
                 else
                 {
-                    @Context.Title
+                    @EditorContext.Title
                 }
             </h1>
         </div>
 
-        @if (!string.IsNullOrWhiteSpace(Context.Description))
+        @if (!string.IsNullOrWhiteSpace(EditorContext.Description))
         {
             <h2 class="post-subtitle">
-                @((MarkupString)Markdown.Render(Context.Description))
+                @((MarkupString)Markdown.Render(EditorContext.Description))
             </h2>
         }
 
         <div class="post-content">
-            @((MarkupString)Context.PreviewMarkup)
+            @((MarkupString)EditorContext.PreviewMarkup)
         </div>
 
-        @if (Context.PostType == PostType.Normal)
+        @if (EditorContext.PostType == PostType.Normal)
         {
             <div class="post-meta">
                 <div class="post-meta-items">
@@ -40,9 +40,9 @@
                     </span>
 
                     <span class="post-meta-item post-meta-category">
-                        @if (!string.IsNullOrWhiteSpace(Context.Category))
+                        @if (!string.IsNullOrWhiteSpace(EditorContext.Category))
                         {
-                            @(Context.Category)
+                            @(EditorContext.Category)
                         }
                         else
                         {
@@ -50,11 +50,11 @@
                         }
                     </span>
 
-                    @if (!string.IsNullOrWhiteSpace(Context.TagList))
+                    @if (!string.IsNullOrWhiteSpace(EditorContext.TagList))
                     {
                         <div class="post-meta-item post-meta-tags">
                             <ul>
-                                @foreach (var tag in Context.TagList.Split(',', StringSplitOptions.TrimEntries))
+                                @foreach (var tag in EditorContext.TagList.Split(',', StringSplitOptions.TrimEntries))
                                 {
                                     <li>@tag</li>
                                 }
@@ -72,5 +72,5 @@
     public UserContext UserContext { get; set; } = null!;
 
     [Parameter]
-    public required EditorContext Context { get; set; }
+    public required EditorContext EditorContext { get; set; }
 }

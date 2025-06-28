@@ -1,0 +1,164 @@
+﻿@layout AdminShell
+
+@page "/admin/manage/shortcodes"
+@inherits XaelithRestrictedPage
+
+@inject IModalService Modals;
+@inject IToastService Toasts;
+
+<h1 class="admin-view-title">@Title</h1>
+
+<div class="admin-inner-content">
+    <EditForm Model="ValueEditContext" OnSubmit="@SaveChanges">
+        <DualValueEditor ValueEditContext="ValueEditContext"
+                         AllowReorder="@true"
+                         OnMoveUpRequested="MoveEntryUp"
+                         OnMoveDownRequested="MoveEntryDown"
+                         FirstValueId="custom-pattern-match-edit-field"
+                         FirstValueClass="custom-pattern-match"
+                         FirstValueLabel="Pattern"
+                         FirstValuePlaceholder="Awaiting regex..."
+                         SecondValueId="custom-pattern-replace-edit-field"
+                         SecondValueClass="custom-pattern-replace"
+                         SecondValueLabel="Replace"
+                         SecondValuePlaceholder="Awaiting replacement..."
+                         ListContainerClass="custom-pattern-editor"
+                         OnAddRequested="@AddEmptyPattern"
+                         OnDeleteRequested="@((e) => DeleteEntry(e))"
+                         OnDiscardRequested="@DiscardChanges" />
+    </EditForm>
+</div>
+
+@code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+    
+    protected override string Title => "shortcodes";
+
+    private DualValueEditContext ValueEditContext { get; set; } = new();
+    private DualValueEditContext PreviousState { get; set; } = new();
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        foreach (var pattern in Configuration.Root!.Rendering.CustomRegexPatterns)
+        {
+            var entry = new DualValueEditContext.Entry(
+                pattern.Match,
+                pattern.Replace
+            );
+
+            entry.UserData = pattern.SingleLine;
+            
+            ValueEditContext.Entries.Add(entry);
+        }
+
+        PreviousState = ValueEditContext.Copy();
+    }
+
+    private void SaveChanges(EditContext editContext)
+    {
+        var context = (DualValueEditContext)editContext.Model;
+
+        foreach (var entry in context.Entries)
+        {
+            if (string.IsNullOrWhiteSpace(entry.FirstValue))
+            {
+                Toasts.Show(
+                    "Empty patterns are not allowed",
+                    ToastSeverity.Warning,
+                    3500
+                );
+
+                return;
+            }
+        }
+
+        try
+        {
+            Configuration.Root!.Rendering.CustomRegexPatterns.Clear();
+
+            foreach (var entry in context.Entries)
+            {
+                Configuration.Root!.Rendering.CustomRegexPatterns.Add(
+                    new RegexPattern
+                    {
+                        Match = entry.FirstValue,
+                        Replace = entry.SecondValue,
+                        SingleLine = true
+                    }
+                );
+            }
+
+            Configuration.Save();
+            Toasts.Show(
+                "Shortcodes saved",
+                ToastSeverity.Success
+            );
+        }
+        catch (Exception e)
+        {
+            Toasts.Show(
+                $"Failed to save shortcodes: {e.Message}",
+                ToastSeverity.Error
+            );
+        }
+    }
+
+    private void DeleteEntry(int index)
+        => ValueEditContext.Entries.RemoveAt(index);
+
+    private void AddEmptyPattern()
+    {
+        var entry = new DualValueEditContext.Entry(string.Empty, string.Empty)
+        {
+            UserData = true
+        };
+
+        ValueEditContext.Entries.Add(entry);
+    }
+
+    private async Task DiscardChanges()
+    {
+        await Modals.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding any changes made to shortcodes.<br/>" +
+                "This action is irreversible.",
+                "Proceed",
+                "Abort",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        ValueEditContext = PreviousState.Copy();
+                }
+            )
+        );
+    }
+
+    private void MoveEntryUp(DualValueEditContext.Entry entry)
+    {
+        var index = ValueEditContext.Entries.IndexOf(entry);
+
+        if (index <= 0)
+            return;
+
+        var tmp = ValueEditContext.Entries[index - 1];
+        ValueEditContext.Entries[index - 1] = entry;
+        ValueEditContext.Entries[index] = tmp;
+    }
+    
+    private void MoveEntryDown(DualValueEditContext.Entry entry)
+    {
+        var index = ValueEditContext.Entries.IndexOf(entry);
+
+        if (index >= ValueEditContext.Entries.Count - 1)
+            return;
+
+        var tmp = ValueEditContext.Entries[index + 1];
+        ValueEditContext.Entries[index + 1] = entry;
+        ValueEditContext.Entries[index] = tmp;
+    }
+}

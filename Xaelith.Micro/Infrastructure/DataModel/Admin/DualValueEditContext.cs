@@ -6,7 +6,8 @@ public class DualValueEditContext
     {
         public string FirstValue { get; set; }
         public string SecondValue { get; set; }
-        
+        public object? UserData { get; set; }
+
         public Entry(string firstValue, string secondValue)
         {
             FirstValue = firstValue;

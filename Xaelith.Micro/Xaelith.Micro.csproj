@@ -56,6 +56,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
     <PackageReference Include="Markdig" Version="0.41.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Slugify.Core" Version="5.1.1" />

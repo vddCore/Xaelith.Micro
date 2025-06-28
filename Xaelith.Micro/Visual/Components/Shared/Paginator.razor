@@ -92,13 +92,21 @@
 
     protected List<Post> PostsToRender { get; private set; } = [];
 
+    private void Configure()
+    {
+        PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
+        PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
+        PageCount = (Posts.Count / PostsPerPage);
+        
+        if (Posts.Count % PostsPerPage != 0)
+            PageCount++;
+    }
+    
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
-        PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
-        PageCount = (Posts.Count / PostsPerPage) + 1;
+        Configure();
         UpdatePageFromQuery();
 
         Navigation.LocationChanged += OnLocationChanged;
@@ -108,9 +116,7 @@
     {
         base.OnParametersSet();
 
-        PaginationLimit = Configuration.Root!.Content.MaximumPagesInPaginator;
-        PostsPerPage = Configuration.Root!.Content.MaximumPostsPerPage;
-        PageCount = (Posts.Count / PostsPerPage) + 1;
+        Configure();
         UpdatePageFromQuery();
     }
 

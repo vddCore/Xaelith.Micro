@@ -3,6 +3,7 @@
     "api_url": "http://localhost:5271",
     "is_installed": true
   },
+  
   "general": {
     "site_title": "aura's binary forge",
     "site_description": "digital witch's vibrant recluse: tech, tinkering, stories and... poetry? wtf girl you have issues.",
@@ -11,6 +12,17 @@
     "date_format": "dd MMMM yyyy - HH:mm",
     "post_order_criteria": "date",
     "post_order_direction": "descending"
+  },
+  
+  "rendering": {
+    "pagebreak_token": "[[pagebreak]]",
+    "custom_regex_patterns": [
+      {
+        "match": "\\[c=#(?<color>[0-9A-Fa-f]{3,8})](?<content>.*?)\\[/c]",
+        "replace": "<span style=\"color: #${color};\">${content}</span>",
+        "single_line": true
+      }
+    ]
   },
   
   "content": {

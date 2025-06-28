@@ -9,7 +9,7 @@
                type="text"
                spellcheck="false"
                placeholder="Enter a title..."
-               @bind="@Context.Title"
+               @bind="@EditorContext.Title"
                @oninput="TitleChanged"/>
     </div>
     
@@ -19,7 +19,7 @@
                type="text"
                spellcheck="false"
                placeholder="Enter a slug..."
-               @bind="@Context.Slug"/>
+               @bind="@EditorContext.Slug"/>
     </div>
 </div>
 
@@ -30,7 +30,7 @@
                type="text"
                spellcheck="false"
                placeholder="Enter a description..."
-               @bind="@Context.Description"/>
+               @bind="@EditorContext.Description"/>
     </div>
 
     <div class="input-group">
@@ -39,7 +39,7 @@
                type="text"
                spellcheck="false"
                placeholder="Awaiting publish date..."
-               @bind="@Context.PublishDateString"/>
+               @bind="@EditorContext.PublishDateString"/>
     </div>
 </div>
 
@@ -54,7 +54,7 @@
         
         <select id="md-editor-post-type"
                 style="display: none;"
-                @bind="@Context.PostType">
+                @bind="@EditorContext.PostType">
             @foreach (var value in Enum.GetValues<PostType>())
             {
                 <option value="@value">@EnumUtility.GetDisplayName(value)</option>
@@ -62,7 +62,7 @@
         </select>
     </div>
 
-    @if (Context.PostType == PostType.Normal)
+    @if (EditorContext.PostType == PostType.Normal)
     {
         <div class="input-group">
             <label for="md-editor-category">Category</label>
@@ -74,7 +74,7 @@
             
             <select id="md-editor-category"
                     style="display: none;"
-                    @bind="Context.Category">
+                    @bind="EditorContext.Category">
                 @foreach (var (name, _) in Configuration.Root!.Content.Categories)
                 {
                     <option>@name</option>
@@ -88,14 +88,14 @@
                    type="text"
                    spellcheck="false"
                    placeholder="Enter tags..."
-                   @bind="@Context.TagList"/>
+                   @bind="@EditorContext.TagList"/>
         </div>
     }
 </div>
 
 @code {
     [Parameter]
-    public required EditorContext Context { get; set; } = null!;
+    public required EditorContext EditorContext { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -122,6 +122,6 @@
 
     private void TitleChanged(ChangeEventArgs e)
     {
-        Context.Slug = Content.GenerateSlug(e.Value?.ToString() ?? string.Empty);
+        EditorContext.Slug = Content.GenerateSlug(e.Value?.ToString() ?? string.Empty);
     }
 }

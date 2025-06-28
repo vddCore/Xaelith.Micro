@@ -84,6 +84,9 @@ public record RenderingSettings
 {
     [JsonProperty("pagebreak_token")]
     public string PageBreakToken { get; set; } = "[[pagebreak]]";
+
+    [JsonProperty("custom_regex_patterns")]
+    public List<RegexPattern> CustomRegexPatterns { get; set; } = [];
 }
 
 public record NavigationSettings

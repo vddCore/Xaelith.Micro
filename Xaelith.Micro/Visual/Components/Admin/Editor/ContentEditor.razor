@@ -1,38 +1,58 @@
-﻿<div class="input-group">
+﻿@using GaelJ.BlazorCodeMirror6.Models
+<div class="input-group">
     <label for="md-editor-area">Content</label>
 
-    <textarea id="md-editor-area"
-              type="text"
-              spellcheck="false"
-              placeholder="Content goes here..."
-              @bind="@Context.Markdown"
-              @oninput="OnMarkdownInput"></textarea>
+    <div id="md-editor-area">
+        <CodeMirror6Wrapper Placeholder="AWAITING CONTENT..."
+                            TabSize="2"
+                            IndentationUnit="2"
+                            Language="CodeMirrorLanguage.Markdown"
+                            AutoFormatMarkdown=@false
+                            Setup="@Setup"
+                            PreviewImages=@false
+                            FullScreen=@false
+                            Doc="@EditorContext.Markdown"
+                            DocChanged="OnMarkdownInput"
+                            MaxHeight="760px" 
+                            HighlightActiveLine=@true
+                            HighlightTrailingWhitespace=@false
+                            HighlightWhitespace=@false
+                            HighlightActiveLineGutter=@true  />
+    </div>
 
     <div class="md-editor-statusbar">
-         <span class="md-editor-status md-editor-status-lines">
-             Lines: @Context.Lines
-         </span>
-
         <span class="md-editor-status md-editor-status-characters">
-             Characters: @Context.Characters
+             Characters: @EditorContext.Characters
          </span>
     </div>
 </div>
 
 @code {
+    private readonly CodeMirrorSetup Setup = new() {
+        BindMode = DocumentBindMode.OnInput,
+        Autocompletion = false,
+        History = true,
+        IndentWithTab = true,
+        IndentOnInput = false,
+        AllowMentions = false,
+        FocusOnCreation = true,
+        SyntaxHighlighting = false,
+        BracketMatching = false
+    };
+    
     [Parameter]
-    public required EditorContext Context { get; set; } = null!;
+    public required EditorContext EditorContext { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> OnMarkdownEdited { get; set; }
 
-    private async Task OnMarkdownInput(ChangeEventArgs e)
+    private async Task OnMarkdownInput(string? content)
     {
-        Context.Markdown = e.Value?.ToString() ?? string.Empty;
+        EditorContext.Markdown = content ?? string.Empty;
 
         if (OnMarkdownEdited.HasDelegate)
         {
-            await OnMarkdownEdited.InvokeAsync(Context.Markdown);
+            await OnMarkdownEdited.InvokeAsync(EditorContext.Markdown);
         }
     }
 }

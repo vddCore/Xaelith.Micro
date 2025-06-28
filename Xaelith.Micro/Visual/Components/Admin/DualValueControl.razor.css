@@ -88,6 +88,14 @@ input[type="text"]:focus {
     border-bottom: none;
 }
 
+.dual-value-move-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 0.5rem;
+    font-size: 1.3rem;
+}
+
 .dual-value-delete {
     cursor: default;
 

@@ -35,13 +35,13 @@
             <TabView Classes="md-editor-tabview"
                      TabChanged="OnTabChanged">
                 <Tab Header="Edit">
-                    <ContentEditor Context="@EditorContext"
+                    <ContentEditor EditorContext="@EditorContext"
                                    OnMarkdownEdited="@OnMarkdownEdited"/>
-                    <ContentProperties Context="@EditorContext"/>
+                    <ContentProperties EditorContext="@EditorContext"/>
                 </Tab>
 
                 <Tab Header="Preview">
-                    <ContentPreview Context="@EditorContext"/>
+                    <ContentPreview EditorContext="@EditorContext"/>
                 </Tab>
             </TabView>
         </EditForm>

@@ -7,7 +7,7 @@
             <input id="user-login-name"
                    type="text"
                    placeholder="Awaiting login name..."
-                   @bind="Context.LoginName"/>
+                   @bind="UserEditContext.LoginName"/>
         </div>
 
         <div class="input-group">
@@ -17,7 +17,7 @@
             <input id="user-display-name"
                    type="text"
                    placeholder="Awaiting display name..."
-                   @bind="Context.DisplayName"/>
+                   @bind="UserEditContext.DisplayName"/>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
             <input id="user-password"
                    type="password"
                    placeholder="Awaiting password..."
-                   @bind="Context.Password"/>
+                   @bind="UserEditContext.Password"/>
         </div>
 
         <div class="input-group">
@@ -39,19 +39,19 @@
             <input id="user-confirm-password"
                    type="password"
                    placeholder="Awaiting password..."
-                   @bind="Context.ConfirmPassword"/>
+                   @bind="UserEditContext.ConfirmPassword"/>
         </div>
     </div>
 
     <div class="user-entry-toolbar">
         <CustomInputCheckbox Id="user-is-enabled"
                              Label="Is Enabled?"
-                             Value="Context.IsEnabled"
-                             ValueExpression="@(() => Context.IsEnabled)"
+                             Value="UserEditContext.IsEnabled"
+                             ValueExpression="@(() => UserEditContext.IsEnabled)"
                              ValueChanged="OnIsEnabledChanged"/>
         
         <a class="danger"
-           @onclick="@(async () => await RequestDelete(Context))">
+           @onclick="@(async () => await RequestDelete(UserEditContext))">
             <i class="las la-trash"></i>
             DELETE
         </a>
@@ -60,13 +60,13 @@
 
 @code {
     [Parameter]
-    public required UserEditContext Context { get; set; }
+    public required UserEditContext UserEditContext { get; set; }
 
     [Parameter]
     public EventCallback<UserEditContext> DeleteRequested { get; set; }
 
     private void OnIsEnabledChanged(bool value)
-        => Context.IsEnabled = value;
+        => UserEditContext.IsEnabled = value;
 
     private async Task RequestDelete(UserEditContext context)
     {

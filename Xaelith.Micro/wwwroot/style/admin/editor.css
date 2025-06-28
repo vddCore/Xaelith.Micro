@@ -1,5 +1,29 @@
 ﻿:root {
+    --md-editor-gutter-background: #1f0f2e;
+    --md-editor-gutter-foreground: #cfaee9;
+    --md-editor-gutter-line-focused-background: #ff88ff22;
+    --md-editor-placeholder-foreground: #ff88ff55;
+
+    --md-editor-border: #ff88ff66;
+    --md-editor-hover-border: #ff88ffaa;
+    --md-editor-focus-border: #ff88ff;
+    
+    --md-editor-background: #1a0421;
     --md-editor-foreground: #cfaee9;
+
+    --md-editor-caret-foreground: #ff88ff;
+
+    --md-editor-selection-background: #ff88ffcc;
+    --md-editor-selection-foreground: #1e0725;
+
+    --md-editor-line-focused-background: #ff88ff22;
+    --md-editor-selection-match-background: #ff88ff33;
+
+    --md-editor-tab-guide-foreground: #ff88ff33;
+    
+    --md-editor-fold-placeholder-background: #00000000;
+    --md-editor-fold-placeholder-foreground: #ff88ff;
+    
     --md-editor-statusbar-foreground: #120217;
     --md-editor-statusbar-background: #ff88ff;
     
@@ -16,25 +40,6 @@
 
 main#admin .md-editor-tabview {
     margin-top: -42px;
-}
-
-main#admin #md-editor-area {
-    height: 760px;
-    padding: 12px;
-
-    border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    
-    font-family: "NK57 Monospace";
-    font-weight: 300;
-
-    font-size: 16px;
-    
-    resize: none;
-}
-
-main#admin #md-editor-area:focus {
-    color: var(--md-editor-foreground);
 }
 
 main#admin .md-editor-statusbar {
@@ -67,3 +72,162 @@ main#admin .content-preview {
     overflow: hidden;
     display: flex;
 }
+
+main#admin #md-editor-area .editor-loading {
+    border: 1px solid var(--md-editor-border);
+    border-bottom: none;
+
+    border-radius: 4px 4px 0 0;
+    background: var(--md-editor-background);
+}
+
+main#admin #md-editor-area .loading-animation {
+    background: linear-gradient(
+        to right,
+        #ff88ff66 8%,
+        #ff88ffaa 18%,
+        #ff88ff66 33%
+    );
+}
+
+main#admin #md-editor-area .cm-editor {
+    background-color: var(--md-editor-background);
+    
+    border: 1px solid var(--md-editor-border);
+    border-bottom: none;
+    
+    border-radius: 4px 4px 0 0;
+    
+    font-family: "NK57 Monospace";
+    font-size: 16px;
+}
+
+main#admin #md-editor-area .ͼ1.cm-focused {
+    outline: 1px dotted #212121;
+}
+
+main#admin #md-editor-area .ͼ2 .cm-content,
+main#admin #md-editor-area .ͼ3 .cm-content {
+    caret-color: var(--md-editor-caret-foreground);
+}
+
+main#admin #md-editor-area .ͼ2 .cm-selectionBackground,
+main#admin #md-editor-area .ͼ3 .cm-selectionBackground {
+    background: var(--md-editor-selection-background);
+    color: var(--md-editor-selection-foreground);
+}
+
+main#admin #md-editor-area .ͼ2.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground,
+main#admin #md-editor-area .ͼ3.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {
+    background: var(--md-editor-selection-background);
+    color: var(--md-editor-selection-foreground);
+}
+
+main#admin #md-editor-area .cm-panels {
+    display: none;
+}
+
+main#admin #md-editor-area .ͼ1 .cm-scroller {
+    font-family: "NK57 Monospace";
+    font-weight: 300;
+}
+
+main#admin #md-editor-area .ͼ1 .cm-cursor, .ͼ1 .cm-dropCursor,
+main#admin #md-editor-area .ͼ3 .cm-cursor {
+    border-left: 1.2px solid var(--md-editor-caret-foreground);
+}
+
+main#admin #md-editor-area .ͼ2 .cm-activeLine,
+main#admin #md-editor-area .ͼ3 .cm-activeLine {
+    background: var(--md-editor-line-focused-background);
+}
+
+main#admin #md-editor-area .ͼ2 .cm-gutters,
+main#admin #md-editor-area .ͼ3 .cm-gutters {
+    background-color: var(--md-editor-gutter-background);
+    color: var(--md-editor-gutter-foreground);
+    border-right: 1px dotted var(--md-editor-border);
+}
+
+main#admin #md-editor-area .ͼ2 .cm-activeLineGutter,
+main#admin #md-editor-area .ͼ3 .cm-activeLineGutter {
+    background-color: var(--md-editor-gutter-line-focused-background);
+}
+
+main#admin #md-editor-area .ͼ1 .cm-placeholder {
+    color: var(--md-editor-placeholder-foreground);
+}
+
+main#admin #md-editor-area .ͼ1 .cm-textfield {
+    color: inherit;
+}
+
+main#admin #md-editor-area .ͼ2 .cm-textfield,
+main#admin #md-editor-area .ͼ3 .cm-textfield {
+    border: var(--textbox-border);
+    background-color: var(--textbox-background);
+}
+
+main#admin #md-editor-area .ͼ1 .cm-selectionMatch {
+    background-color: var(--md-editor-selection-match-background);
+}
+
+main#admin #md-editor-area .ͼ1 .cm-searchMatch .cm-selectionMatch {
+    background-color: transparent;
+}
+
+main#admin #md-editor-area .ͼ1 .cm-foldPlaceholder {
+    background-color: var(--md-editor-fold-placeholder-background);
+    color: var(--md-editor-fold-placeholder-foreground);
+    
+    border: none;
+}
+
+main#admin #md-editor-area .ͼ1 .cm-widgetBuffer {
+    display: none;
+}
+
+main#admin #md-editor-area .ͼ2,
+main#admin #md-editor-area .ͼ3 {
+    --indent-marker-bg-color: var(--md-editor-tab-guide-foreground);
+    --indent-marker-active-bg-color: var(--md-editor-tab-guide-foreground)
+}
+
+/**
+ * for the future V:
+ *   if you fancy syntax highlighting,
+ *   and have a bit too much time on your hands...
+ *  
+ *   go wild.
+ ** ~ love, past V */
+main#admin #md-editor-area .ͼ5 {color: #404740;}
+main#admin #md-editor-area .ͼb {color: #708;}
+main#admin #md-editor-area .ͼc {color: #219;}
+main#admin #md-editor-area .ͼd {color: #164;}
+main#admin #md-editor-area .ͼe {color: #a11;}
+main#admin #md-editor-area .ͼf {color: #e40;}
+main#admin #md-editor-area .ͼg {color: #00f;}
+main#admin #md-editor-area .ͼh {color: #30a;}
+main#admin #md-editor-area .ͼi {color: #085;}
+main#admin #md-editor-area .ͼj {color: #167;}
+main#admin #md-editor-area .ͼk {color: #256;}
+main#admin #md-editor-area .ͼl {color: #00c;}
+main#admin #md-editor-area .ͼm {color: #940;}
+main#admin #md-editor-area .ͼn {color: #f00;}
+main#admin #md-editor-area .ͼp {color: #404080;}
+main#admin #md-editor-area .ͼq {color: #999999;}
+main#admin #md-editor-area .ͼr {color: #7090B0;}
+main#admin #md-editor-area .ͼs {color: #8080A0;}
+main#admin #md-editor-area .ͼt {color: #805080;}
+main#admin #md-editor-area .ͼu {color: #60B0FF;}
+main#admin #md-editor-area .ͼv {color: #B0FFF0;}
+main#admin #md-editor-area .ͼw {color: #60B0FF;}
+main#admin #md-editor-area .ͼx {color: #A0A0FF;}
+main#admin #md-editor-area .ͼy {color: #008080;}
+main#admin #md-editor-area .ͼz {color: #A0A0FF;}
+main#admin #md-editor-area .ͼ10 {color: #80A0FF;}
+main#admin #md-editor-area .ͼ11 {color: #70E080;}
+main#admin #md-editor-area .ͼ12 {color: #50A0A0;}
+main#admin #md-editor-area .ͼ13 {color: #009090;}
+main#admin #md-editor-area .ͼ14 {color: #B0FFF0;}
+main#admin #md-editor-area .ͼ15 {color: #D0D0FF;}

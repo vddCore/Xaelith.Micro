@@ -17,27 +17,25 @@ public partial class XaelithPage : ComponentBase
     [Inject] protected NavigationManager Navigation { get; set; } = null!;
     
     protected virtual string Title => string.Empty;
+    protected string FullTitle { get; private set; } = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await UpdateTitleAsync();
-        }
+        await UpdateTitleAsync();
     }
     
     protected virtual async Task UpdateTitleAsync()
     {
-        var baseTitle = $"{Configuration.Root!.General.SiteTitle}";
+        FullTitle = $"{Configuration.Root!.General.SiteTitle}";
 
         if (!string.IsNullOrWhiteSpace(Title))
         {
-            baseTitle += " // " + Title;
+            FullTitle += " // " + Title;
         }
-
+        
         await JS.InvokeVoidAsync(
             "window.xaelith.setDocumentTitle",
-            baseTitle
+            FullTitle
         );
     }
 }

@@ -1,4 +1,19 @@
 ﻿<div class="dual-value-row">
+    @if (ShowReorderArrows)
+    {
+        <div class="dual-value-move-buttons">
+            <a class="dual-value-moveup"
+               @onclick="@RequestMoveUp">
+                <i class="las la-arrow-up"></i>
+            </a>
+
+            <a class="dual-value-movedown"
+               @onclick="@RequestMoveDown">
+                <i class="las la-arrow-down"></i>
+            </a>
+        </div>
+    }
+
     <div class="dual-value-pair">
         <div class="dual-value-container dual-value-first">
             <div class="dual-value-container-label">
@@ -31,6 +46,13 @@
        @onclick="@RequestDelete">
         <i class="las la-trash"></i>
     </a>
+    
+    @if (@ChildContent != null)
+    {
+        <div class="dual-value-extra">
+            @ChildContent
+        </div>
+    }
 </div>
 
 @code {
@@ -62,6 +84,9 @@
     public string SecondValueLabel { get; set; } = "Value 2";
 
     [Parameter]
+    public bool ShowReorderArrows { get; set; }
+    
+    [Parameter]
     public EventCallback OnFirstValueChanged { get; set; }
 
     [Parameter]
@@ -70,11 +95,36 @@
     [Parameter]
     public EventCallback<DualValueEditContext.Entry> OnDeleteRequested { get; set; }
 
+    [Parameter]
+    public EventCallback<DualValueEditContext.Entry> OnMoveUpRequested { get; set; }
+    
+    [Parameter]
+    public EventCallback<DualValueEditContext.Entry> OnMoveDownRequested { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
     private async Task RequestDelete()
     {
         if (OnDeleteRequested.HasDelegate)
         {
             await OnDeleteRequested.InvokeAsync(Entry);
+        }
+    }
+    
+    private async Task RequestMoveUp()
+    {
+        if (OnMoveUpRequested.HasDelegate)
+        {
+            await OnMoveUpRequested.InvokeAsync(Entry);
+        }
+    }
+    
+    private async Task RequestMoveDown()
+    {
+        if (OnMoveDownRequested.HasDelegate)
+        {
+            await OnMoveDownRequested.InvokeAsync(Entry);
         }
     }
 }

@@ -9,8 +9,8 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="Context" OnSubmit="@SaveCategories">
-        <DualValueEditor Context="Context"
+    <EditForm Model="ValueEditContext" OnSubmit="@SaveCategories">
+        <DualValueEditor ValueEditContext="ValueEditContext"
                          FirstValueClass="category"
                          FirstValueId="category-name-edit-field"
                          FirstValuePlaceholder="Awaiting category name..."
@@ -30,7 +30,7 @@
 
     protected override string Title => "categories";
 
-    private DualValueEditContext Context { get; set; } = new();
+    private DualValueEditContext ValueEditContext { get; set; } = new();
     private DualValueEditContext PreviousState { get; set; } = new();
 
     protected override void OnInitialized()
@@ -39,14 +39,14 @@
 
         foreach (var (name, description) in Configuration.Root!.Content.Categories)
         {
-            Context.Entries.Add(new(name, description));
+            ValueEditContext.Entries.Add(new(name, description));
         }
 
-        Context.Entries = Context.Entries
+        ValueEditContext.Entries = ValueEditContext.Entries
             .OrderBy(x => x.FirstValue)
             .ToList();
 
-        PreviousState = Context.Copy();
+        PreviousState = ValueEditContext.Copy();
     }
 
     private void SaveCategories(EditContext editContext)
@@ -93,7 +93,7 @@
                 .ToList();
 
             Configuration.Save();
-            PreviousState = Context.Copy();
+            PreviousState = ValueEditContext.Copy();
 
             Toasts.Show(
                 "Categories updated",
@@ -111,10 +111,10 @@
     }
 
     private void AddEmptyCategory()
-        => Context.Entries.Insert(0, new(string.Empty, string.Empty));
+        => ValueEditContext.Entries.Insert(0, new(string.Empty, string.Empty));
 
     private void DeleteCategory(int index)
-        => Context.Entries.RemoveAt(index);
+        => ValueEditContext.Entries.RemoveAt(index);
 
     private async Task DiscardChanges()
     {
@@ -129,7 +129,7 @@
                 (result) =>
                 {
                     if (result)
-                        Context = PreviousState.Copy();
+                        ValueEditContext = PreviousState.Copy();
                 }
             )
         );

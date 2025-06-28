@@ -418,14 +418,6 @@ main#admin .editor-toolbar .custom-checkbox {
     flex-direction: row;
 }
 
-.nav-group-row .entry-move-buttons {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-right: 0.5rem;
-    font-size: 1.3rem;
-}
-
 .nav-group-row .dual-value-row {
     width: 100%;
 }
@@ -1017,4 +1009,11 @@ main#admin .editor-toolbar .custom-checkbox {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+}
+
+#custom-pattern-match-edit-field,
+#custom-pattern-replace-edit-field {
+    font-family: "NK57 Monospace", monospace;
+    font-size: 14px;
+    font-weight: 300;
 }

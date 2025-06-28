@@ -34,7 +34,7 @@
         <div class="user-edit-list">
             @foreach (var user in UserEditContexts)
             {
-                <UserEditor Context="@user"
+                <UserEditor UserEditContext="@user"
                             DeleteRequested="UserDeleteRequested"/>
             }
         </div>
@@ -127,7 +127,12 @@
                         {
                             u.LoginName = user.LoginName;
                             u.DisplayName = user.DisplayName;
-                            u.PasswordHash = Hasher.Hash(user.Password);
+
+                            if (!string.IsNullOrWhiteSpace(user.Password))
+                            {
+                                u.PasswordHash = Hasher.Hash(user.Password);
+                            }
+                            
                             u.IsEnabled = user.IsEnabled;
                         }
                     );

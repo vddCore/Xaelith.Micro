@@ -1,4 +1,5 @@
-﻿<div class="dual-value-editor-toolbar editor-toolbar">
+﻿@using Microsoft.AspNetCore.Components
+<div class="dual-value-editor-toolbar editor-toolbar">
     <button class="safe"
             type="submit">SAVE
     </button>
@@ -16,15 +17,18 @@
     </button>
 </div>
 
-@if (Context.Entries.Any())
+@if (ValueEditContext.Entries.Any())
 {
     <div class="dual-value-editor @ListContainerClass">
         <div class="dual-value-list-view">
-            @for (var i = 0; i < Context.Entries.Count; i++)
+            @for (var i = 0; i < ValueEditContext.Entries.Count; i++)
             {
                 var index = i;
 
-                <DualValueControl Entry="Context.Entries[index]"
+                <DualValueControl Entry="ValueEditContext.Entries[index]"
+                                  ShowReorderArrows="@AllowReorder"
+                                  OnMoveUpRequested="@OnMoveUpRequested"
+                                  OnMoveDownRequested="@OnMoveDownRequested"
                                   FirstValueId="@FirstValueId"
                                   FirstValueClass="@FirstValueClass"
                                   FirstValuePlaceholder="@FirstValuePlaceholder"
@@ -33,9 +37,9 @@
                                   SecondValuePlaceholder="@SecondValuePlaceholder"
                                   OnFirstValueChanged="@(() => RaiseFirstValueChanged(@index))"
                                   OnSecondValueChanged="@(() => RaiseSecondValueChanged(@index))"
-                                  FirstValueLabel="Name"
-                                  SecondValueLabel="Desc."
-                                  OnDeleteRequested="@(() => RequestEntryDeletion(Context.Entries[index]))"/>
+                                  FirstValueLabel="@FirstValueLabel"
+                                  SecondValueLabel="@SecondValueLabel"
+                                  OnDeleteRequested="@(() => RequestEntryDeletion(ValueEditContext.Entries[index]))" />
             }
         </div>
     </div>
@@ -47,7 +51,7 @@ else
 
 @code {
     [Parameter]
-    public required DualValueEditContext Context { get; set; }
+    public required DualValueEditContext ValueEditContext { get; set; }
 
     [Parameter]
     public required string ListContainerClass { get; set; } = string.Empty;
@@ -62,6 +66,9 @@ else
     public string FirstValueClass { get; set; } = string.Empty;
 
     [Parameter]
+    public string FirstValueLabel { get; set; } = "Name";
+
+    [Parameter]
     public string FirstValuePlaceholder { get; set; } = string.Empty;
 
     [Parameter]
@@ -70,6 +77,9 @@ else
     [Parameter]
     public string SecondValueClass { get; set; } = string.Empty;
 
+    [Parameter]
+    public string SecondValueLabel { get; set; } = "Desc.";
+    
     [Parameter]
     public string SecondValuePlaceholder { get; set; } = string.Empty;
 
@@ -86,6 +96,12 @@ else
     public EventCallback<int> OnDeleteRequested { get; set; }
 
     [Parameter]
+    public EventCallback<DualValueEditContext.Entry> OnMoveUpRequested { get; set; }
+
+    [Parameter]
+    public EventCallback<DualValueEditContext.Entry> OnMoveDownRequested { get; set; }
+
+    [Parameter]
     public EventCallback OnDiscardRequested { get; set; }
 
     [Parameter]
@@ -96,6 +112,9 @@ else
 
     [Parameter]
     public EventCallback<int> OnSecondValueChanged { get; set; }
+
+    [Parameter]
+    public bool AllowReorder { get; set; }
 
     private async Task RequestDeleteByIndex(int index)
     {
@@ -139,6 +158,6 @@ else
 
     private async Task RequestEntryDeletion(DualValueEditContext.Entry entry)
     {
-        await RequestDeleteByIndex(Context.Entries.IndexOf(entry));
+        await RequestDeleteByIndex(ValueEditContext.Entries.IndexOf(entry));
     }
 }

@@ -58,19 +58,10 @@
                             @foreach (var entry in navgroup.Links.Entries)
                             {
                                 <div class="nav-group-row">
-                                    <div class="entry-move-buttons">
-                                        <a class="nav-link-moveup"
-                                           @onclick="@(() => MoveNavLinkUp(navgroup, entry))">
-                                            <i class="las la-arrow-up"></i>
-                                        </a>
-
-                                        <a class="nav-link-movedown"
-                                           @onclick="@(() => MoveNavLinkDown(navgroup, entry))">
-                                            <i class="las la-arrow-down"></i>
-                                        </a>
-                                    </div>
-
                                     <DualValueControl Entry="@entry"
+                                                      ShowReorderArrows="@true"
+                                                      OnMoveUpRequested="@((e) => MoveNavLinkUp(navgroup, entry))"
+                                                      OnMoveDownRequested="@((e) => MoveNavLinkDown(navgroup, entry))"
                                                       FirstValueLabel="Label"
                                                       FirstValueClass="nav-link-label"
                                                       FirstValuePlaceholder="Awaiting label..."

@@ -9,8 +9,8 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="Context" OnSubmit="@SaveChanges">
-        <DualValueEditor Context="Context"
+    <EditForm Model="ValueEditContext" OnSubmit="@SaveChanges">
+        <DualValueEditor ValueEditContext="ValueEditContext"
                          FirstValueClass="tag"
                          FirstValueId="tag-name-edit-field"
                          FirstValuePlaceholder="Awaiting tag name..."
@@ -24,14 +24,13 @@
     </EditForm>
 </div>
 
-
 @code {
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
     protected override string Title => "tags";
 
-    private DualValueEditContext Context { get; set; } = new();
+    private DualValueEditContext ValueEditContext { get; set; } = new();
     private DualValueEditContext PreviousState { get; set; } = new();
 
     protected override void OnInitialized()
@@ -40,14 +39,14 @@
 
         foreach (var (name, description) in Configuration.Root!.Content.Tags)
         {
-            Context.Entries.Add(new(name, description));
+            ValueEditContext.Entries.Add(new(name, description));
         }
 
-        Context.Entries = Context.Entries
+        ValueEditContext.Entries = ValueEditContext.Entries
             .OrderBy(x => x.FirstValue)
             .ToList();
 
-        PreviousState = Context.Copy();
+        PreviousState = ValueEditContext.Copy();
     }
 
     private void SaveChanges(EditContext editContext)
@@ -94,7 +93,7 @@
                 .ToList();
 
             Configuration.Save();
-            PreviousState = Context.Copy();
+            PreviousState = ValueEditContext.Copy();
 
             Toasts.Show(
                 "Tags updated",
@@ -112,10 +111,10 @@
     }
 
     private void AddEmptyTag()
-        => Context.Entries.Insert(0, new(string.Empty, string.Empty));
+        => ValueEditContext.Entries.Insert(0, new(string.Empty, string.Empty));
 
     private void DeleteTag(int index)
-        => Context.Entries.RemoveAt(index);
+        => ValueEditContext.Entries.RemoveAt(index);
 
     private async Task DiscardChanges()
     {
@@ -130,7 +129,7 @@
                 (result) =>
                 {
                     if (result)
-                        Context = PreviousState.Copy();
+                        ValueEditContext = PreviousState.Copy();
                 }
             )
         );
