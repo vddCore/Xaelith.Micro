@@ -82,12 +82,7 @@ main#admin #md-editor-area .editor-loading {
 }
 
 main#admin #md-editor-area .loading-animation {
-    background: linear-gradient(
-        to right,
-        #ff88ff66 8%,
-        #ff88ffaa 18%,
-        #ff88ff66 33%
-    );
+    background: linear-gradient(to right, #ff88ff66 8%, #ff88ffaa 18%, #ff88ff66 33%);
 }
 
 main#admin #md-editor-area .cm-editor {
@@ -200,19 +195,49 @@ main#admin #md-editor-area .ͼ3 {
  *  
  *   go wild.
  ** ~ love, past V */
-main#admin #md-editor-area .ͼ5 {color: #404740;}
-main#admin #md-editor-area .ͼb {color: #708;}
-main#admin #md-editor-area .ͼc {color: #219;}
-main#admin #md-editor-area .ͼd {color: #164;}
-main#admin #md-editor-area .ͼe {color: #a11;}
+main#admin #md-editor-area .ͼ5 { 
+    color: #404740;
+}
+
+/* CSS function, e.g. linear-gradient() */
+main#admin #md-editor-area .ͼb { 
+    color: #ffcf88;
+}
+
+/* CSS keyword, e.g. auto, element ID */
+main#admin #md-editor-area .ͼc {
+    color: #ffcf88;
+}
+
+/* CSS rule value */
+main#admin #md-editor-area .ͼd {
+    color: #88ff92;
+}
+
+/* Element name */
+main#admin #md-editor-area .ͼi {
+    color: #ff88ffcc;
+}
+
+/* Class name */
+main#admin #md-editor-area .ͼj {
+    color: #ff88ff;
+}
+
+/* String */
+main#admin #md-editor-area .ͼe {
+    color: #e7478f;
+}
+
 main#admin #md-editor-area .ͼf {color: #e40;}
 main#admin #md-editor-area .ͼg {color: #00f;}
 main#admin #md-editor-area .ͼh {color: #30a;}
-main#admin #md-editor-area .ͼi {color: #085;}
-main#admin #md-editor-area .ͼj {color: #167;}
 main#admin #md-editor-area .ͼk {color: #256;}
 main#admin #md-editor-area .ͼl {color: #00c;}
-main#admin #md-editor-area .ͼm {color: #940;}
+
+/* Comment */
+main#admin #md-editor-area .ͼm { color: #ff88ff66; }
+
 main#admin #md-editor-area .ͼn {color: #f00;}
 main#admin #md-editor-area .ͼp {color: #404080;}
 main#admin #md-editor-area .ͼq {color: #999999;}

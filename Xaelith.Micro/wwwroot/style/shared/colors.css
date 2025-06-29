@@ -29,6 +29,11 @@
     --list-bullet-foreground: #ff88ff99;
     --block-background: #200529;
     --block-foreground: #aa88c4;
+    --block-border-left: #ff88ffcc;
+    --block-border-right: #ff88ff88;
+    --block-background-1: #4b1c5b44;
+    --block-background-2: #370c4644;
+    --block-background-3: #20052944;
     --code-border: #ff88ff66;
     --table-border: #aa88c4;
     --table-header-background: #cfaee9;

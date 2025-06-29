@@ -1,0 +1,122 @@
+﻿@layout AdminShell
+
+@page "/admin/core/usercss"
+@inherits XaelithRestrictedPage
+
+@inject IModalService Modal;
+@inject IToastService Toast;
+
+<h1 class="admin-view-title">@Title</h1>
+<div class="admin-inner-content">
+    <div class="content-editor-container">
+        <EditForm Model="@StylesheetEditContext"
+                  OnSubmit="@SaveStylesheet">
+            <div class="editor-toolbar">
+                <button class="safe"
+                        type="submit">SAVE
+                </button>
+
+                <button class="dual-value-tool discard unsafe"
+                        type="button"
+                        @onclick="@(Discard)">
+                    DISCARD
+                </button>
+            </div>
+
+            <div class="input-group">
+                <label for="md-editor-area">Custom CSS</label>
+
+                <div id="md-editor-area">
+                    <CodeMirror6Wrapper @bind-Doc="@StylesheetEditContext.Code"
+                                        Placeholder="AWAITING STYLESHEET..."
+                                        TabSize="2"
+                                        IndentationUnit="2"
+                                        Language="CodeMirrorLanguage.Css"
+                                        AutoFormatMarkdown=@false
+                                        Setup="@Setup"
+                                        PreviewImages=@false
+                                        FullScreen=@false
+                                        MaxHeight="760px"
+                                        HighlightActiveLine=@true
+                                        HighlightTrailingWhitespace=@false
+                                        HighlightWhitespace=@false
+                                        HighlightActiveLineGutter=@true/>
+                </div>
+
+                <div class="md-editor-statusbar">
+        <span class="md-editor-status md-editor-status-characters">
+             Characters: @StylesheetEditContext.Characters
+         </span>
+                </div>
+            </div>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private readonly CodeMirrorSetup Setup = new() {
+        BindMode = DocumentBindMode.OnInput,
+        Autocompletion = false,
+        History = true,
+        IndentWithTab = true,
+        IndentOnInput = false,
+        AllowMentions = false,
+        FocusOnCreation = true,
+        SyntaxHighlighting = true,
+        BracketMatching = false
+    };
+    
+    private StylesheetEditContext StylesheetEditContext { get; set; } = new();
+
+    protected override string Title => "User CSS";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        StylesheetEditContext.Code = Configuration.Root!.Core.UserCSS;
+    }
+
+    private void SaveStylesheet()
+    {
+        try
+        {
+            Configuration.Root!.Core.UserCSS = StylesheetEditContext.Code;
+            Configuration.Save();
+
+            Toast.Show(
+                "Stylesheet saved",
+                ToastSeverity.Success,
+                1500
+            );
+        }
+        catch (Exception e)
+        {
+            Toast.Show(
+                $"Failed to save stylesheet: {e.Message}",
+                ToastSeverity.Error,
+                3500
+            );
+        }
+    }
+
+    private async Task Discard()
+    {
+        await Modal.ShowAsync(
+            new DialogModalData(
+                "Discard changes?",
+                "Confirm discarding changes to the user stylesheet.<br />" +
+                "This action is irreversible.",
+                "Proceed",
+                "Abort",
+                DialogModalSeverity.Warning,
+                (result) =>
+                {
+                    if (result)
+                        StylesheetEditContext.Code = Configuration.Root!.Core.UserCSS;
+                }
+            )
+        );
+    }
+}

@@ -18,4 +18,5 @@ public static class WellKnown
     public static string PostMediaDirectoryName { get; } = "media";
     public static string PostMetadataFileName { get; } = "meta.json";
     public static string PostBodyFileName { get; } = "body.md";
+    public static string UserCssFileName { get; } = "user.css";
 }
