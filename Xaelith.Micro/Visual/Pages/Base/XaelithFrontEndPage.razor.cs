@@ -10,6 +10,7 @@ public partial class XaelithFrontEndPage : XaelithPage
 
         if (firstRender)
         {
+            await JS.InvokeVoidAsync("xaelith.initScrollGlow", "#main-nav .nav-lists-wrapper");
             await JS.InvokeVoidAsync("xaelith.initMobileView");
         }
     }
