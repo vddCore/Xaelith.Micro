@@ -36,6 +36,9 @@
     <Compile Update="Infrastructure\ServiceModel\Core\Security\FlatFileUserStore.cs">
       <DependentUpon>IFlatFileUserStore.cs</DependentUpon>
     </Compile>
+    <Compile Update="Infrastructure\ServiceModel\Core\Security\LoginAttemptTracker.cs">
+      <DependentUpon>ILoginAttemptTracker.cs</DependentUpon>
+    </Compile>
     <Compile Update="Infrastructure\ServiceModel\Admin\Editor\AutosaveService.cs">
       <DependentUpon>IAutosaveService.cs</DependentUpon>
     </Compile>
@@ -56,7 +59,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="GaelJ.BlazorCodeMirror6" Version="0.10.0" />
+    <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
     <PackageReference Include="Markdig" Version="0.41.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Slugify.Core" Version="5.1.1" />
@@ -511,6 +514,10 @@
     <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\Manage\Tags.razor" />
     <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\System\About.razor" />
     <_ContentIncludedByDefault Remove="Visual\Pages\Admin\ControlPanel\System\Settings.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dependencies\BlazorCodeMirror6\CodeMirror6\CodeMirror6.csproj" />
   </ItemGroup>
 
 </Project>

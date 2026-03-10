@@ -21,6 +21,9 @@ public record Configuration
     [JsonProperty("content")]
     public ContentSettings Content { get; private set; } = new();
 
+    [JsonProperty("security")]
+    public SecuritySettings Security { get; private set; } = new();
+
     public Configuration Copy() => this with
     {
         Core = Core with { },
@@ -111,4 +114,22 @@ public record ContentSettings
 
     [JsonProperty("max_pages_in_paginator")]
     public int MaximumPagesInPaginator { get; set; } = 7;
+}
+
+public record SecuritySettings
+{
+    [JsonProperty("user_max_failed_login_attempts")]
+    public int UserMaxFailedLoginAttempts { get; set; } = 5;
+    
+    [JsonProperty("ip_max_failed_login_attempts")]
+    public int IpMaxFailedLoginAttempts { get; set; } = 10;
+    
+    [JsonProperty("rate_limit_window_minutes")]
+    public int RateLimitWindowMinutes { get; set; } = 5;
+
+    [JsonProperty("lockout_duration_minutes")]
+    public int LockoutDurationMinutes { get; set; } = 15;
+    
+    [JsonProperty("lockout_reset_interval_minutes")]
+    public int LockoutResetIntervalMinutes { get; set; } = 30;
 }

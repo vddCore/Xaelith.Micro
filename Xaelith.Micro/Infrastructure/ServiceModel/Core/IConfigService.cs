@@ -4,8 +4,10 @@ using Xaelith.Micro.Infrastructure.DataModel.Core;
 
 public interface IConfigService : IXaelithService
 {
-    Configuration? Root { get; }
+    event EventHandler<ConfigurationEventArgs>? Modified;
     
+    Configuration? Root { get; }
+ 
     void Reload();
     void Save();
 }

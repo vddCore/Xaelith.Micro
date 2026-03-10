@@ -4,6 +4,7 @@
 @attribute [RequiresStaticRendering]
 
 @inject IBCryptPasswordHasher Hasher;
+@inject ILoginAttemptTracker LoginAttemptTracker;
 
 <HeadContent>
     <script src="lib/xaelith/login.js" defer></script>
@@ -26,7 +27,19 @@
             </a>
         </div>
         
-        @if (Navigation.QueryString("failure") == "1")
+        @if (Navigation.QueryString("locked") == "1")
+        {
+            <div class="login-subtitle failure">
+                user locked out
+            </div>
+        }
+        else if (Navigation.QueryString("ratelimit") == "1")
+        {
+            <div class="login-subtitle failure">
+                remote host locked out
+            </div>
+        }
+        else if (Navigation.QueryString("failure") == "1")
         {
             <div class="login-subtitle failure">
                 authentication failure
@@ -91,18 +104,52 @@
 
     private async Task AttemptLogin()
     {
+        var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        if (LoginAttemptTracker.IsIpRateLimited(ipAddress))
+        {
+            Navigation.NavigateTo(
+                "/admin/login?ratelimit=1",
+                true
+            );
+
+            return;
+        }
+
+        if (LoginAttemptTracker.IsAccountLocked(Credentials.Username))
+        {
+            // var remainingSeconds = LoginAttemptTracker.GetRemainingLockoutSeconds(Credentials.Username);
+            Navigation.NavigateTo(
+                $"/admin/login?locked=1",
+                true
+            );
+
+            return;
+        }
+
         var user = await UserStore.FindByNameAsync(Credentials.Username);
 
         if (user == null)
+        {
+            LoginAttemptTracker.RecordFailedAttempt(Credentials.Username, ipAddress);
+            Navigation.NavigateTo(
+                "/admin/login?failure=1",
+                true
+            );
+
+            return;
+        }
+
+        if (!user.IsEnabled)
         {
             Navigation.NavigateTo(
                 "/admin/login?failure=1",
                 true
             );
-            
+
             return;
         }
-        
+
         var passwordVerificationResult = Hasher.Verify(
             Credentials.Password,
             user.PasswordHash
@@ -110,13 +157,16 @@
 
         if (passwordVerificationResult == PasswordVerificationResult.Failed)
         {
+            LoginAttemptTracker.RecordFailedAttempt(Credentials.Username, ipAddress);
             Navigation.NavigateTo(
                 "/admin/login?failure=1",
                 true
             );
-            
+
             return;
         }
+
+        LoginAttemptTracker.ClearFailedAttempts(Credentials.Username);
 
         var claims = new List<Claim>
         {
@@ -140,8 +190,8 @@
         var returnUrl = Navigation.QueryString("ReturnUrl");
 
         Navigation.NavigateTo(
-            string.IsNullOrWhiteSpace(returnUrl) 
-                ? "/admin/dashboard" 
+            string.IsNullOrWhiteSpace(returnUrl)
+                ? "/admin/dashboard"
                 : HttpUtility.UrlDecode(returnUrl),
             true
         );

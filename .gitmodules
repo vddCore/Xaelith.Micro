@@ -1,0 +1,3 @@
+[submodule "Dependencies/BlazorCodeMirror6"]
+	path = Dependencies/BlazorCodeMirror6
+	url = git@github.com:vddCore/BlazorCodeMirror6.git

@@ -128,7 +128,7 @@ public class FlatFileUserStore : IFlatFileUserStore
 
         foreach (var existingUser in users)
         {
-            if (existingUser.LoginName == user.LoginName)
+            if (existingUser.Id != user.Id && existingUser.LoginName == user.LoginName)
             {
                 return Task.FromResult(
                     IdentityResult.Failed(

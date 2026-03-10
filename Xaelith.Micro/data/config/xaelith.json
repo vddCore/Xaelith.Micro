@@ -4,6 +4,16 @@
     "is_installed": true
   },
   
+  "git": {
+    "remote_url": "",
+    "base_branch_name": "",
+    
+    "access": {
+      "mode": "token",
+      "credentials": ""
+    }
+  },
+  
   "general": {
     "site_title": "aura's binary forge",
     "site_description": "digital witch's vibrant recluse: tech, tinkering, stories and... poetry? wtf girl you have issues.",
@@ -40,6 +50,14 @@
     
     "max_posts_per_page": 7,
     "max_pages_in_paginator": 7
+  },
+  
+  "security": {
+    "user_max_failed_login_attempts": 5,
+    "ip_max_failed_login_attempts": 10,
+    "rate_limit_window_minutes": 5,
+    "lockout_duration_minutes": 15,
+    "lockout_reset_interval_minutes": 30
   },
   
   "navigation": {

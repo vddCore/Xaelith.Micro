@@ -11,8 +11,10 @@ public class ConfigService : IConfigService
         WellKnown.ConfigurationFileName
     );
     
+    public event EventHandler<ConfigurationEventArgs>? Modified;
+    
     public Configuration? Root { get; private set; }
-
+    
     public ConfigService()
     {
         Reload();
@@ -43,9 +45,14 @@ public class ConfigService : IConfigService
 
     public void Save()
     {
+        if (Root == null)
+            return;
+        
         using (var sw = new StreamWriter(ConfigPath))
         {
             sw.Write(JsonConvert.SerializeObject(Root));
         }
+        
+        Modified?.Invoke(this, new ConfigurationEventArgs(Root));
     }
 }

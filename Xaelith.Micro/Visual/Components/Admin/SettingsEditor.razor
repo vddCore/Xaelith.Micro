@@ -25,6 +25,59 @@
         </div>
     </Tab>
 
+    <Tab Header="Security">
+        <div class="input-row">
+            <div class="input-group">
+                <label for="settings-security-user-max-failures">
+                    Max failed user login attempts
+                </label>
+                <input id="settings-security-user-max-failures"
+                       type="text"
+                       @bind="@Configuration.Security.UserMaxFailedLoginAttempts"/>
+            </div>
+            
+            <div class="input-group">
+                <label for="settings-security-ip-max-failures">
+                    Max failed IP login attempts
+                </label>
+                <input id="settings-security-ip-max-failures"
+                       type="text"
+                       @bind="@Configuration.Security.IpMaxFailedLoginAttempts"/>
+            </div>
+        </div>
+
+        <div class="input-row">
+            <div class="input-group">
+                <label for="settings-security-lockout-duration">
+                    Lock-out duration (minutes)
+                </label>
+                <input id="settings-security-lockout-duration"
+                       type="text"
+                       @bind="@Configuration.Security.LockoutDurationMinutes"/>
+            </div>
+            
+            <div class="input-group">
+                <label for="settings-security-lockout-reset-interval">
+                    Lock-out reset interval (minutes)
+                </label>
+                <input id="settings-security-lockout-reset-interval"
+                       type="text"
+                       @bind="@Configuration.Security.LockoutResetIntervalMinutes"/>
+            </div>
+        </div>
+        
+        <div class="input-row">
+            <div class="input-group">
+                <label for="settings-security-rate-limit-time-window">
+                    Rate-limiting time window (minutes)
+                </label>
+                <input id="settings-security-rate-limit-time-window"
+                       type="text"
+                       @bind="@Configuration.Security.RateLimitWindowMinutes"/>
+            </div>
+        </div>
+    </Tab>
+
     <Tab Header="General">
         <div class="input-group">
             <label for="settings-general-site-title">

@@ -3,6 +3,7 @@ namespace Xaelith.Micro;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.FileProviders;
 using Xaelith.Micro.Infrastructure.Utilities;
 
@@ -39,6 +40,12 @@ public partial class App
 
         builder.Services.AddAuthorization();
         builder.Services.AddCascadingAuthenticationState();
+        
+        builder.Services.Configure<HubOptions>(o =>
+        {
+            o.MaximumReceiveMessageSize = null;
+        });
+        
         builder.WebHost.UseStaticWebAssets();
         
         var app = builder.Build();
