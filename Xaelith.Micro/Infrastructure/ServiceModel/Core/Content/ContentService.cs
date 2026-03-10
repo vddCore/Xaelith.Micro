@@ -211,7 +211,7 @@ public class ContentService : IContentService
         }
         else
         {
-            if(DateTime.TryParseExact(
+            if (DateTime.TryParseExact(
                 context.PublishDateString,
                 _configService.Root!.General.DateFormat,
                 null,

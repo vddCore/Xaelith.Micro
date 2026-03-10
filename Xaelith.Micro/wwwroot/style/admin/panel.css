@@ -180,10 +180,10 @@ main#admin h1.admin-view-title::after {
 
 main#admin table.admin-table {
     display: block;
-    
+
     overflow-y: scroll;
-    height: 75%;
-    min-height: 75%;
+    height: 80vh;
+    min-height: calc(100vh - 160px);
 
     border: 1px solid var(--admin-table-border);
     border-radius: 4px;
