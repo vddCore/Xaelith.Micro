@@ -1,0 +1,61 @@
+﻿<div class="dual-value-row category-editor-row">
+    <div class="dual-value-pair">
+        <div class="dual-value-container dual-value-first">
+            <div class="dual-value-container-label">
+                @("Name")
+            </div>
+
+            <input type="text"
+                   id="category-name-edit-field"
+                   class="category"
+                   @bind="@Entry.Name"
+                   placeholder="Awaiting category name..."/>
+        </div>
+        
+        <div class="dual-value-container dual-value-second">
+            <div class="dual-value-container-label">
+                @("Desc.")
+            </div>
+            
+            <input type="text"
+                   id="category-desc-edit-field"
+                   class="description"
+                   @bind="@Entry.Description"
+                   placeholder="Awaiting category description..."/>
+        </div>
+    </div>
+    
+    <a class="dual-value-delete category-delete danger"
+       @onclick="@RequestDelete">
+        <i class="las la-trash"></i>
+    </a>
+</div>
+
+<div class="category-row-toolbar">
+    <CustomInputCheckbox Label="show on main page"
+                         Value="@Entry.ShowOnMainPage"
+                         ValueChanged="ShowOnMainPageStateChanged"
+                         ValueExpression="ProvideShowOnMainPageState"/>
+</div>
+
+@code {
+    [Parameter]
+    public required CategoryEditContext.Entry Entry { get; set; }
+    
+    [Parameter]
+    public EventCallback<CategoryEditContext.Entry> OnDeleteRequested { get; set; }
+    
+    private async Task RequestDelete()
+    {
+        if (OnDeleteRequested.HasDelegate)
+        {
+            await OnDeleteRequested.InvokeAsync(Entry);
+        }
+    }
+    
+    private void ShowOnMainPageStateChanged(bool value)
+        => Entry.ShowOnMainPage = value;
+
+    private bool ProvideShowOnMainPageState()
+        => Entry.ShowOnMainPage;
+}

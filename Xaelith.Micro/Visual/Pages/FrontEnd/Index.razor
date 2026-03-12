@@ -1,6 +1,6 @@
 ﻿@page "/"
 @inherits XaelithFrontEndPage
-    
+
 <NavBar/>
 
 <main>
@@ -23,20 +23,31 @@
 
 @code {
     private List<Post> Posts { get; set; } = [];
-    
+
     protected override string Title => "home";
 
     protected override void OnInitialized()
     {
-        Posts = Content.GetAllPosts(
-            p => p is
+        var posts = Content.GetAllPosts(p => p is
+        {
+            Metadata:
             {
-                Metadata:
-                {
-                    Published: true,
-                    Type: PostType.Normal
-                }
+                Published: true,
+                Type: PostType.Normal
             }
-        );
+        });
+
+        if (Configuration.Root != null)
+        {
+            foreach (var (categoryName, data) in Configuration.Root.Content.Categories)
+            {
+                posts.RemoveAll(
+                    x => x.Metadata.Category == categoryName 
+                      && !data.ShowOnMainPage
+                );
+            }
+        }
+
+        Posts = posts;
     }
 }

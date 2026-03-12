@@ -10,18 +10,22 @@
 <h1 class="admin-view-title">@Title</h1>
 
 <div class="admin-inner-content">
-    <EditForm Model="ValueEditContext" OnSubmit="@SaveCategories">
-        <DualValueEditor ValueEditContext="ValueEditContext"
-                         FirstValueClass="category"
-                         FirstValueId="category-name-edit-field"
-                         FirstValuePlaceholder="Awaiting category name..."
-                         SecondValueClass="description"
-                         SecondValueId="catgory-description-edit-field"
-                         SecondValuePlaceholder="Awaiting category description..."
-                         ListContainerClass="category-editor"
-                         OnDeleteRequested="@DeleteCategory"
-                         OnAddRequested="@AddEmptyCategory"
-                         OnDiscardRequested="@DiscardChanges"/>
+    <EditForm Model="CategoryEditContext" OnSubmit="@SaveCategories">
+        <CategoryEditor CategoryEditContext="CategoryEditContext"
+                        OnAddRequested="@AddEmptyCategory"
+                        OnDeleteRequested="@DeleteCategory"
+                        OnDiscardRequested="@DiscardChanges"/>
+        @* <DualValueEditor ValueEditContext="ValueEditContext" *@
+        @*                  FirstValueClass="category" *@
+        @*                  FirstValueId="category-name-edit-field" *@
+        @*                  FirstValuePlaceholder="Awaiting category name..." *@
+        @*                  SecondValueClass="description" *@
+        @*                  SecondValueId="catgory-description-edit-field" *@
+        @*                  SecondValuePlaceholder="Awaiting category description..." *@
+        @*                  ListContainerClass="category-editor" *@
+        @*                  OnDeleteRequested="@DeleteCategory" *@
+        @*                  OnAddRequested="@AddEmptyCategory" *@
+        @*                  OnDiscardRequested="@DiscardChanges"/> *@
     </EditForm>
 </div>
 
@@ -31,7 +35,7 @@
 
     protected override string Title => "categories";
 
-    private CategoryEditContext ValueEditContext { get; set; } = new();
+    private CategoryEditContext CategoryEditContext { get; set; } = new();
     private CategoryEditContext PreviousState { get; set; } = new();
 
     protected override void OnInitialized()
@@ -40,18 +44,18 @@
 
         foreach (var (name, category) in Configuration.Root!.Content.Categories)
         {
-            ValueEditContext.Entries.Add(new(
+            CategoryEditContext.Entries.Add(new(
                 name, 
                 category.Description,
                 category.ShowOnMainPage
             ));
         }
 
-        ValueEditContext.Entries = ValueEditContext.Entries
+        CategoryEditContext.Entries = CategoryEditContext.Entries
             .OrderBy(x => x.Name)
             .ToList();
 
-        PreviousState = ValueEditContext.Copy();
+        PreviousState = CategoryEditContext.Copy();
     }
 
     private void SaveCategories(EditContext editContext)
@@ -102,7 +106,7 @@
                 .ToList();
 
             Configuration.Save();
-            PreviousState = ValueEditContext.Copy();
+            PreviousState = CategoryEditContext.Copy();
 
             Toasts.Show(
                 "Categories updated",
@@ -120,10 +124,10 @@
     }
 
     private void AddEmptyCategory()
-        => ValueEditContext.Entries.Insert(0, new(string.Empty, string.Empty, true));
+        => CategoryEditContext.Entries.Insert(0, new(string.Empty, string.Empty, true));
 
     private void DeleteCategory(int index)
-        => ValueEditContext.Entries.RemoveAt(index);
+        => CategoryEditContext.Entries.RemoveAt(index);
 
     private async Task DiscardChanges()
     {
@@ -138,7 +142,7 @@
                 (result) =>
                 {
                     if (result)
-                        ValueEditContext = PreviousState.Copy();
+                        CategoryEditContext = PreviousState.Copy();
                 }
             )
         );

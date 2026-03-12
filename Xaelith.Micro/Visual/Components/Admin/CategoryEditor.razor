@@ -1,0 +1,92 @@
+﻿<div class="category-editor-toolbar editor-toolbar">
+    <button class="safe"
+            type="submit">SAVE
+    </button>
+
+    <button class="category-editor-tool discard unsafe"
+            type="button"
+            @onclick="@(RequestDiscard)">
+        @DiscardLabel
+    </button>
+
+    <button class="category-editor-tool add"
+            type="button"
+            @onclick="@(RequestAddNew)">
+        @(AddNewLabel)
+    </button>
+</div>
+
+@if (CategoryEditContext.Entries.Any())
+{
+    <div class="dual-value-editor category-editor">
+        <div class="dual-value-list-view category-editor-list-view">
+            @for (var i = 0; i < CategoryEditContext.Entries.Count; i++)
+            {
+                var index = i;
+                var entry = CategoryEditContext.Entries[index];
+                
+                <CategoryControl Entry="@entry" 
+                                 OnDeleteRequested="@(() => RequestEntryDeletion(entry))"/>
+            }
+        </div>
+    </div>
+}
+else
+{
+    @("There are no entries to display. Add some?")
+}
+
+@code {
+    [Parameter]
+    public required CategoryEditContext CategoryEditContext { get; set; }
+
+    [Parameter]
+    public string DiscardLabel { get; set; } = "Discard";
+
+    [Parameter]
+    public string AddNewLabel { get; set; } = "Add";
+
+    [Parameter]
+    public string DeleteLabel { get; set; } = "Delete";
+
+    [Parameter]
+    public EventCallback<int> OnDeleteRequested { get; set; }
+
+    [Parameter]
+    public EventCallback OnDiscardRequested { get; set; }
+
+    [Parameter]
+    public EventCallback OnAddRequested { get; set; }
+
+    [Parameter]
+    public bool AllowReorder { get; set; }
+
+    private async Task RequestDeleteByIndex(int index)
+    {
+        if (OnDeleteRequested.HasDelegate)
+        {
+            await OnDeleteRequested.InvokeAsync(index);
+        }
+    }
+
+    private async Task RequestDiscard()
+    {
+        if (OnDiscardRequested.HasDelegate)
+        {
+            await OnDiscardRequested.InvokeAsync();
+        }
+    }
+
+    private async Task RequestAddNew()
+    {
+        if (OnAddRequested.HasDelegate)
+        {
+            await OnAddRequested.InvokeAsync();
+        }
+    }
+
+    private async Task RequestEntryDeletion(CategoryEditContext.Entry entry)
+    {
+        await RequestDeleteByIndex(CategoryEditContext.Entries.IndexOf(entry));
+    }
+}
