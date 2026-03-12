@@ -16,13 +16,13 @@
             </h1>
 
             @{
-                var contentDescription = Content.GetCategoryDescription(
+                var category = Content.GetCategory(
                     CategoryName
                 );
 
-                if (!string.IsNullOrWhiteSpace(contentDescription))
+                if (!string.IsNullOrWhiteSpace(category?.Description))
                 {
-                    <h2>@((MarkupString)Markdown.Render(contentDescription))</h2>
+                    <h2>@((MarkupString)Markdown.Render(category.Description))</h2>
                 }
             }
         </div>

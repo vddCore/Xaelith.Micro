@@ -123,12 +123,11 @@ public class ContentService : IContentService
             : null;
     }
 
-    public string GetCategoryDescription(string category)
+    public Category? GetCategory(string categoryName)
     {
-        return _configService.Root!.Content.Categories.TryGetValue(
-            category, out var categoryDescription
-        ) ? categoryDescription 
-          : string.Empty;
+        return _configService.Root!.Content.Categories.GetValueOrDefault(
+            categoryName
+        );
     }
 
     public string GetTagDescription(string tag)

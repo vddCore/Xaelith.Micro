@@ -11,7 +11,7 @@ public interface IContentService : IXaelithService
     Post? GetPostById(string id);
     Post? GetPostById(Guid id);
     
-    string GetCategoryDescription(string category);
+    Category? GetCategory(string categoryName);
     string GetTagDescription(string tag);
     
     void DeletePost(Guid postId);

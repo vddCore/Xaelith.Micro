@@ -1,6 +1,7 @@
 ﻿@layout AdminShell
 
 @page "/admin/manage/categories"
+@using Category = Xaelith.Micro.Infrastructure.DataModel.Core.Content.Category
 @inherits XaelithRestrictedPage
 
 @inject IModalService Modals;
@@ -30,20 +31,24 @@
 
     protected override string Title => "categories";
 
-    private DualValueEditContext ValueEditContext { get; set; } = new();
-    private DualValueEditContext PreviousState { get; set; } = new();
+    private CategoryEditContext ValueEditContext { get; set; } = new();
+    private CategoryEditContext PreviousState { get; set; } = new();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
-        foreach (var (name, description) in Configuration.Root!.Content.Categories)
+        foreach (var (name, category) in Configuration.Root!.Content.Categories)
         {
-            ValueEditContext.Entries.Add(new(name, description));
+            ValueEditContext.Entries.Add(new(
+                name, 
+                category.Description,
+                category.ShowOnMainPage
+            ));
         }
 
         ValueEditContext.Entries = ValueEditContext.Entries
-            .OrderBy(x => x.FirstValue)
+            .OrderBy(x => x.Name)
             .ToList();
 
         PreviousState = ValueEditContext.Copy();
@@ -51,11 +56,11 @@
 
     private void SaveCategories(EditContext editContext)
     {
-        var context = (DualValueEditContext)editContext.Model;
+        var context = (CategoryEditContext)editContext.Model;
 
         try
         {
-            if (context.Entries.Any(x => string.IsNullOrWhiteSpace(x.FirstValue)))
+            if (context.Entries.Any(x => string.IsNullOrWhiteSpace(x.Name)))
             {
                 Toasts.Show(
                     "Empty category names are not allowed",
@@ -66,7 +71,7 @@
                 return;
             }
 
-            var uniqueEntries = context.Entries.Select(x => x.FirstValue).Distinct();
+            var uniqueEntries = context.Entries.Select(x => x.Name).Distinct();
 
             if (uniqueEntries.Count() != context.Entries.Count)
             {
@@ -82,14 +87,18 @@
             Configuration.Root!.Content.Categories.Clear();
             foreach (var category in context.Entries)
             {
-                if (string.IsNullOrWhiteSpace(category.FirstValue))
+                if (string.IsNullOrWhiteSpace(category.Name))
                     continue;
 
-                Configuration.Root!.Content.Categories[category.FirstValue] = category.SecondValue;
+                Configuration.Root!.Content.Categories[category.Name] = new Category
+                {
+                    Description = category.Description,
+                    ShowOnMainPage = category.ShowOnMainPage
+                };
             }
 
             context.Entries = context.Entries
-                .OrderBy(x => x.FirstValue)
+                .OrderBy(x => x.Name)
                 .ToList();
 
             Configuration.Save();
@@ -111,7 +120,7 @@
     }
 
     private void AddEmptyCategory()
-        => ValueEditContext.Entries.Insert(0, new(string.Empty, string.Empty));
+        => ValueEditContext.Entries.Insert(0, new(string.Empty, string.Empty, true));
 
     private void DeleteCategory(int index)
         => ValueEditContext.Entries.RemoveAt(index);

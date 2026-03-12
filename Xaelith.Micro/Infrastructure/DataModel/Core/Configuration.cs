@@ -3,6 +3,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Xaelith.Micro.Infrastructure.DataModel.FrontEnd;
+using Xaelith.Micro.Infrastructure.DataModel.Core.Content;
 
 public record Configuration
 {
@@ -104,7 +105,7 @@ public record NavigationSettings
 public record ContentSettings
 {
     [JsonProperty("categories")]
-    public Dictionary<string, string> Categories { get; set; } = [];
+    public Dictionary<string, Category> Categories { get; set; } = [];
 
     [JsonProperty("tags")]
     public Dictionary<string, string> Tags { get; set; } = [];

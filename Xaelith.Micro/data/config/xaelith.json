@@ -37,9 +37,18 @@
   
   "content": {
     "categories": {
-      "debug": "debugging purposes are cool. they let you *see* things.",
-      "stories": "stories i write. some with assistance from others, some fully of my own",
-      "poetry": "'s just me spilling my guts. feel free to laugh."
+      "debug": {
+        "description": "debugging purposes are cool. they let you *see* things.",
+        "show_on_main_page": true
+      },
+      "stories": {
+        "description": "stories i write. some with assistance from others, some fully of my own",
+        "show_on_main_page": true
+      },
+      "poetry": {
+        "description": "'s just me spilling my guts. feel free to laugh.",
+        "show_on_main_page": false
+      }
     },
 
     "tags": { 
