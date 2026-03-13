@@ -1087,11 +1087,11 @@ main#admin .editor-toolbar .custom-checkbox {
     user-select: none;
 }
 
-input[type="text"]:hover {
+.dual-value-container input[type="text"]:hover {
     border-color: var(--textbox-border);
 }
 
-input[type="text"]:focus {
+.dual-value-container input[type="text"]:focus {
     border-right: 4px solid var(--textbox-focus-border);
     background-color: var(--dual-value-container-textbox-focus-background);
 
