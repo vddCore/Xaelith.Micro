@@ -1,0 +1,22 @@
+﻿@switch (Post.Metadata.Type)
+{
+    case PostType.Normal:
+        <PostFull Post="@Post"/>
+        break;
+
+    case PostType.Static:
+        <PostStatic Post="@Post"/>
+        break;
+
+    default:
+        <NotFound Message="This post type doesn't have a template."/>
+        break;
+}
+
+@code {
+    [CascadingParameter]
+    public UserContext UserContext { get; set; } = null!;
+    
+    [Parameter]
+    public required Post Post { get; set; }
+}

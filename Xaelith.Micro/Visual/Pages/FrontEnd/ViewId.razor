@@ -1,7 +1,7 @@
-﻿@page "/view/{slug}"
+﻿@page "/view/id/{id}"
 @inherits XaelithFrontEndPage
 
-<NavBar/>
+<NavBar />
 
 <main>
     @if (Post == null || (!Post.Metadata.Published && !UserContext.IsAuthenticated))
@@ -14,30 +14,30 @@
     }
 </main>
 
-<Footer/>
+<Footer />
 
 @code {
     [CascadingParameter]
     public UserContext UserContext { get; set; } = null!;
 
     [Parameter]
-    public required string Slug { get; set; }
-
+    public required string Id { get; set; }
+    
     protected override string Title
         => Post != null
             ? Post.Metadata.Title
             : "post not found";
-
+    
     private Post? Post { get; set; }
 
     private string NotFoundMessage
-        => $"No post with slug <code>{Slug}</code> exists _";
-
+        => $"No post with ID <code>{Id}</code> exists _";
+    
     protected override void OnParametersSet()
     {
-        Post = Content.GetPostBySlug(Slug);
+        Post = Content.GetPostById(Id);
     }
-
+    
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
