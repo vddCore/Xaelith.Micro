@@ -22,7 +22,7 @@
         <tr>
             <td class="title">
                 <a href="/admin/content/edit/@(post.Id.ToString("D"))"
-                   tool>
+                   title="@post.Metadata.Title">
                     @if (post.Metadata.Type == PostType.Normal)
                     {
                         <i class="las la-file-alt"></i>
