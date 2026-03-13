@@ -5,17 +5,17 @@
     <div class="post-meta-items">
         <span class="post-meta-item post-meta-author">
             @{
-                var author = UserStore.FindByIdAsync(@Post.Metadata.Author.ToString("D"))
+                var author = UserStore.FindByIdAsync(Post.Metadata.Author.ToString("D"))
                     .GetAwaiter()
                     .GetResult();
 
                 if (author != null)
                 {
-                    @author.DisplayName;
+                    @author.DisplayName
                 }
                 else
                 {
-                    @("unknown user");
+                    @("unknown user")
                 }
             }
         </span>
@@ -35,7 +35,7 @@
             }
             else
             {
-                @("no category");
+                @("no category")
             }
         </span>
 
