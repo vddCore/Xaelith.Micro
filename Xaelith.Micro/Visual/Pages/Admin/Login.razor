@@ -184,7 +184,10 @@
 
         await HttpContext.SignInAsync(principal, new AuthenticationProperties
         {
-            IsPersistent = Credentials.RememberLogin
+            IsPersistent = Credentials.RememberLogin,
+            ExpiresUtc = Credentials.RememberLogin ?
+                DateTimeOffset.UtcNow.AddMonths(3) :
+                DateTimeOffset.UtcNow.AddHours(1)
         });
 
         var returnUrl = Navigation.QueryString("ReturnUrl");
