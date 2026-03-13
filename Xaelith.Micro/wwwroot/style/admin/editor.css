@@ -36,6 +36,11 @@
     --md-editor-toolbar-save-button-active-foreground: #73e4af88;
     --md-editor-toolbar-save-button-disabled-foreground: #73e4af66;
     --md-editor-toolbar-save-button-hover-shadow: #73e4af55;
+    
+    --md-editor-tool-panel-background: #1f0f2e;
+    --md-editor-tool-panel-border: #ff88ff66;
+    --md-editor-tool-panel-button-foreground: #ff88ffaa;
+    --md-editor-tool-panel-button-background: #ff88ff11;
 }
 
 main#admin .md-editor-tabview {
@@ -119,7 +124,58 @@ main#admin #md-editor-area .ͼ3.cm-focused > .cm-scroller > .cm-selectionLayer .
 }
 
 main#admin #md-editor-area .cm-panels {
+    border-top: 1px solid var(--md-editor-tool-panel-border);
+    background-color: var(--md-editor-tool-panel-background);
+}
+
+main#admin #md-editor-area .cm-panels input[type="checkbox"],
+main#admin #md-editor-area .cm-panels label {
     display: none;
+}
+
+main#admin #md-editor-area .cm-panels input.cm-textfield {
+    padding: 0.4rem;
+    margin: 4px 8px 2px 0;
+
+    border-radius: 4px;
+    border: 1px solid var(--textbox-border);
+
+    font-family: "Rajdhani";
+    font-size: 1rem;
+
+    color: var(--textbox-foreground);
+    background-color: var(--textbox-background);
+
+    transition: .15s ease-in-out;
+}
+
+main#admin #md-editor-area .cm-panels input.cm-textfield::placeholder {
+    text-transform: uppercase;
+
+    color: var(--textbox-placeholder-foreground);
+}
+
+main#admin #md-editor-area .cm-panels input.cm-textfield:hover {
+    border-color: var(--textbox-hover-border);
+}
+
+main#admin #md-editor-area .cm-panels .cm-button {
+    padding: 0.4rem 0.3rem 0.3rem 0.2rem;
+    background-image: none;
+    background-color: var(--md-editor-tool-panel-button-background);
+    border-radius: 2px;
+    border: none;
+    border-left: 4px solid var(--md-editor-tool-panel-button-foreground);
+    border-right: 4px solid var(--md-editor-tool-panel-button-foreground);
+    color: var(--md-editor-tool-panel-button-foreground);
+    font-size: 1rem;
+}
+
+main#admin #md-editor-area .cm-panels input.cm-textfield:focus {
+    border: 1px solid var(--textbox-focus-border);
+
+    color: var(--textbox-focus-foreground);
+    box-shadow: 0 0 6px var(--textbox-focus-shadow);
 }
 
 main#admin #md-editor-area .ͼ1 .cm-scroller {
