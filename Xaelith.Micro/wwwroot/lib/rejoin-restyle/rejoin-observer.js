@@ -41,10 +41,10 @@ if (dialog && dialog.shadowRoot) {
     let retryButton = shadowRoot.querySelector("button");
     if (retryButton) {
         retryButton.style.backgroundColor = computedStyle
-          .getPropertyValue("--button-background");
+          .getPropertyValue("--retry-button-background");
           
         retryButton.style.color = computedStyle
-          .getPropertyValue("--button-foreground");
+          .getPropertyValue("--link-normal-foreground");
         
         retryButton.style.padding = "4px 20px";
         retryButton.style.borderRadius = "6px";
@@ -56,12 +56,18 @@ if (dialog && dialog.shadowRoot) {
 
         retryButton.addEventListener("mouseenter", () => {
             retryButton.style.backgroundColor = computedStyle
-              .getPropertyValue("--button-hover-background");
+                       .getPropertyValue("--retry-button-background");
+            
+            retryButton.style.foregroundColor = computedStyle
+                       .getPropertyValue("--link-hover-foreground");
         });
         
         retryButton.addEventListener("mouseleave", () => {
             retryButton.style.backgroundColor = computedStyle
-              .getPropertyValue("--button-background");
+                       .getPropertyValue("--retry-button-background");
+
+            retryButton.style.backgroundColor = computedStyle
+                       .getPropertyValue("--link-normal-foreground");
         });
     }
 }
