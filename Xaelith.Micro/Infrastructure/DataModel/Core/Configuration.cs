@@ -56,9 +56,6 @@ public record CoreSettings
 
     [JsonProperty("autosave_interval_seconds")]
     public int AutosaveIntervalSeconds { get; set; } = 30;
-    
-    [JsonProperty("user_css")]
-    public string UserCSS { get; set; } = string.Empty;
 }
 
 public record GeneralSettings

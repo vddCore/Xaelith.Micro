@@ -3,6 +3,7 @@
 @page "/admin/core/usercss"
 @inherits XaelithRestrictedPage
 
+@inject IUserStyleService UserStyle;
 @inject IModalService Modal;
 @inject IToastService Toast;
 
@@ -75,15 +76,14 @@
     {
         base.OnInitialized();
 
-        StylesheetEditContext.Code = Configuration.Root!.Core.UserCSS;
+        StylesheetEditContext.Code = UserStyle.Fetch();
     }
 
     private void SaveStylesheet()
     {
         try
         {
-            Configuration.Root!.Core.UserCSS = StylesheetEditContext.Code;
-            Configuration.Save();
+            UserStyle.Update(StylesheetEditContext.Code);
 
             Toast.Show(
                 "Stylesheet saved",
@@ -114,7 +114,7 @@
                 (result) =>
                 {
                     if (result)
-                        StylesheetEditContext.Code = Configuration.Root!.Core.UserCSS;
+                        StylesheetEditContext.Code = UserStyle.Fetch();
                 }
             )
         );

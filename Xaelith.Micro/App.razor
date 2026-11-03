@@ -1,4 +1,5 @@
 ﻿@inject IConfigService Configuration
+@inject IUserStyleService UserStyle;
 
 <PageTitle>@Configuration.Root!.General.SiteTitle</PageTitle>
 
@@ -48,7 +49,7 @@
     <script src="@Assets["lib/selectr/selectr.min.js"]"></script>
     
     <style>
-        @((MarkupString)Configuration.Root.Core.UserCSS)
+        @((MarkupString)UserStyle.Fetch())
     </style>
 
     <ImportMap/>

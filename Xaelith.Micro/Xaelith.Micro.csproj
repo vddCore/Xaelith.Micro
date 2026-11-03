@@ -51,6 +51,9 @@
     <Compile Update="Infrastructure\ServiceModel\Shared\ToastService.cs">
       <DependentUpon>IToastService.cs</DependentUpon>
     </Compile>
+    <Compile Update="Infrastructure\ServiceModel\FrontEnd\UserStyleService.cs">
+      <DependentUpon>IUserStyleService.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
