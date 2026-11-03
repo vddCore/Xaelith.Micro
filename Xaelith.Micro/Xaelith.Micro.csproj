@@ -118,6 +118,7 @@
     </Content>
     <None Remove="data\content\ce20e8e2-5e15-4c6f-91be-1ea1f763fa76\media\3195811.jpg" />
     <None Remove="data\content\ce20e8e2-5e15-4c6f-91be-1ea1f763fa76\media\E4BB9179-87B5-4493-9A1C-22F61809ACFE.png" />
+    <Content Remove="data\config\regex_patterns.json" />
   </ItemGroup>
 
   <ItemGroup>

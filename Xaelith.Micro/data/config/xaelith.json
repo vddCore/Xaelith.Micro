@@ -26,13 +26,6 @@
   
   "rendering": {
     "pagebreak_token": "[[pagebreak]]",
-    "custom_regex_patterns": [
-      {
-        "match": "\\[c=#(?<color>[0-9A-Fa-f]{3,8})](?<content>.*?)\\[/c]",
-        "replace": "<span style=\"color: #${color};\">${content}</span>",
-        "single_line": true
-      }
-    ]
   },
   
   "content": {

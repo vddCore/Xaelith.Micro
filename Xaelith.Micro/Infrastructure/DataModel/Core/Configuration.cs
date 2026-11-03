@@ -48,8 +48,8 @@ public record Configuration
 
 public record CoreSettings
 {
-    [JsonProperty("is_installed")]
-    public bool IsInstalled { get; set; }
+    [JsonProperty("under_maintenance")]
+    public bool IsUnderMaintenance { get; set; }
 
     [JsonProperty("max_file_upload_size_kb")]
     public int MaxFileUploadSizeKilobytes { get; set; } = 8192;
@@ -88,9 +88,6 @@ public record RenderingSettings
 {
     [JsonProperty("pagebreak_token")]
     public string PageBreakToken { get; set; } = "[[pagebreak]]";
-
-    [JsonProperty("custom_regex_patterns")]
-    public List<RegexPattern> CustomRegexPatterns { get; set; } = [];
 }
 
 public record NavigationSettings

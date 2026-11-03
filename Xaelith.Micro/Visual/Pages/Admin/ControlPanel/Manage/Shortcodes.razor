@@ -3,6 +3,7 @@
 @page "/admin/manage/shortcodes"
 @inherits XaelithRestrictedPage
 
+@inject IRegexPatternService RegexPatterns;
 @inject IModalService Modals;
 @inject IToastService Toasts;
 
@@ -24,7 +25,7 @@
                          SecondValuePlaceholder="Awaiting replacement..."
                          ListContainerClass="custom-pattern-editor"
                          OnAddRequested="@AddEmptyPattern"
-                         OnDeleteRequested="@((e) => DeleteEntry(e))"
+                         OnDeleteRequested="@(DeleteEntry)"
                          OnDiscardRequested="@DiscardChanges" />
     </EditForm>
 </div>
@@ -42,7 +43,7 @@
     {
         base.OnInitialized();
 
-        foreach (var pattern in Configuration.Root!.Rendering.CustomRegexPatterns)
+        foreach (var pattern in RegexPatterns.Fetch())
         {
             var entry = new DualValueEditContext.Entry(
                 pattern.Match,
@@ -77,11 +78,11 @@
 
         try
         {
-            Configuration.Root!.Rendering.CustomRegexPatterns.Clear();
-
+            var patterns = new List<RegexPattern>();
+            
             foreach (var entry in context.Entries)
             {
-                Configuration.Root!.Rendering.CustomRegexPatterns.Add(
+                patterns.Add(
                     new RegexPattern
                     {
                         Match = entry.FirstValue,
@@ -91,7 +92,8 @@
                 );
             }
 
-            Configuration.Save();
+            RegexPatterns.Update(patterns);
+
             Toasts.Show(
                 "Shortcodes saved",
                 ToastSeverity.Success

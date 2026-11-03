@@ -14,7 +14,7 @@ public static class WellKnown
 
     public static string ConfigurationFileName { get; } = "xaelith.json";
     public static string StatisticsFileName { get; } = "stats.json";
-    public static string ShortcodeStoreFileName { get; } = "shortcodes.json";
+    public static string RegexPatternStoreFileName { get; } = "regex.json";
     public static string UserCssFileName { get; } = "user.css";
 
     public static string PostMediaDirectoryName { get; } = "media";
