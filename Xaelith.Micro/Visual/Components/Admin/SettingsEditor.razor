@@ -4,7 +4,6 @@
          TabChanged="OnTabChanged">
     <Tab Header="Core">
         <div class="input-row">
-
             <div class="input-group">
                 <label for="settings-core-autosave-interval">
                     Autosave interval (seconds)
@@ -21,6 +20,15 @@
                 <input id="settings-core-max-file-upload-size"
                        type="text"
                        @bind="@Configuration.Core.MaxFileUploadSizeKilobytes"/>
+            </div>
+        </div>
+        
+        <div class="input-row">
+            <div class="input-group">
+                <CustomInputCheckbox Label="Enable maintenance mode"
+                                     Value="@Configuration.Core.IsUnderMaintenance"
+                                     ValueChanged="MaintenanceModeStateChanged"
+                                     ValueExpression="ProvideMaintenanceModeState"/>
             </div>
         </div>
     </Tab>
@@ -243,4 +251,10 @@
             StateHasChanged();
         }
     }
+    
+    private void MaintenanceModeStateChanged(bool value)
+        => Configuration.Core.IsUnderMaintenance = value;
+
+    private bool ProvideMaintenanceModeState()
+        => Configuration.Core.IsUnderMaintenance;
 }

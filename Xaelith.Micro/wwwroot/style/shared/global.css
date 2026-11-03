@@ -96,6 +96,11 @@ footer p.footer-content {
     color: var(--footer-foreground);
 }
 
+footer p.footer-content p {
+    margin: 0;
+    padding: 0;
+}
+
 a {
     cursor: pointer;
 

@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
 @inject IFlatFileUserStore UserStore;
+@inject IConfigService Config;
+@inject NavigationManager Navigation;
 
 @if (_isReady)
 {
@@ -34,7 +36,30 @@
                 .Identity?
                 .IsAuthenticated ?? false;
         }
+        
+        var relativePath = Navigation
+            .ToBaseRelativePath(Navigation.Uri)
+            .ToLowerInvariant();
+        if (Config.Root!.Core.IsUnderMaintenance && !UserContext.IsAuthenticated)
+        {
+            var isAllowedInMaintenance = relativePath.StartsWith("admin")
+                                         || relativePath.StartsWith("maintenance");
 
-        _isReady = true;
-    }
+            if (!isAllowedInMaintenance)
+            {
+                Navigation.NavigateTo("/maintenance");
+                return;
+            }
+        }
+        
+        if (relativePath.Trim('/') == "admin")
+        {
+            Navigation.NavigateTo("/admin/login");
+            return;
+        }
+
+
+    _isReady = true;
+}
+
 }

@@ -31,7 +31,14 @@
                     {
                         <i class="las la-pen-alt"></i>
                     }
-                    @post.Metadata.Title
+                    @if (!string.IsNullOrEmpty(post.Metadata.Title))
+                    {
+                        @post.Metadata.Title
+                    }
+                    else
+                    {
+                        @("<untitled>")
+                    }
                 </a>
             </td>
             

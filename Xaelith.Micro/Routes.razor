@@ -1,7 +1,9 @@
-﻿<Router AppAssembly="typeof(App).Assembly">
+﻿@inject IConfigService Config;
+
+<Router AppAssembly="typeof(App).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData"
-                            DefaultLayout="typeof(AppShell)"/>
+                            DefaultLayout="typeof(AppShell)" />
     </Found>
     
     <NotFound>

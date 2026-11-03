@@ -1,7 +1,8 @@
-﻿@inject IConfigService ConfigService;
+﻿@inject IConfigService Config;
+@inject IMarkdownService Markdown;
 
 <footer id="main-footer">
     <p class="footer-content">
-        @ConfigService.Root!.General.FooterText     
+        @((MarkupString)Markdown.Render(Config.Root!.General.FooterText))     
     </p>    
 </footer>

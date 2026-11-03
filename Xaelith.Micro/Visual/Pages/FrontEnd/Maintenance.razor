@@ -1,0 +1,45 @@
+@page "/maintenance"
+
+<PageTitle>Maintenance</PageTitle>
+
+<div class="error-container">
+    <div class="error-content">
+        <div class="icon @(ShowIcon ? "visible" : "")">
+            <i class="las la-radiation-alt"></i>
+        </div>
+
+        <div class="message">
+            <div class="message-title @(ShowTitle ? "visible" : "")">
+                SYSTEM UNDER MAINTENANCE
+            </div>
+            
+            <div class="message-subtitle @(ShowSubtitle ? "visible" : "")">
+                // CLOSED UNTIL FURTHER NOTICE. LEAVE _
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Route { get; set; }
+
+    public bool ShowIcon { get; set; }
+    public bool ShowTitle { get; set; }
+    public bool ShowSubtitle { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        ShowIcon = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(1800);
+
+        ShowTitle = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(250);
+        
+        ShowSubtitle = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(250);
+    }
+}
