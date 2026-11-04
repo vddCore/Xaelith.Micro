@@ -35,30 +35,6 @@ main {
     text-align: justify;
 }
 
-@media screen and (min-width: 1550px) {
-    main {
-        width: 50%;
-    }
-
-    footer {
-        width: 55%;
-    }
-}
-
-@media screen and (max-width: 836px) {
-    main {
-        margin: 90px auto 0;
-    }
-
-    footer {
-        width: 100%;
-
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
-    }
-}
-
 footer {
     position: fixed;
     bottom: 0;
@@ -99,6 +75,30 @@ footer p.footer-content {
 footer p.footer-content p {
     margin: 0;
     padding: 0;
+}
+
+@media screen and (min-width: 1550px) {
+    main {
+        width: 50%;
+    }
+
+    footer {
+        width: 55%;
+    }
+}
+
+@media screen and (max-width: 846px) {
+    main {
+        margin: 90px auto 0;
+    }
+
+    footer {
+        width: 100%;
+
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
 }
 
 a {

@@ -223,7 +223,7 @@ ul li:last-child {
     }
 }
 
-@media screen and (max-width: 885px) {
+@media screen and (max-width: 846px) {
     nav {
         width: 100%;
 
@@ -249,7 +249,7 @@ ul li:last-child {
     }
 }
 
-@media screen and (max-width: 836px) {
+@media screen and (max-width: 846px) {
     nav {
         flex-direction: column;
 

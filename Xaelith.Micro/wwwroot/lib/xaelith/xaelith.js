@@ -45,22 +45,46 @@ window.xaelith.initScrollGlow = (wrapperSelector) => {
 }
 
 window.xaelith.initMobileView = () => {
-    let prevScrollpos = window.pageYOffset;
+    let prevScrollPos = document.body.scrollTop;
 
     document.body.addEventListener('scroll', () => {
-        if (window.innerWidth <= 836) {
+        if (window.innerWidth <= 846) {
             const mainNav = document.querySelector('#main-nav');
             const mainFooter = document.querySelector('#main-footer');
-            
+
             if (!mainNav || !mainFooter) return;
 
             const currentScrollPos = document.body.scrollTop;
-            const isScrollingUp = prevScrollpos > currentScrollPos;
+            const scrollDelta = currentScrollPos - prevScrollPos;
 
-            mainNav.style.top = isScrollingUp ? "0" : "-100px";
-            mainFooter.style.bottom = isScrollingUp ? "0" : "-100px";
+            const navHeight = mainNav.offsetHeight;
+            const footerHeight = mainFooter.offsetHeight;
 
-            prevScrollpos = currentScrollPos;
+            const navOffset = parseFloat(mainNav.dataset.scrollOffset || 0);
+            const footerOffset = parseFloat(mainFooter.dataset.scrollOffset || 0);
+
+            const newNavOffset = Math.max(0, Math.min(navHeight, navOffset + scrollDelta));
+            const newFooterOffset = Math.max(0, Math.min(footerHeight, footerOffset + scrollDelta));
+
+            mainNav.dataset.scrollOffset = `${newNavOffset}`;
+            mainFooter.dataset.scrollOffset = `${newFooterOffset}`;
+
+            mainNav.style.top = `-${newNavOffset}px`;
+            mainFooter.style.bottom = `-${newFooterOffset}px`;
+
+            prevScrollPos = currentScrollPos;
         }
+    });
+    
+    window.addEventListener('resize', () => {
+       if (window.innerWidth >= 846) {
+           const mainNav = document.querySelector('#main-nav');
+           const mainFooter = document.querySelector('#main-footer');
+
+           if (!mainNav || !mainFooter) return;
+
+           mainNav.style.top = "0";
+           mainFooter.style.bottom = "0";
+       }
     });
 }
