@@ -40,6 +40,13 @@
         var relativePath = Navigation
             .ToBaseRelativePath(Navigation.Uri)
             .ToLowerInvariant();
+
+        if (!Config.Root!.Core.IsUnderMaintenance && relativePath.StartsWith("maintenance"))
+        {
+            Navigation.NavigateTo("/");
+            return;
+        }
+        
         if (Config.Root!.Core.IsUnderMaintenance && !UserContext.IsAuthenticated)
         {
             var isAllowedInMaintenance = relativePath.StartsWith("admin")

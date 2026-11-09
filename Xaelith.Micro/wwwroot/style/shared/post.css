@@ -494,6 +494,9 @@ section.post pre {
 
     background-color: var(--block-background);
     color: var(--block-foreground);
+    
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
 }
 
 section.post code {

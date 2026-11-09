@@ -744,82 +744,73 @@ main#admin .editor-toolbar .custom-checkbox {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
     margin: 0 auto;
-    height: 100%;
 }
 
 .error-content {
-    margin-top: -20px;
-    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
 }
 
 .error-container .icon {
     margin: 0 auto;
-
-    text-align: center;
-    font-size: 20rem;
-
+    font-size: clamp(8rem, 22vw, 18rem);
+    line-height: 1;
     opacity: 0;
     color: var(--404-icon-foreground);
-
-    transition: 2s ease-in-out;
+    transition: opacity 1.8s ease-in-out;
 }
 
 .error-container .message {
-    margin-top: -6.2rem;
-
-    text-align: center;
+    text-wrap: nowrap;
+    margin-top: -0.35em;
+    width: 100%;
 }
 
 .error-container .message-title {
-    margin-bottom: 1rem;
-
-    height: 0;
-
-    font-size: 6rem;
-
+    margin-bottom: 0.15em;
+    max-height: 0;
+    font-size: clamp(1.75rem, 5vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.15;
     opacity: 0;
-
-    transition: opacity 0.2s ease-in-out,
-    height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
-
     color: var(--404-title-foreground);
+    transition: opacity 0.3s ease-in-out,
+                max-height 0.4s cubic-bezier(0.9, 0, 0.1, 1);
 }
 
 .error-container .message-subtitle {
-    margin-top: -20px;
-
-    opacity: 0;
-    height: 0;
-    font-size: 2rem;
-
+    max-height: 0;
+    font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+    line-height: 1;
     text-transform: uppercase;
-
-    transition: opacity 0.2s ease-in-out,
-    height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
-
+    letter-spacing: 0.05em;
+    opacity: 0;
     color: var(--404-subtitle-foreground);
+    transition: opacity 0.3s ease-in-out,
+                max-height 0.4s cubic-bezier(0.9, 0, 0.1, 1);
 }
 
 .error-container a {
-    display: block;
-
-    height: 0;
-
+    display: inline-block;
+    max-height: 0;
+    overflow: hidden;
     margin-top: 2rem;
-
-    text-align: center;
-
-    font-size: 1.8rem;
-
+    font-size: clamp(0.95rem, 2vw, 1.35rem);
     text-transform: uppercase;
-
+    letter-spacing: 0.08em;
     opacity: 0;
-
-    transition: 0.15s ease-in-out,
-    opacity 0.2s ease-in-out,
-    height 0.3s cubic-bezier(0.9, 0, 0.1, 1);
+    transition: opacity 0.25s ease-in-out,
+    max-height 0.35s cubic-bezier(0.9, 0, 0.1, 1),
+    color 0.15s ease-in-out;
 }
 
 .error-container .visible {
@@ -827,15 +818,15 @@ main#admin .editor-toolbar .custom-checkbox {
 }
 
 .error-container .message-title.visible {
-    height: 6rem;
+    max-height: 12rem;
 }
 
 .error-container .message-subtitle.visible {
-    height: 2rem;
+    max-height: 6rem;
 }
 
 .error-container a.visible {
-    height: 1.8rem;
+    max-height: 4rem;
 }
 
 .modal-box.modal-media {
